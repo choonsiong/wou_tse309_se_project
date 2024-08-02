@@ -1,0 +1,53 @@
+body {
+    background: #b0d5b3;
+    /*color: white;*/
+}
+
+.navbar {
+    border-bottom: #056808 3px solid;
+    opacity: 0.9;
+}
+
+#header-section {
+    color: white;
+    background: url(images/header-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 700px;
+}
+
+#header-section .dark-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 700px;
+    background: rgba(0,0,0,0.7);
+}
+
+#header-section .header-inner {
+    padding-top: 150px;
+}
+
+#header-section .card-form {
+    background: #056808 !important;
+    opacity: 0.8;
+}
+
+#header-section .fas {
+    color: #056808;
+    background: #fff;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#footer-section {
+    background: #056808;
+    color: white;
+    opacity: 0.8;
+}
+
+#main-section {
+    margin-top: 100px;
+}
