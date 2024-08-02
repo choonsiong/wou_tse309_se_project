@@ -1,6 +1,14 @@
 <template>
-    <h1>Hello</h1>
+    <main-header></main-header>
 </template>
 
 <script>
+import MainHeader from "@/components/MainHeader.vue";
+
+export default {
+    name: 'App',
+    components: {
+        MainHeader
+    }
+}
 </script>
