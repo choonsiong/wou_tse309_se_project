@@ -44,7 +44,30 @@ export default {
     },
     methods: {
         loginUser() {
-            this.isLoggedIn = true;
+            //this.isLoggedIn = true;
+
+            console.log("loginUser called");
+
+            const payload = {
+                email: 'test@example.com',
+                password: '123456',
+            }
+
+            const requestOptions = {
+                method: 'POST',
+                body: JSON.stringify(payload),
+            }
+
+            fetch('http://localhost:8081/users/login', requestOptions)
+                .then((resp) => response.json())
+                .then((resp) => {
+                    console.log(resp);
+                    if (resp.error) {
+                        console.log('error: ', resp.message);
+                    } else {
+                        console.log(resp);
+                    }
+                });
         }
     }
 }
