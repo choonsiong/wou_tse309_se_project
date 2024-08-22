@@ -9,6 +9,9 @@ export default {
     ],
     theme: {
         extend: {
+            boxShadow: {
+                blue: "0 0 3px 3px #4285f4",
+            },
             colors: {
                 "brand-bg-1": "#ffffff",
                 "brand-gray-1": "#dadce0",
