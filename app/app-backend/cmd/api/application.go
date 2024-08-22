@@ -7,12 +7,14 @@ import (
 	"net/http"
 )
 
+// application type store application wide shared data
 type application struct {
 	cfg      config
 	errorLog *log.Logger
 	infoLog  *log.Logger
 }
 
+// start the web server
 func (app *application) serve() error {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		var payload struct {

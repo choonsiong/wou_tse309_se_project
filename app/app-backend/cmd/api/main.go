@@ -9,6 +9,7 @@ var (
 	cfg config
 )
 
+// main function is the entry point of the application
 func main() {
 	cfg.port = 8081
 
