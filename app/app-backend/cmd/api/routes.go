@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// routes function handle HTTP routes
 func (app *application) routes() http.Handler {
 	mux := chi.NewRouter()
 
