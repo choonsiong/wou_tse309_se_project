@@ -5,4 +5,8 @@
 go: downloading github.com/go-chi/chi/v5 v5.1.0
 go: added github.com/go-chi/chi/v5 v5.1.0
 [mbp2022 2:44:17:131] 
+
+[mbp2022 5:06:44:131] go get github.com/go-chi/cors
+go: added github.com/go-chi/cors v1.2.1
+[mbp2022 5:06:46:131] 
 ```
