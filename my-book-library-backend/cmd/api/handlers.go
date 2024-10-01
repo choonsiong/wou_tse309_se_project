@@ -12,6 +12,7 @@ type jsonResponse struct {
 }
 
 // GenerateBcryptPassword generates bcrypt password according to user provided query string
+// http://localhost:9009/test/bcrypt?p=abc
 func (app *application) GenerateBcryptPassword(w http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query().Get("p")
 	bs := []byte(q)
