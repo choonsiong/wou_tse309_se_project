@@ -11,7 +11,7 @@ func (app *application) routes() http.Handler {
 	mux := chi.NewRouter()
 
 	// middlewares
-	mux.Use(middleware.Recoverer)
+	mux.Use(middleware.Recoverer) // recover from crash
 
 	mux.Get("/users/login", app.Login)
 	mux.Post("/users/login", app.Login)

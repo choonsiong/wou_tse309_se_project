@@ -1,5 +1,7 @@
 # About
 
+To keep track of dependencies used in the application.
+
 ## Dependencies
 
 ### Backend
