@@ -67,6 +67,7 @@ func (t *Token) GenerateToken(userID int, ttl time.Duration) (*Token, error) {
 		Expiry: time.Now().Add(ttl),
 	}
 
+	// Generate a random bytes
 	randomBytes := make([]byte, 16)
 	_, err := rand.Read(randomBytes)
 	if err != nil {
