@@ -43,7 +43,7 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// TODO: Authenticate user
-	app.infoLog.Println(cred.Email, cred.Password)
+	app.infoLog.Println("Authenticating user: ", cred.Email, cred.Password)
 
 	// Send back a JSON response if user successfully authenticated.
 	payload.Error = false
