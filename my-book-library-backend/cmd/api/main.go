@@ -11,7 +11,7 @@ var (
 
 // main function is the entry point of the application
 func main() {
-	cfg.port = 8081
+	cfg.port = 9009
 
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)

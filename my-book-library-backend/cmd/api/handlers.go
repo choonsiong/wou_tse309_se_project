@@ -23,8 +23,8 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&cred)
 	if err != nil {
-		// user authentication failed
-		app.errorLog.Println(err)
+		// User authentication failed.
+		app.errorLog.Println("Failed to authenticate user: ", err)
 
 		payload.Error = true
 		payload.Message = "invalid credentials"
@@ -45,7 +45,7 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	// TODO: Authenticate user
 	app.infoLog.Println(cred.Email, cred.Password)
 
-	// send back JSON response
+	// Send back a JSON response if user successfully authenticated.
 	payload.Error = false
 	payload.Message = "success"
 

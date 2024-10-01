@@ -6,11 +6,11 @@ import (
 	"net/http"
 )
 
-// routes function handle HTTP routes
+// routes function handle application HTTP routes
 func (app *application) routes() http.Handler {
 	mux := chi.NewRouter()
 
-	// middlewares
+	// The middlewares used in the application.
 	mux.Use(middleware.Recoverer) // recover from crash
 
 	mux.Get("/users/login", app.Login)
