@@ -1,0 +1,29 @@
+package main
+
+import (
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
+	"net/http"
+)
+
+// routes function handle application wide HTTP routes
+func (app *application) routes() http.Handler {
+	mux := chi.NewRouter()
+
+	// The middlewares used in the application.
+	mux.Use(middleware.Recoverer) // Make sure we recover from crash
+	mux.Use(cors.Handler(cors.Options{
+		AllowCredentials: true,
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		AllowedMethods:   []string{"GET", "PATCH", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedOrigins:   []string{"https://*", "http://*"},
+		ExposedHeaders:   []string{"Link"},
+		MaxAge:           300, // seconds
+	})) // For cross-site server request
+
+	//mux.Get("/users/login", app.Login)
+	mux.Post("/users/login", app.Login)
+
+	return mux
+}
