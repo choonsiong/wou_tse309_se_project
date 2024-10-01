@@ -4,6 +4,10 @@ To keep track of dependencies used in the application.
 
 ## Dependencies
 
+### Postgres
+
+In local development environment (using docker) database is `bookappdb`, username is `postgres`, password is `password`
+
 ### Backend
 
 ```

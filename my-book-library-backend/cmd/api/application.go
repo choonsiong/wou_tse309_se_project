@@ -1,6 +1,7 @@
 package main
 
 import (
+	"app-backend/internal/driver"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 // application type store application wide shared data
 type application struct {
 	cfg      config
+	db       *driver.DB
 	errorLog *log.Logger
 	infoLog  *log.Logger
 }
