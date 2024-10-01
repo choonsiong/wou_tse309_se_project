@@ -40,6 +40,26 @@ export default {
       console.log('Email: ' + userEmail)
       console.log('Password: ' + userPassword)
       this.showLoginDialog = false
+
+      const payload = {
+        email: userEmail,
+        password: userPassword
+      }
+
+      const requestOptions = {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      }
+
+      fetch('http://localhost:9009/users/login', requestOptions)
+        .then((resp) => resp.json())
+        .then((jsonResp) => {
+          if (jsonResp.error) {
+            console.log(jsonResp.error)
+          } else {
+            console.log(jsonResp)
+          }
+        })
     }
   }
 }
