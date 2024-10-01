@@ -17,7 +17,8 @@ func main() {
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 
-	dsn := "host=localhost port=5432 user=postgres password=password dbname=bookappdb sslmode=disable timezone=utc connect_timeout=5"
+	dsn := os.Getenv("DSN")
+
 	db, err := driver.ConnectPostgresDatabase(dsn)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
