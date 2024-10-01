@@ -1,31 +1,44 @@
 package main
 
 import (
+	"app-backend/internal/data/models"
 	"app-backend/internal/driver"
+	"database/sql"
 	"log"
 	"os"
 )
 
 var (
-	cfg config
+	cfg Config
 )
 
 // main function is the entry point of the application
 func main() {
-	cfg.port = 9009
-
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 
-	dsn := "host=localhost port=5432 user=postgres password=password dbname=bookappdb sslmode=disable timezone=utc connect_timeout=5"
-	db, err := driver.ConnectPostgresDatabase(dsn)
+	// load configuration
+	err := loadConfig(&cfg)
+	if err != nil {
+		log.Fatalf("Failed to load config: %v", err)
+	}
+
+	// initialize database connection
+	db, err := driver.ConnectPostgresDatabase(cfg.DSN)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
+	defer func(SQL *sql.DB) {
+		err := SQL.Close()
+		if err != nil {
+			log.Fatalf("Failed to close SQL connection: %v", err)
+		}
+	}(db.SQL)
+
 	app := &application{
 		cfg:      cfg,
-		db:       db,
+		models:   models.New(db.SQL),
 		errorLog: errorLog,
 		infoLog:  infoLog,
 	}
