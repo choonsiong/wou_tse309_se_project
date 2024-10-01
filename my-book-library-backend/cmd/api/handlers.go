@@ -1,6 +1,7 @@
 package main
 
 import (
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
 
@@ -8,6 +9,30 @@ import (
 type jsonResponse struct {
 	Error   bool   `json:"error"`
 	Message string `json:"message"`
+}
+
+// GenerateBcryptPassword generates bcrypt password according to user provided query string
+// http://localhost:9009/test/bcrypt?p=abc
+func (app *application) GenerateBcryptPassword(w http.ResponseWriter, r *http.Request) {
+	q := r.URL.Query().Get("p")
+	bs := []byte(q)
+
+	// Hashing the password with a cost of 12
+	hashedPassword, err := bcrypt.GenerateFromPassword(bs, 12)
+	if err != nil {
+		app.errorLog.Println(err)
+	}
+
+	app.infoLog.Println("Generated bcrypt password:", string(hashedPassword))
+
+	var payload jsonResponse
+	payload.Error = false
+	payload.Message = string(hashedPassword)
+
+	err = app.writeJSON(w, http.StatusOK, payload)
+	if err != nil {
+		app.errorLog.Println(err)
+	}
 }
 
 // Login handler
@@ -20,33 +45,13 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	var cred credential
 	var payload jsonResponse
 
-	//err := json.NewDecoder(r.Body).Decode(&cred)
-	//if err != nil {
-	//	// User authentication failed.
-	//	app.errorLog.Println("Failed to authenticate user: ", err)
-	//
-	//	payload.Error = true
-	//	payload.Message = "invalid credentials"
-	//
-	//	out, err := json.MarshalIndent(payload, "", "\t")
-	//	if err != nil {
-	//		app.errorLog.Println(err)
-	//	}
-	//
-	//	w.Header().Set("Content-Type", "application/json")
-	//	w.WriteHeader(http.StatusOK)
-	//
-	//	_, _ = w.Write(out)
-	//
-	//	return
-	//}
-
 	err := app.readJSON(w, r, &cred)
 	if err != nil {
 		app.errorLog.Println(err)
 		payload.Error = true
 		payload.Message = "failed to read JSON data from request body"
 		_ = app.writeJSON(w, http.StatusBadRequest, payload)
+		return
 	}
 
 	// TODO: Authenticate user
@@ -55,16 +60,6 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	// Send back a JSON response if user successfully authenticated.
 	payload.Error = false
 	payload.Message = "user authenticated successfully"
-
-	//out, err := json.MarshalIndent(payload, "", "\t")
-	//if err != nil {
-	//	app.errorLog.Println(err)
-	//}
-	//
-	//w.Header().Set("Content-Type", "application/json")
-	//w.WriteHeader(http.StatusOK)
-	//
-	//_, _ = w.Write(out)
 
 	err = app.writeJSON(w, http.StatusOK, payload)
 	if err != nil {
