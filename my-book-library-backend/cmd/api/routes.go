@@ -1,6 +1,7 @@
 package main
 
 import (
+	"app-backend/internal/data/models"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -22,8 +23,19 @@ func (app *application) routes() http.Handler {
 		MaxAge:           300, // seconds
 	})) // For cross-site server request
 
-	//mux.Get("/users/login", app.Login)
 	mux.Post("/users/login", app.Login)
+	
+	mux.Get("/test/users/login", app.Login)
+	mux.Get("/test/users/all", func(w http.ResponseWriter, r *http.Request) {
+		var u models.User
+
+		users, err := u.GetAll()
+		if err != nil {
+			app.errorLog.Println(err)
+		}
+
+		_ = app.writeJSON(w, http.StatusOK, users)
+	})
 
 	return mux
 }
