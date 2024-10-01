@@ -81,3 +81,48 @@ func (u *User) GetById(id int) (*User, error) {
 
 	return &user, nil
 }
+
+// Update updates a user
+func (u *User) Update() error {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	stmt := `UPDATE users SET email = $1, first_name = $2, last_name = $3, updated_at = $4, user_active = $5 WHERE id = $6`
+
+	_, err := db.ExecContext(ctx, stmt, u.Email, u.FirstName, u.LastName, time.Now(), u.Active, u.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Delete deletes a user
+func (u *User) Delete() error {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	stmt := `DELETE FROM users WHERE id = $1`
+
+	_, err := db.ExecContext(ctx, stmt, u.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DeleteById deletes a user by id
+func (u *User) DeleteById(id int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	stmt := `DELETE FROM users WHERE id = $1`
+
+	_, err := db.ExecContext(ctx, stmt, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
