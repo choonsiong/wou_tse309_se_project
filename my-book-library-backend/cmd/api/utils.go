@@ -29,7 +29,7 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, data in
 	return nil
 }
 
-// writeJSON is a helper function to write JSON data into HTTP response body. http.Header parameter accepts zero or one value.
+// writeJSON is a helper function to write JSON data into HTTP response body. httpHeaders parameter accepts zero or one value.
 func (app *application) writeJSON(w http.ResponseWriter, status int, data interface{}, httpHeaders ...http.Header) error {
 	out, err := json.MarshalIndent(data, "", "\t")
 	if err != nil {
@@ -53,4 +53,19 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data interf
 	}
 
 	return nil
+}
+
+// errorJSON is a helper function to write JSON data into HTTP response body for communicating error message. httpStatusCodes accepts zero or one value.
+func (app *application) errorJSON(w http.ResponseWriter, err error, httpStatusCodes ...int) error {
+	httpStatusCode := http.StatusBadRequest
+
+	if len(httpStatusCodes) > 0 {
+		httpStatusCode = httpStatusCodes[0]
+	}
+
+	var payload jsonResponse
+	payload.Error = true
+	payload.Message = err.Error()
+
+	return app.writeJSON(w, httpStatusCode, payload)
 }
