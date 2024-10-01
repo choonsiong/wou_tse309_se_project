@@ -17,6 +17,7 @@ type User struct {
 	Token     Token     `json:"token"`
 }
 
+// GetAll returns a slice of pointer to User or error
 func (u *User) GetAll() ([]*User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
 	defer cancel()
@@ -41,4 +42,42 @@ func (u *User) GetAll() ([]*User, error) {
 	}
 
 	return users, nil
+}
+
+// GetByEmail returns a pointer to User or error
+func (u *User) GetByEmail(email string) (*User, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	query := `SELECT id, email, first_name, last_name, password, created_at, updated_at, user_active FROM users WHERE email = $1`
+
+	var user User
+
+	row := db.QueryRowContext(ctx, query, email)
+
+	err := row.Scan(&user.ID, &user.Email, &user.FirstName, &user.LastName, &user.Password, &user.CreatedAt, &user.UpdatedAt, &user.Active)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+// GetById returns a pointer to User or error
+func (u *User) GetById(id int) (*User, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	query := `SELECT id, email, first_name, last_name, password, created_at, updated_at, user_active FROM users WHERE id = $1`
+
+	var user User
+
+	row := db.QueryRowContext(ctx, query, id)
+
+	err := row.Scan(&user.ID, &user.Email, &user.FirstName, &user.LastName, &user.Password, &user.CreatedAt, &user.UpdatedAt, &user.Active)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }
