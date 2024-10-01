@@ -1,6 +1,7 @@
 package main
 
 import (
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
 
@@ -8,6 +9,29 @@ import (
 type jsonResponse struct {
 	Error   bool   `json:"error"`
 	Message string `json:"message"`
+}
+
+// GenerateBcryptPassword generates bcrypt password according to user provided query string
+func (app *application) GenerateBcryptPassword(w http.ResponseWriter, r *http.Request) {
+	q := r.URL.Query().Get("p")
+	bs := []byte(q)
+
+	// Hashing the password with a cost of 12
+	hashedPassword, err := bcrypt.GenerateFromPassword(bs, 12)
+	if err != nil {
+		app.errorLog.Println(err)
+	}
+
+	app.infoLog.Println("Generated bcrypt password:", string(hashedPassword))
+
+	var payload jsonResponse
+	payload.Error = false
+	payload.Message = string(hashedPassword)
+
+	err = app.writeJSON(w, http.StatusOK, payload)
+	if err != nil {
+		app.errorLog.Println(err)
+	}
 }
 
 // Login handler

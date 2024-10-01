@@ -24,7 +24,9 @@ func (app *application) routes() http.Handler {
 	})) // For cross-site server request
 
 	mux.Post("/users/login", app.Login)
-	
+
+	mux.Get("/test/bcrypt", app.GenerateBcryptPassword)
+
 	mux.Get("/test/users/login", app.Login)
 	mux.Get("/test/users/all", func(w http.ResponseWriter, r *http.Request) {
 		var u models.User
