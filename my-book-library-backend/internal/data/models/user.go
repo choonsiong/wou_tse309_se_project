@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"errors"
 	"golang.org/x/crypto/bcrypt"
 	"time"
 )
@@ -150,6 +151,43 @@ func (u *User) Insert(user User) (int, error) {
 	}
 
 	return newID, nil
+}
+
+// ResetPassword reset a user's password
+func (u *User) ResetPassword(newPassword string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	hashedPassword, err := getHashedPassword(newPassword)
+	if err != nil {
+		return err
+	}
+
+	stmt := `UPDATE users SET password = $1 WHERE id = $2`
+
+	_, err = db.ExecContext(ctx, stmt, hashedPassword, u.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// PasswordMatches check user's password match
+func (u *User) PasswordMatches(plainTextPassword string) (bool, error) {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(plainTextPassword))
+
+	if err != nil {
+		switch {
+		case errors.Is(err, bcrypt.ErrMismatchedHashAndPassword):
+			// Invalid password
+			return false, nil
+		default:
+			return false, err
+		}
+	}
+
+	return true, nil
 }
 
 // getHashedPassword returns a bcrypt hashed password
