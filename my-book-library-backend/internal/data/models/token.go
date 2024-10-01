@@ -121,3 +121,74 @@ func (t *Token) AuthenticateToken(r *http.Request) (*User, error) {
 
 	return user, nil
 }
+
+// Insert new token for the given user
+func (t *Token) Insert(token Token, u User) error {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	// Delete existing token
+	stmt := `DELETE FROM tokens WHERE user_id = $1`
+	_, err := db.ExecContext(ctx, stmt, token.UserID)
+	if err != nil {
+		return err
+	}
+
+	token.Email = u.Email
+
+	stmt = `INSERT INTO tokens (user_id, email, token, token_hash, created_at, updated_at, expiry) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	_, err = db.ExecContext(ctx, stmt, token.UserID, token.Email, token.Token, token.TokenHash, time.Now(), time.Now(), token.Expiry)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DeleteByToken deletes a token
+func (t *Token) DeleteByToken(plainTextToken string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	stmt := `DELETE FROM tokens WHERE token = $1`
+	_, err := db.ExecContext(ctx, stmt, plainTextToken)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ValidToken checks the validity of the given token
+func (t *Token) ValidToken(plainTextToken string) (bool, error) {
+	token, err := t.GetByToken(plainTextToken)
+	log.Println("token =", token)
+	if err != nil {
+		return false, errors.New("no matching token found")
+	}
+
+	_, err = t.GetUserByToken(*token)
+	if err != nil {
+		return false, errors.New("no matching user found")
+	}
+
+	if token.Expiry.Before(time.Now()) {
+		return false, errors.New("token is expired")
+	}
+
+	return true, nil
+}
+
+// DeleteTokensForUser delete a token for the given user id
+func (t *Token) DeleteTokensForUser(id int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	stmt := "delete from tokens where user_id = $1"
+	_, err := db.ExecContext(ctx, stmt, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
