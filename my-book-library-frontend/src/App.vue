@@ -1,20 +1,46 @@
 <template>
-    <main-header></main-header>
-    <div>
-        <router-view />
-    </div>
-    <main-footer></main-footer>
+  <login-dialog v-if="showLoginDialog"
+                @close-event="handleCloseEvent"
+                @login-event="handleLoginUserEvent">
+  </login-dialog>
+  <main-header @show-login-event="handleShowLoginEvent"></main-header>
+  <div>
+    <router-view />
+  </div>
+  <main-footer></main-footer>
 </template>
 
 <script>
-import MainHeader from "@/components/MainHeader.vue";
-import MainFooter from "@/components/MainFooter.vue";
+import MainHeader from '@/components/MainHeader.vue'
+import MainFooter from '@/components/MainFooter.vue'
+import LoginDialog from '@/components/LoginDialog.vue'
 
 export default {
-    name: 'App',
-    components: {
-        MainHeader,
-        MainFooter,
+  name: 'App',
+  components: {
+    LoginDialog,
+    MainHeader,
+    MainFooter
+  },
+  data() {
+    return {
+      showLoginDialog: false
     }
+  },
+  methods: {
+    handleCloseEvent() {
+      this.showLoginDialog = false
+    },
+    handleShowLoginEvent() {
+      console.log('handleShowLoginEvent()')
+      this.showLoginDialog = true
+    },
+    handleLoginUserEvent(userEmail, userPassword) {
+      console.log('handleLoginUserEvent()')
+      console.log('Email: ' + userEmail)
+      console.log('Password: ' + userPassword)
+      this.showLoginDialog = false
+    }
+  }
 }
 </script>
