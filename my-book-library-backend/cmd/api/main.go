@@ -2,6 +2,7 @@ package main
 
 import (
 	"app-backend/internal/driver"
+	"database/sql"
 	"log"
 	"os"
 )
@@ -24,6 +25,13 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
+
+	defer func(SQL *sql.DB) {
+		err := SQL.Close()
+		if err != nil {
+			log.Fatalf("Failed to close SQL connection: %v", err)
+		}
+	}(db.SQL)
 
 	app := &application{
 		cfg:      cfg,
