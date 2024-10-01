@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
@@ -125,4 +126,33 @@ func (u *User) DeleteById(id int) error {
 	}
 
 	return nil
+}
+
+// Insert inserts a new user
+func (u *User) Insert(user User) (int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	//fmt.Println("user =", user)
+
+	hashedPassword, err := getHashedPassword(user.Password)
+	if err != nil {
+		return 0, err
+	}
+
+	var newID int
+
+	stmt := `INSERT INTO users (email, first_name, last_name, password, created_at, updated_at, user_active) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`
+
+	err = db.QueryRowContext(ctx, stmt, user.Email, user.FirstName, user.LastName, hashedPassword, time.Now(), time.Now(), user.Active).Scan(&newID)
+	if err != nil {
+		return 0, err
+	}
+
+	return newID, nil
+}
+
+// getHashedPassword returns a bcrypt hashed password
+func getHashedPassword(password string) ([]byte, error) {
+	return bcrypt.GenerateFromPassword([]byte(password), 12)
 }
