@@ -9,7 +9,7 @@ import (
 
 // application type store application wide shared data
 type application struct {
-	cfg      config
+	cfg      Config
 	db       *driver.DB
 	errorLog *log.Logger
 	infoLog  *log.Logger
@@ -33,10 +33,10 @@ func (app *application) serve() error {
 	//	_, _ = w.Write(out)
 	//})
 
-	app.infoLog.Println("Listening on port ", app.cfg.port)
+	app.infoLog.Println("Listening on port ", app.cfg.HttpPort)
 
 	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%d", app.cfg.port),
+		Addr:    fmt.Sprintf(":%d", app.cfg.HttpPort),
 		Handler: app.routes(),
 	}
 

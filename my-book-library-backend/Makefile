@@ -1,6 +1,4 @@
-DSN="host=localhost port=5432 user=postgres password=password dbname=bookappdb sslmode=disable timezone=UTC connect_timeout=5"
 BINARY_NAME=mybooklibrary-api
-ENV=development
 
 ## build: Build binary
 build:
@@ -11,7 +9,7 @@ build:
 ## run: builds and runs the application
 run: build
 	@echo "Starting back end..."
-	@env DSN=${DSN} ENV=${ENV} ./${BINARY_NAME} &
+	./${BINARY_NAME} &
 	@echo "Back end started!"
 
 ## clean: runs go clean and deletes binaries

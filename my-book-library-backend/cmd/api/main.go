@@ -7,19 +7,20 @@ import (
 )
 
 var (
-	cfg config
+	cfg Config
 )
 
 // main function is the entry point of the application
 func main() {
-	cfg.port = 9009
-
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 
-	dsn := os.Getenv("DSN")
+	err := loadConfig(&cfg)
+	if err != nil {
+		log.Fatalf("Failed to load config: %v", err)
+	}
 
-	db, err := driver.ConnectPostgresDatabase(dsn)
+	db, err := driver.ConnectPostgresDatabase(cfg.DSN)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
