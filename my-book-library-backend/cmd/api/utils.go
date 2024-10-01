@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"io"
 	"net/http"
 )
 
@@ -21,7 +22,7 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, data in
 	}
 
 	err = d.Decode(&struct{}{}) // make sure we only received a single JSON value
-	if err != nil {
+	if err != io.EOF {
 		return errors.New("request body must have only a single JSON value")
 	}
 
