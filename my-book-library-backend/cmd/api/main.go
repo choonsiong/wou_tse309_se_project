@@ -1,6 +1,7 @@
 package main
 
 import (
+	"app-backend/internal/data/models"
 	"app-backend/internal/driver"
 	"database/sql"
 	"log"
@@ -16,11 +17,13 @@ func main() {
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 
+	// load configuration
 	err := loadConfig(&cfg)
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}
 
+	// initialize database connection
 	db, err := driver.ConnectPostgresDatabase(cfg.DSN)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
@@ -35,7 +38,7 @@ func main() {
 
 	app := &application{
 		cfg:      cfg,
-		db:       db,
+		models:   models.New(db.SQL),
 		errorLog: errorLog,
 		infoLog:  infoLog,
 	}
