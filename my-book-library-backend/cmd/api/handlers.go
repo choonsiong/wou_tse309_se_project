@@ -1,11 +1,10 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
 )
 
-// jsonResponse type to structure JSON response
+// jsonResponse type to store a structure JSON response
 type jsonResponse struct {
 	Error   bool   `json:"error"`
 	Message string `json:"message"`
@@ -21,25 +20,33 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	var cred credential
 	var payload jsonResponse
 
-	err := json.NewDecoder(r.Body).Decode(&cred)
+	//err := json.NewDecoder(r.Body).Decode(&cred)
+	//if err != nil {
+	//	// User authentication failed.
+	//	app.errorLog.Println("Failed to authenticate user: ", err)
+	//
+	//	payload.Error = true
+	//	payload.Message = "invalid credentials"
+	//
+	//	out, err := json.MarshalIndent(payload, "", "\t")
+	//	if err != nil {
+	//		app.errorLog.Println(err)
+	//	}
+	//
+	//	w.Header().Set("Content-Type", "application/json")
+	//	w.WriteHeader(http.StatusOK)
+	//
+	//	_, _ = w.Write(out)
+	//
+	//	return
+	//}
+
+	err := app.readJSON(w, r, &cred)
 	if err != nil {
-		// User authentication failed.
-		app.errorLog.Println("Failed to authenticate user: ", err)
-
+		app.errorLog.Println(err)
 		payload.Error = true
-		payload.Message = "invalid credentials"
-
-		out, err := json.MarshalIndent(payload, "", "\t")
-		if err != nil {
-			app.errorLog.Println(err)
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-
-		_, _ = w.Write(out)
-
-		return
+		payload.Message = "failed to read JSON data from request body"
+		_ = app.writeJSON(w, http.StatusBadRequest, payload)
 	}
 
 	// TODO: Authenticate user
@@ -49,13 +56,18 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	payload.Error = false
 	payload.Message = "user authenticated successfully"
 
-	out, err := json.MarshalIndent(payload, "", "\t")
+	//out, err := json.MarshalIndent(payload, "", "\t")
+	//if err != nil {
+	//	app.errorLog.Println(err)
+	//}
+	//
+	//w.Header().Set("Content-Type", "application/json")
+	//w.WriteHeader(http.StatusOK)
+	//
+	//_, _ = w.Write(out)
+
+	err = app.writeJSON(w, http.StatusOK, payload)
 	if err != nil {
 		app.errorLog.Println(err)
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-
-	_, _ = w.Write(out)
 }
