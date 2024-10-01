@@ -47,7 +47,7 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 
 	// Send back a JSON response if user successfully authenticated.
 	payload.Error = false
-	payload.Message = "success"
+	payload.Message = "user authenticated successfully"
 
 	out, err := json.MarshalIndent(payload, "", "\t")
 	if err != nil {
