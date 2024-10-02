@@ -17,6 +17,7 @@ import LoginDialog from '@/components/LoginDialog.vue'
 
 import {store} from '@/components/store.js'
 import notie from 'notie'
+import appEnvironment from '@/environment.js'
 
 const getCookie = (name) => {
   return document.cookie.split('; ').reduce((r, v) => {
@@ -63,7 +64,9 @@ export default {
         body: JSON.stringify(payload)
       }
 
-      fetch('http://localhost:9009/users/login', requestOptions)
+      console.log(appEnvironment().apiURL)
+
+      fetch(appEnvironment().apiURL + '/users/login', requestOptions)
         .then((resp) => resp.json())
         .then((jsonResp) => {
           if (jsonResp.error) {
