@@ -1,8 +1,10 @@
 package main
 
 import (
+	"errors"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	"time"
 )
 
 // envelop wraps data in JSON response
@@ -61,9 +63,46 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	// TODO: Authenticate user
 	app.infoLog.Println("Authenticating user: ", cred.Email, cred.Password)
 
+	// Search user by email
+	u, err := app.models.User.GetByEmail(cred.Email)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, errors.New("invalid user"))
+		return
+	}
+
+	// Validate user password
+	isPasswordValid, err := u.PasswordMatches(cred.Password)
+	if err != nil || !isPasswordValid {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, errors.New("invalid user"))
+		return
+	}
+
+	// If we have a valid user, then generate a token
+	t, err := app.models.Token.GenerateToken(u.ID, time.Hour*24)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, errors.New("failed to generate token"))
+		return
+	}
+
+	// Save the token to the database
+	err = app.models.Token.Insert(*t, *u)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, errors.New("failed to save token"))
+		return
+	}
+
 	// Send back a JSON response if user successfully authenticated.
-	payload.Error = false
-	payload.Message = "user authenticated successfully"
+	payload = jsonResponse{
+		Error:   false,
+		Message: "user logged in",
+		Data: envelop{
+			"token": t,
+		},
+	}
 
 	err = app.writeJSON(w, http.StatusOK, payload)
 	if err != nil {
