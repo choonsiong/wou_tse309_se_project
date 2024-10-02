@@ -48,16 +48,18 @@ export default {
 
       const requestOptions = {
         method: 'POST',
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload)
       }
 
       fetch('http://localhost:9009/users/login', requestOptions)
         .then((resp) => resp.json())
         .then((jsonResp) => {
           if (jsonResp.error) {
-            console.log(jsonResp.error)
+            //console.log(jsonResp.error)
+            console.log('error: ', jsonResp.message)
           } else {
-            console.log(jsonResp)
+            //console.log(jsonResp)
+            console.log('token: ', jsonResp.data.token.token)
           }
         })
     }
