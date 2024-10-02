@@ -5,6 +5,9 @@ import (
 	"net/http"
 )
 
+// envelop wraps data in JSON response
+type envelop map[string]interface{}
+
 // jsonResponse type to store a structure JSON response
 type jsonResponse struct {
 	Error   bool        `json:"error"`
