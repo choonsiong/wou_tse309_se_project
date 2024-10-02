@@ -7,8 +7,9 @@ import (
 
 // jsonResponse type to store a structure JSON response
 type jsonResponse struct {
-	Error   bool   `json:"error"`
-	Message string `json:"message"`
+	Error   bool        `json:"error"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data,omitempty"`
 }
 
 // GenerateBcryptPassword generates bcrypt password according to user provided query string

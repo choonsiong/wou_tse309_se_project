@@ -5,6 +5,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"strings"
 )
 
 // readJSON is a helper function to read JSON data from HTTP request body.
@@ -63,9 +64,25 @@ func (app *application) errorJSON(w http.ResponseWriter, err error, httpStatusCo
 		httpStatusCode = httpStatusCodes[0]
 	}
 
+	var customErr error
+
+	switch {
+	case strings.Contains(err.Error(), "SQLSTATE 23505"):
+		customErr = errors.New("duplicate value violates unique constraint")
+		httpStatusCode = http.StatusForbidden
+	case strings.Contains(err.Error(), "SQLSTATE 22001"):
+		customErr = errors.New("the value you are tring to insert is too large")
+		httpStatusCode = http.StatusForbidden
+	case strings.Contains(err.Error(), "SQLSTATE 23503"):
+		customErr = errors.New("foreign key violation")
+		httpStatusCode = http.StatusForbidden
+	default:
+		customErr = err
+	}
+
 	var payload jsonResponse
 	payload.Error = true
-	payload.Message = err.Error()
+	payload.Message = customErr.Error()
 
 	return app.writeJSON(w, httpStatusCode, payload)
 }
