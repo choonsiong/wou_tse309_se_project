@@ -6,13 +6,19 @@
       </div>
       <div class="mr-8 hidden md:inline">
         <ul class="flex space-x-2 font-bold font-roboto">
-          <li class="py-1 px-3 hover:bg-green-400 hover:rounded-full cursor-pointer" @click="showLogin">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                 stroke="currentColor" class="w-8 h-8 inline-block">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+          <li v-if="!store.isLoggedIn" class="py-1 px-3 hover:bg-green-400 hover:rounded-full cursor-pointer" @click="showLogin">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 inline-block">
+                <path d="M2.00098 11.999L16.001 11.999M16.001 11.999L12.501 8.99902M16.001 11.999L12.501 14.999" stroke="#1C274C" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M9.00195 7C9.01406 4.82497 9.11051 3.64706 9.87889 2.87868C10.7576 2 12.1718 2 15.0002 2L16.0002 2C18.8286 2 20.2429 2 21.1215 2.87868C22.0002 3.75736 22.0002 5.17157 22.0002 8L22.0002 16C22.0002 18.8284 22.0002 20.2426 21.1215 21.1213C20.3531 21.8897 19.1752 21.9862 17 21.9983M9.00195 17C9.01406 19.175 9.11051 20.3529 9.87889 21.1213C10.5202 21.7626 11.4467 21.9359 13 21.9827" stroke="#1C274C" stroke-linecap="round"></path>
             </svg>
             Login
+          </li>
+          <li v-else class="py-1 px-3 hover:bg-green-400 hover:rounded-full cursor-pointer" @click="logoutUser">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 inline-block">
+                <path d="M15 12L2 12M2 12L5.5 9M2 12L5.5 15" stroke="#1C274C" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M9.00195 7C9.01406 4.82497 9.11051 3.64706 9.87889 2.87868C10.7576 2 12.1718 2 15.0002 2L16.0002 2C18.8286 2 20.2429 2 21.1215 2.87868C22.0002 3.75736 22.0002 5.17157 22.0002 8L22.0002 16C22.0002 18.8284 22.0002 20.2426 21.1215 21.1213C20.3531 21.8897 19.1752 21.9862 17 21.9983M9.00195 17C9.01406 19.175 9.11051 20.3529 9.87889 21.1213C10.5202 21.7626 11.4467 21.9359 13 21.9827" stroke="#1C274C" stroke-linecap="round"></path>
+            </svg>
+            Logout
           </li>
         </ul>
       </div>
@@ -21,14 +27,26 @@
 </template>
 
 <script>
+import { store } from '@/components/store.js'
+
 export default {
   name: 'MainHeader',
+  data() {
+    return {
+      store
+    }
+  },
   emits: ['show-login-event'],
   methods: {
     showLogin() {
       console.log('showLogin()')
       this.$emit('show-login-event')
     },
+    logoutUser() {
+      console.log('logoutUser()')
+      store.isLoggedIn = false
+      store.token = ""
+    }
   }
 }
 </script>

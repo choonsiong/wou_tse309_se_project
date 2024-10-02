@@ -15,6 +15,8 @@ import MainHeader from '@/components/MainHeader.vue'
 import MainFooter from '@/components/MainFooter.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
 
+import {store} from '@/components/store.js'
+
 export default {
   name: 'App',
   components: {
@@ -24,7 +26,8 @@ export default {
   },
   data() {
     return {
-      showLoginDialog: false
+      showLoginDialog: false,
+      store,
     }
   },
   methods: {
@@ -60,6 +63,8 @@ export default {
           } else {
             //console.log(jsonResp)
             console.log('token: ', jsonResp.data.token.token)
+            store.token = jsonResp.data.token.token
+            store.isLoggedIn = true
           }
         })
     }
