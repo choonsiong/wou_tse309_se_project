@@ -16,6 +16,7 @@ import MainFooter from '@/components/MainFooter.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
 
 import {store} from '@/components/store.js'
+import router from '@/router/index.js'
 
 export default {
   name: 'App',
@@ -65,6 +66,7 @@ export default {
             console.log('token: ', jsonResp.data.token.token)
             store.token = jsonResp.data.token.token
             store.isLoggedIn = true
+            //router.push('/home')
           }
         })
     }
