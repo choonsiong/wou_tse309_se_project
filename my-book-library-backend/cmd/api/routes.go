@@ -6,6 +6,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -126,25 +127,45 @@ func (app *application) routes() http.Handler {
 			return
 		}
 
-		t, err := app.models.User.Token.GenerateToken(15, time.Minute*60)
+		uidStr := r.URL.Query().Get("uid")
+		if uidStr == "" {
+			app.errorLog.Println("uidStr is empty")
+			return
+		}
+
+		uid, err := strconv.Atoi(uidStr)
 		if err != nil {
 			app.errorLog.Println(err)
 			_ = app.errorJSON(w, err, http.StatusBadRequest)
 			return
 		}
 
-		u, err := app.models.User.GetById(15)
+		u, err := app.models.User.GetById(uid)
 		if err != nil {
 			app.errorLog.Println(err)
 			_ = app.errorJSON(w, err, http.StatusBadRequest)
 			return
 		}
 
-		t.UserID = u.ID
+		t, err := app.models.User.Token.GenerateToken(u.ID, time.Minute*60)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err, http.StatusBadRequest)
+			return
+		}
+
+		u2, err := app.models.User.GetById(u.ID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err, http.StatusBadRequest)
+			return
+		}
+
+		t.UserID = u2.ID
 		t.CreatedAt = time.Now()
 		t.UpdatedAt = time.Now()
 
-		err = t.Insert(*t, *u)
+		err = t.Insert(*t, *u2)
 		if err != nil {
 			app.errorLog.Println(err)
 			_ = app.errorJSON(w, err, http.StatusBadRequest)
