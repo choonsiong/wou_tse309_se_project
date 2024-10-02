@@ -1,5 +1,6 @@
 {
   "dsn": "host=localhost port=5432 user=postgres password=password dbname=bookappdb sslmode=disable timezone=UTC connect_timeout=5",
   "env": "dev",
-  "http_port": 9009
+  "http_port": 9009,
+  "secret": "secret"
 }

@@ -10,18 +10,6 @@ import (
 	"time"
 )
 
-const (
-	secret = "$2a$12$BqyqTZdjKcV6kYXJGqjukOKMRUEO5qHbSeC4457HwHWyk9MEKEHni"
-)
-
-func checkTestSecret(s string) bool {
-	if s != secret {
-		return false
-	}
-
-	return true
-}
-
 // routes function handle application wide HTTP routes
 func (app *application) routes() http.Handler {
 	mux := chi.NewRouter()
@@ -59,7 +47,7 @@ func (app *application) routes() http.Handler {
 
 	mux.Get("/test/users/all", func(w http.ResponseWriter, r *http.Request) {
 		secret := r.URL.Query().Get("secret")
-		if !checkTestSecret(secret) {
+		if !app.checkTestSecret(secret) {
 			return
 		}
 
@@ -83,7 +71,7 @@ func (app *application) routes() http.Handler {
 
 	mux.Get("/test/users/add", func(w http.ResponseWriter, r *http.Request) {
 		secret := r.URL.Query().Get("secret")
-		if !checkTestSecret(secret) {
+		if !app.checkTestSecret(secret) {
 			return
 		}
 
@@ -111,7 +99,7 @@ func (app *application) routes() http.Handler {
 
 	mux.Get("/test/tokens/generate", func(w http.ResponseWriter, r *http.Request) {
 		secret := r.URL.Query().Get("secret")
-		if !checkTestSecret(secret) {
+		if !app.checkTestSecret(secret) {
 			return
 		}
 
@@ -137,7 +125,7 @@ func (app *application) routes() http.Handler {
 
 	mux.Get("/test/tokens/save", func(w http.ResponseWriter, r *http.Request) {
 		secret := r.URL.Query().Get("secret")
-		if !checkTestSecret(secret) {
+		if !app.checkTestSecret(secret) {
 			return
 		}
 
@@ -197,7 +185,7 @@ func (app *application) routes() http.Handler {
 
 	mux.Get("/test/tokens/validate", func(w http.ResponseWriter, r *http.Request) {
 		secret := r.URL.Query().Get("secret")
-		if !checkTestSecret(secret) {
+		if !app.checkTestSecret(secret) {
 			return
 		}
 
