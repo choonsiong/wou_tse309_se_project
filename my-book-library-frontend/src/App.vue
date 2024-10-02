@@ -15,7 +15,7 @@ import MainHeader from '@/components/MainHeader.vue'
 import MainFooter from '@/components/MainFooter.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
 
-import {store} from '@/components/store.js'
+import {store} from '@/store.js'
 import notie from 'notie'
 import appEnvironment from '@/environment.js'
 
