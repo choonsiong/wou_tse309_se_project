@@ -3,8 +3,13 @@
 </template>
 
 <script>
+import Security from '@/security.js'
+
 export default {
-  name: 'UserBooks'
+  name: 'UserBooks',
+  beforeMount() {
+    Security.requireToken()
+  },
 }
 </script>
 

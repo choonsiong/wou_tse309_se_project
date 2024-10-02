@@ -86,10 +86,11 @@ export default {
               first_name: jsonResp.data.user.first_name,
               last_name: jsonResp.data.user.last_name,
               email: jsonResp.data.user.email,
-              is_admin: jsonResp.data.user.is_admin,
+              is_admin: jsonResp.data.user.is_admin === 1,
             }
             store.isLoggedIn = true
-            store.isAdmin = jsonResp.data.user.is_admin
+            console.log(jsonResp.data.user.is_admin)
+            store.isAdmin = jsonResp.data.user.is_admin === 1
 
             // save user logged in info to cookie
             let date = new Date()

@@ -3,8 +3,13 @@
 </template>
 
 <script>
+import Security from '@/security.js'
+
 export default {
-  name: 'AllBooks'
+  name: 'AllBooks',
+  beforeMount() {
+    Security.requireAdmin()
+  },
 }
 </script>
 
