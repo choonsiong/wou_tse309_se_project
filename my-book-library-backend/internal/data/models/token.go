@@ -117,7 +117,7 @@ func (t *Token) AuthenticateToken(r *http.Request) (*User, error) {
 	}
 
 	if user.Active == 0 {
-		return nil, errors.New("user not active")
+		return nil, errors.New("user is not active")
 	}
 
 	return user, nil

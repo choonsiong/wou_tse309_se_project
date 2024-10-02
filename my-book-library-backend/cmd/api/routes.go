@@ -31,6 +31,9 @@ func (app *application) routes() http.Handler {
 	mux.Route("/admin", func(r chi.Router) {
 		r.Use(app.AuthenticateToken)
 
+		// Users
+		r.Post("/users/all", app.GetAllUsers)
+
 		r.Post("/test", func(w http.ResponseWriter, r *http.Request) {
 			payload := jsonResponse{
 				Error:   false,
@@ -45,29 +48,7 @@ func (app *application) routes() http.Handler {
 
 	//mux.Get("/test/users/login", app.Login)
 
-	mux.Get("/test/users/all", func(w http.ResponseWriter, r *http.Request) {
-		secret := r.URL.Query().Get("secret")
-		if !app.checkTestSecret(secret) {
-			return
-		}
-
-		var u models.User
-
-		users, err := u.GetAll()
-		if err != nil {
-			app.errorLog.Println(err)
-		}
-
-		payload := jsonResponse{
-			Error:   false,
-			Message: "success",
-			Data: envelop{
-				"users": users,
-			},
-		}
-
-		_ = app.writeJSON(w, http.StatusOK, payload)
-	})
+	mux.Get("/test/users/all", app.GetAllUsers)
 
 	mux.Get("/test/users/add", func(w http.ResponseWriter, r *http.Request) {
 		secret := r.URL.Query().Get("secret")
@@ -75,14 +56,41 @@ func (app *application) routes() http.Handler {
 			return
 		}
 
-		u := models.User{
-			Email:     "alice@example.com",
-			FirstName: "Alice",
-			LastName:  "Smith",
-			Password:  "password",
+		fn := r.URL.Query().Get("fn")
+		if fn == "" {
+			return
 		}
 
-		app.infoLog.Println("adding user")
+		ln := r.URL.Query().Get("ln")
+		if ln == "" {
+			return
+		}
+
+		email := r.URL.Query().Get("e")
+		if email == "" {
+			return
+		}
+
+		pw := r.URL.Query().Get("pw")
+		if pw == "" {
+			return
+		}
+
+		admin := 0
+		adminStr := r.URL.Query().Get("adm")
+		if adminStr == "1" {
+			admin = 1
+		}
+
+		u := models.User{
+			Email:     email,
+			FirstName: fn,
+			LastName:  ln,
+			Password:  pw,
+			IsAdmin:   admin,
+		}
+
+		app.infoLog.Println("adding new user")
 
 		id, err := app.models.User.Insert(u)
 		if err != nil {
