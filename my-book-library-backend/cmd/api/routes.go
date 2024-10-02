@@ -38,6 +38,7 @@ func (app *application) routes() http.Handler {
 	})) // For cross-site server request
 
 	mux.Post("/users/login", app.Login)
+	mux.Post("/users/logout", app.Logout)
 
 	mux.Get("/test/bcrypt", app.GenerateBcryptPassword)
 

@@ -45,12 +45,28 @@ export default {
     },
     logoutUser() {
       console.log('logoutUser()')
-      store.isLoggedIn = false
-      store.token = ""
-      notie.alert({
-        type: 'success',
-        text: 'You are logged out',
-      })
+      const payload = {
+        token: store.token,
+      }
+      const requestOption = {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      }
+      fetch('http://localhost:9009/users/logout', requestOption)
+        .then((resp) => resp.json())
+        .then((jsonResp) => {
+          if (jsonResp.error) {
+            console.log('error: ' + jsonResp.message)
+          } else {
+            store.isLoggedIn = false
+            store.token = ""
+            notie.alert({
+              type: 'success',
+              text: 'You are logged out',
+            })
+            //router.push('/home')
+          }
+        })
     }
   }
 }
