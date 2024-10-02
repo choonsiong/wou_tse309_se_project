@@ -113,7 +113,31 @@ export default {
         last_name: data.user.last_name,
         email: data.user.email,
       }
+      store.isLoggedIn = true
     }
+  },
+  mounted() {
+    // const payload = {
+    //   data: 'test',
+    // }
+    // const headers = new Headers()
+    // headers.append("Content-Type", "application/json")
+    // headers.append("Authorization", "Bearer " + store.token)
+    // const requestOption = {
+    //   method: 'POST',
+    //   headers: headers,
+    //   body: JSON.stringify(payload)
+    // }
+    //
+    // fetch('http://localhost:9009/admin/test', requestOption)
+    //   .then((resp) => resp.json())
+    //   .then((jsonResp) => {
+    //     if (jsonResp.error) {
+    //       console.log('error: ' + jsonResp.message)
+    //     } else {
+    //       console.log(jsonResp)
+    //     }
+    //   })
   }
 }
 </script>
