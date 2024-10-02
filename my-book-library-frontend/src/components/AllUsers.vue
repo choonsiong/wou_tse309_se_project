@@ -1,32 +1,19 @@
 <template>
   <section class="bg-green-100">
-    <h2 class="text-center text-4xl p-5">Manage Users</h2>
+    <h2 class="pt-10 text-4xl mb-6 font-bold text-center">Users Administration</h2>
+    <p class="max-w-xs mx-auto text-center text-gray-800 md:max-w-md">
+      Note: All username in red are <strong>Administrator</strong> and user must be in <strong>active</strong> status in order to login.
+    </p>
     <div class="max-w-4xl mx-auto p-6 space-y-6">
       <div v-for="(user, index) in users" :key="user.id">
         <div class="flex flex-col items-center justify-between w-full p-6 bg-white rounded-lg md:flex-row">
           <p class="font-bold text-center text-veryDarkViolet md:text-left mr-2">#{{ index + 1 }}</p>
-          <p class="font-bold text-center text-veryDarkViolet md:text-left">{{ user.first_name }} {{ user.last_name }}</p>&nbsp;
-          <svg v-if="user.is_admin" fill="#000000" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet"
-               xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="w-6 h-6 inline-block">
-            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-            <g id="SVGRepo_iconCarrier"><title>administrator-line</title>
-              <path
-                d="M14.68,14.81a6.76,6.76,0,1,1,6.76-6.75A6.77,6.77,0,0,1,14.68,14.81Zm0-11.51a4.76,4.76,0,1,0,4.76,4.76A4.76,4.76,0,0,0,14.68,3.3Z"
-                class="clr-i-outline clr-i-outline-path-1"></path>
-              <path
-                d="M16.42,31.68A2.14,2.14,0,0,1,15.8,30H4V24.22a14.81,14.81,0,0,1,11.09-4.68l.72,0a2.2,2.2,0,0,1,.62-1.85l.12-.11c-.47,0-1-.06-1.46-.06A16.47,16.47,0,0,0,2.2,23.26a1,1,0,0,0-.2.6V30a2,2,0,0,0,2,2H16.7Z"
-                class="clr-i-outline clr-i-outline-path-2"></path>
-              <path d="M26.87,16.29a.37.37,0,0,1,.15,0,.42.42,0,0,0-.15,0Z"
-                    class="clr-i-outline clr-i-outline-path-3"></path>
-              <path
-                d="M33.68,23.32l-2-.61a7.21,7.21,0,0,0-.58-1.41l1-1.86A.38.38,0,0,0,32,19l-1.45-1.45a.36.36,0,0,0-.44-.07l-1.84,1a7.15,7.15,0,0,0-1.43-.61l-.61-2a.36.36,0,0,0-.36-.24H23.82a.36.36,0,0,0-.35.26l-.61,2a7,7,0,0,0-1.44.6l-1.82-1a.35.35,0,0,0-.43.07L17.69,19a.38.38,0,0,0-.06.44l1,1.82A6.77,6.77,0,0,0,18,22.69l-2,.6a.36.36,0,0,0-.26.35v2.05A.35.35,0,0,0,16,26l2,.61a7,7,0,0,0,.6,1.41l-1,1.91a.36.36,0,0,0,.06.43l1.45,1.45a.38.38,0,0,0,.44.07l1.87-1a7.09,7.09,0,0,0,1.4.57l.6,2a.38.38,0,0,0,.35.26h2.05a.37.37,0,0,0,.35-.26l.61-2.05a6.92,6.92,0,0,0,1.38-.57l1.89,1a.36.36,0,0,0,.43-.07L32,30.4A.35.35,0,0,0,32,30l-1-1.88a7,7,0,0,0,.58-1.39l2-.61a.36.36,0,0,0,.26-.35V23.67A.36.36,0,0,0,33.68,23.32ZM24.85,28a3.34,3.34,0,1,1,3.33-3.33A3.34,3.34,0,0,1,24.85,28Z"
-                class="clr-i-outline clr-i-outline-path-4"></path>
-              <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
-            </g>
-          </svg>
+          <img class="h-14 w-14 mr-3 rounded-full p-[1.5px]  hover:scale-110 transition-transform duration-200 ease-out"
+               :src="'https://i.pravatar.cc/150?img='+user.id" alt="profile image">
+          <p v-if="user.is_admin" class="font-bold text-center text-rose-500 md:text-left">{{ user.first_name }} {{ user.last_name }}</p>
+          <p v-else class="font-bold text-center text-veryDarkViolet md:text-left">{{ user.first_name }} {{ user.last_name }}</p>&nbsp;
           <div class="flex flex-col items-center justify-end flex-1 space-x-4 space-y-2 md:flex-row md:space-y-0">
-            <div class="font-bold text-cyan">{{ user.email }}</div>
+            <div class="font-bold text-gray-800 mr-4">{{ user.email }}</div>
             <button v-if="user.active"
                     class="p-2 px-8 text-white bg-blue-500 rounded-lg hover:opacity-70 focus:outline-none">Active
             </button>
