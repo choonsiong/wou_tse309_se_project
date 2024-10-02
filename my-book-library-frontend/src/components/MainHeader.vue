@@ -45,6 +45,7 @@
 <script>
 import { store } from '@/components/store.js'
 import notie from 'notie'
+import appEnvironment from '@/environment.js'
 
 export default {
   name: 'MainHeader',
@@ -68,7 +69,8 @@ export default {
         method: 'POST',
         body: JSON.stringify(payload)
       }
-      fetch('http://localhost:9009/users/logout', requestOption)
+      console.log(appEnvironment().apiURL)
+      fetch(appEnvironment().apiURL + '/users/logout', requestOption)
         .then((resp) => resp.json())
         .then((jsonResp) => {
           if (jsonResp.error) {
