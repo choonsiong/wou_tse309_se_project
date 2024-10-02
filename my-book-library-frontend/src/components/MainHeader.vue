@@ -168,8 +168,8 @@ export default {
         method: 'POST',
         body: JSON.stringify(payload)
       }
-      console.log(appEnvironment().apiURL)
-      fetch(appEnvironment().apiURL + '/users/logout', requestOption)
+      console.log(appEnvironment.apiURL())
+      fetch(appEnvironment.apiURL() + '/users/logout', requestOption)
         .then((resp) => resp.json())
         .then((jsonResp) => {
           if (jsonResp.error) {

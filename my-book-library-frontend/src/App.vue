@@ -64,9 +64,9 @@ export default {
         body: JSON.stringify(payload)
       }
 
-      console.log(appEnvironment().apiURL)
+      console.log(appEnvironment.apiURL())
 
-      fetch(appEnvironment().apiURL + '/users/login', requestOptions)
+      fetch(appEnvironment.apiURL() + '/users/login', requestOptions)
         .then((resp) => resp.json())
         .then((jsonResp) => {
           if (jsonResp.error) {
