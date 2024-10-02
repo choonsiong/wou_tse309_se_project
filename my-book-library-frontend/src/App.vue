@@ -87,6 +87,7 @@ export default {
               email: jsonResp.data.user.email,
             }
             store.isLoggedIn = true
+            store.isAdmin = true
 
             // save user logged in info to cookie
             let date = new Date()
