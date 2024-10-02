@@ -86,10 +86,10 @@ export default {
               first_name: jsonResp.data.user.first_name,
               last_name: jsonResp.data.user.last_name,
               email: jsonResp.data.user.email,
-              is_admin: jsonResp.data.user.is_admin === 1,
+              is_admin: jsonResp.data.user.is_admin,
             }
             store.isLoggedIn = true
-            store.isAdmin = jsonResp.data.user.is_admin === 1
+            store.isAdmin = jsonResp.data.user.is_admin
 
             // save user logged in info to cookie
             let date = new Date()
@@ -112,6 +112,7 @@ export default {
     let cookieData = getCookie('_mybooklibrary_data');
     if (cookieData !== "") {
       let data = JSON.parse(cookieData);
+      //console.log(data.user.is_admin)
       store.token = data.token.token;
       store.user = {
         id: data.user.id,
@@ -121,7 +122,9 @@ export default {
         is_admin: data.user.is_admin,
       }
       store.isLoggedIn = true
-      store.isAdmin = data.user.isAdmin
+      store.isAdmin = data.user.is_admin
+      //console.log(data.user.is_admin)
+      //console.log(store.isAdmin)
     }
   },
   mounted() {
