@@ -97,3 +97,12 @@ func (app *application) errorJSON(w http.ResponseWriter, err error, httpStatusCo
 
 	return app.writeJSON(w, httpStatusCode, payload)
 }
+
+// checkTestSecret check secret string for protected routes
+func (app *application) checkTestSecret(s string) bool {
+	if s != app.cfg.Secret {
+		return false
+	}
+
+	return true
+}

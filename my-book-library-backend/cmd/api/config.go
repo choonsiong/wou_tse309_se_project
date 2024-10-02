@@ -10,6 +10,7 @@ type Config struct {
 	DSN      string `json:"dsn"`       // database source name
 	ENV      string `json:"env"`       // running environment (e.g. dev, prod)
 	HttpPort int    `json:"http_port"` // http server listening port
+	Secret   string `json:"secret"`    // secret for protected routes
 }
 
 const (
