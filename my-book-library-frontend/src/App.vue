@@ -85,9 +85,10 @@ export default {
               first_name: jsonResp.data.user.first_name,
               last_name: jsonResp.data.user.last_name,
               email: jsonResp.data.user.email,
+              is_admin: jsonResp.data.user.is_admin,
             }
             store.isLoggedIn = true
-            store.isAdmin = true
+            store.isAdmin = jsonResp.data.user.is_admin
 
             // save user logged in info to cookie
             let date = new Date()
@@ -116,8 +117,10 @@ export default {
         first_name: data.user.first_name,
         last_name: data.user.last_name,
         email: data.user.email,
+        is_admin: data.user.is_admin,
       }
       store.isLoggedIn = true
+      store.isAdmin = data.user.isAdmin
     }
   },
   mounted() {

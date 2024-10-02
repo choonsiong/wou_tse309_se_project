@@ -2,7 +2,7 @@ import { reactive } from 'vue'
 
 export const store = reactive({
   token: '',
-  isAdmin: true,
+  isAdmin: false,
   isLoggedIn: false,
   user: {}
 })
