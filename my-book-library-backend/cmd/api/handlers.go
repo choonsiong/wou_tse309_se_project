@@ -129,6 +129,7 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 		Message: "user logged in",
 		Data: envelop{
 			"token": t,
+			"user":  u,
 		},
 	}
 
