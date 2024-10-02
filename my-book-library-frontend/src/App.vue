@@ -15,6 +15,9 @@ import MainHeader from '@/components/MainHeader.vue'
 import MainFooter from '@/components/MainFooter.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
 
+import {store} from '@/components/store.js'
+import notie from 'notie'
+
 export default {
   name: 'App',
   components: {
@@ -24,7 +27,8 @@ export default {
   },
   data() {
     return {
-      showLoginDialog: false
+      showLoginDialog: false,
+      store,
     }
   },
   methods: {
@@ -48,16 +52,29 @@ export default {
 
       const requestOptions = {
         method: 'POST',
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload)
       }
 
       fetch('http://localhost:9009/users/login', requestOptions)
         .then((resp) => resp.json())
         .then((jsonResp) => {
           if (jsonResp.error) {
-            console.log(jsonResp.error)
+            //console.log(jsonResp.error)
+            //console.log('error: ', jsonResp.message)
+            notie.alert({
+              type: 'error',
+              text: 'Error: ' + jsonResp.message,
+            })
           } else {
-            console.log(jsonResp)
+            //console.log(jsonResp)
+            //console.log('token: ', jsonResp.data.token.token)
+            store.token = jsonResp.data.token.token
+            store.isLoggedIn = true
+            //router.push('/home')
+            notie.alert({
+              type: 'success',
+              text: 'Logged in successfully',
+            })
           }
         })
     }

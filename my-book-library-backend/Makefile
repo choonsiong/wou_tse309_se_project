@@ -1,8 +1,8 @@
 BINARY_NAME=mybooklibrary-api
 
-## build_linode: Build binary for Linode
-build_linode:
-	@echo "Building linode binary..."
+## build_linux: Build binary for Linux environment
+build_linux:
+	@echo "Building linux binary..."
 	GOOS=linux GOARCH=amd64 go build -o ${BINARY_NAME} ./cmd/api/
 	@echo "Binary built!"
 

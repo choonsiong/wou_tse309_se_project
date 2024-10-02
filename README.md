@@ -4,7 +4,7 @@ To keep track of dependencies used in the application.
 
 ## Dependencies
 
-### Postgres
+### PostgreSQL
 
 In local development environment (using docker) database is `bookappdb`, username is `postgres`, password is `password`
 
@@ -133,6 +133,53 @@ Referenced by:
 mybooklibrarydb=# 
 ```
 
+#### Unique Constraints
+
+```
+mybooklibrarydb=# \d users
+                                         Table "public.users"
+   Column    |            Type             | Collation | Nullable |              Default              
+-------------+-----------------------------+-----------+----------+-----------------------------------
+ id          | integer                     |           | not null | nextval('users_id_seq'::regclass)
+ email       | character varying(255)      |           |          | 
+ first_name  | character varying(255)      |           |          | 
+ last_name   | character varying(255)      |           |          | 
+ password    | character varying(60)       |           |          | 
+ created_at  | timestamp without time zone |           |          | now()
+ updated_at  | timestamp without time zone |           |          | now()
+ user_active | integer                     |           |          | 0
+Indexes:
+    "users_pkey" PRIMARY KEY, btree (id)
+Referenced by:
+    TABLE "tokens" CONSTRAINT "fk_users_tokens" FOREIGN KEY (user_id) REFERENCES users(id)
+
+mybooklibrarydb=# 
+mybooklibrarydb=# 
+mybooklibrarydb=# ALTER TABLE users ADD CONSTRAINT unique_users_email UNIQUE (email);
+ALTER TABLE
+mybooklibrarydb=# 
+mybooklibrarydb=# 
+mybooklibrarydb=# \d users
+                                         Table "public.users"
+   Column    |            Type             | Collation | Nullable |              Default              
+-------------+-----------------------------+-----------+----------+-----------------------------------
+ id          | integer                     |           | not null | nextval('users_id_seq'::regclass)
+ email       | character varying(255)      |           |          | 
+ first_name  | character varying(255)      |           |          | 
+ last_name   | character varying(255)      |           |          | 
+ password    | character varying(60)       |           |          | 
+ created_at  | timestamp without time zone |           |          | now()
+ updated_at  | timestamp without time zone |           |          | now()
+ user_active | integer                     |           |          | 0
+Indexes:
+    "users_pkey" PRIMARY KEY, btree (id)
+    "unique_users_email" UNIQUE CONSTRAINT, btree (email)
+Referenced by:
+    TABLE "tokens" CONSTRAINT "fk_users_tokens" FOREIGN KEY (user_id) REFERENCES users(id)
+
+mybooklibrarydb=# 
+```
+
 ### Backend
 
 ```
@@ -174,4 +221,23 @@ go: added github.com/jackc/pgx/v4 v4.18.3
 
 ```
 npm install vue-router@4
+```
+
+- Install [notie](https://github.com/jaredreich/notie).
+
+```
+[mbp2022 15:52:18:91] npm install notie
+
+added 1 package, and audited 340 packages in 2s
+
+80 packages are looking for funding
+  run `npm fund` for details
+
+3 vulnerabilities (2 moderate, 1 high)
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+[mbp2022 15:52:31:91] 
 ```
