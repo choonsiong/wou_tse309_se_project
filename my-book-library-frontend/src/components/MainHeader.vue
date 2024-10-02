@@ -28,6 +28,7 @@
 
 <script>
 import { store } from '@/components/store.js'
+import notie from 'notie'
 
 export default {
   name: 'MainHeader',
@@ -46,6 +47,10 @@ export default {
       console.log('logoutUser()')
       store.isLoggedIn = false
       store.token = ""
+      notie.alert({
+        type: 'success',
+        text: 'You are logged out',
+      })
     }
   }
 }

@@ -16,7 +16,7 @@ import MainFooter from '@/components/MainFooter.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
 
 import {store} from '@/components/store.js'
-import router from '@/router/index.js'
+import notie from 'notie'
 
 export default {
   name: 'App',
@@ -60,13 +60,21 @@ export default {
         .then((jsonResp) => {
           if (jsonResp.error) {
             //console.log(jsonResp.error)
-            console.log('error: ', jsonResp.message)
+            //console.log('error: ', jsonResp.message)
+            notie.alert({
+              type: 'error',
+              text: 'Error: ' + jsonResp.message,
+            })
           } else {
             //console.log(jsonResp)
-            console.log('token: ', jsonResp.data.token.token)
+            //console.log('token: ', jsonResp.data.token.token)
             store.token = jsonResp.data.token.token
             store.isLoggedIn = true
             //router.push('/home')
+            notie.alert({
+              type: 'success',
+              text: 'Logged in successfully',
+            })
           }
         })
     }
