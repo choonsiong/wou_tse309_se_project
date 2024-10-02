@@ -41,6 +41,34 @@ func (app *application) GenerateBcryptPassword(w http.ResponseWriter, r *http.Re
 	}
 }
 
+// Logout handler
+func (app *application) Logout(w http.ResponseWriter, r *http.Request) {
+	var requestData struct {
+		Token string `json:"token"`
+	}
+
+	err := app.readJSON(w, r, &requestData)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, errors.New("error reading json from request data"))
+		return
+	}
+
+	err = app.models.Token.DeleteByToken(requestData.Token)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, errors.New("failed to delete token"))
+		return
+	}
+
+	payload := jsonResponse{
+		Error:   false,
+		Message: "logged out",
+	}
+
+	_ = app.writeJSON(w, http.StatusOK, payload)
+}
+
 // Login handler
 func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	type credential struct {
