@@ -89,7 +89,6 @@ export default {
               is_admin: jsonResp.data.user.is_admin === 1,
             }
             store.isLoggedIn = true
-            console.log(jsonResp.data.user.is_admin)
             store.isAdmin = jsonResp.data.user.is_admin === 1
 
             // save user logged in info to cookie
