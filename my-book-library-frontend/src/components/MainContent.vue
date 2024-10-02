@@ -80,7 +80,7 @@
 
 <script>
 import MainHero from '@/components/MainHero.vue'
-import { store } from '@/components/store.js'
+import { store } from '@/store.js'
 
 export default {
   name: 'MainContent',

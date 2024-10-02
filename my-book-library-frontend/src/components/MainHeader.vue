@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { store } from '@/components/store.js'
+import { store } from '@/store.js'
 import notie from 'notie'
 import appEnvironment from '@/environment.js'
 
