@@ -51,6 +51,7 @@ export default {
         type: 'success',
         text: 'You are logged out',
       })
+      //router.push('/home')
     }
   }
 }
