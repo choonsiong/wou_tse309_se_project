@@ -31,6 +31,9 @@ func (app *application) routes() http.Handler {
 	mux.Route("/admin", func(r chi.Router) {
 		r.Use(app.AuthenticateToken)
 
+		// Users
+		r.Post("/users/all", app.GetAllUsers)
+
 		r.Post("/test", func(w http.ResponseWriter, r *http.Request) {
 			payload := jsonResponse{
 				Error:   false,
@@ -45,29 +48,7 @@ func (app *application) routes() http.Handler {
 
 	//mux.Get("/test/users/login", app.Login)
 
-	mux.Get("/test/users/all", func(w http.ResponseWriter, r *http.Request) {
-		secret := r.URL.Query().Get("secret")
-		if !app.checkTestSecret(secret) {
-			return
-		}
-
-		var u models.User
-
-		users, err := u.GetAll()
-		if err != nil {
-			app.errorLog.Println(err)
-		}
-
-		payload := jsonResponse{
-			Error:   false,
-			Message: "success",
-			Data: envelop{
-				"users": users,
-			},
-		}
-
-		_ = app.writeJSON(w, http.StatusOK, payload)
-	})
+	mux.Get("/test/users/all", app.GetAllUsers)
 
 	mux.Get("/test/users/add", func(w http.ResponseWriter, r *http.Request) {
 		secret := r.URL.Query().Get("secret")
