@@ -40,6 +40,19 @@ func (app *application) routes() http.Handler {
 	mux.Post("/users/login", app.Login)
 	mux.Post("/users/logout", app.Logout)
 
+	mux.Route("/admin", func(r chi.Router) {
+		r.Use(app.AuthenticateToken)
+
+		r.Post("/test", func(w http.ResponseWriter, r *http.Request) {
+			payload := jsonResponse{
+				Error:   false,
+				Message: "test",
+			}
+
+			_ = app.writeJSON(w, http.StatusOK, payload)
+		})
+	})
+
 	mux.Get("/test/bcrypt", app.GenerateBcryptPassword)
 
 	//mux.Get("/test/users/login", app.Login)
