@@ -18,6 +18,7 @@ import LoginDialog from '@/components/LoginDialog.vue'
 import {store} from '@/store.js'
 import notie from 'notie'
 import appEnvironment from '@/environment.js'
+import Security from '@/security.js'
 
 const getCookie = (name) => {
   return document.cookie.split('; ').reduce((r, v) => {
@@ -59,14 +60,14 @@ export default {
         password: userPassword
       }
 
-      const requestOptions = {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      }
+      // const requestOptions = {
+      //   method: 'POST',
+      //   body: JSON.stringify(payload)
+      // }
 
-      console.log(appEnvironment().apiURL)
+      //console.log(appEnvironment.apiURL())
 
-      fetch(appEnvironment().apiURL + '/users/login', requestOptions)
+      fetch(appEnvironment.apiURL() + '/users/login', Security.requestOptions(payload))
         .then((resp) => resp.json())
         .then((jsonResp) => {
           if (jsonResp.error) {
@@ -85,8 +86,11 @@ export default {
               first_name: jsonResp.data.user.first_name,
               last_name: jsonResp.data.user.last_name,
               email: jsonResp.data.user.email,
+              is_admin: jsonResp.data.user.is_admin === 1,
             }
             store.isLoggedIn = true
+            console.log(jsonResp.data.user.is_admin)
+            store.isAdmin = jsonResp.data.user.is_admin === 1
 
             // save user logged in info to cookie
             let date = new Date()
@@ -115,8 +119,10 @@ export default {
         first_name: data.user.first_name,
         last_name: data.user.last_name,
         email: data.user.email,
+        is_admin: data.user.is_admin,
       }
       store.isLoggedIn = true
+      store.isAdmin = data.user.isAdmin
     }
   },
   mounted() {
