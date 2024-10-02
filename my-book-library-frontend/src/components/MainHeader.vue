@@ -145,6 +145,7 @@ import { store } from '@/store.js'
 import notie from 'notie'
 import appEnvironment from '@/environment.js'
 import router from '@/router/index.js'
+import Security from '@/security.js'
 
 export default {
   name: 'MainHeader',
@@ -164,12 +165,13 @@ export default {
       const payload = {
         token: store.token
       }
-      const requestOption = {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      }
-      console.log(appEnvironment.apiURL())
-      fetch(appEnvironment.apiURL() + '/users/logout', requestOption)
+      // const requestOption = {
+      //   method: 'POST',
+      //   body: JSON.stringify(payload)
+      // }
+      //console.log(appEnvironment.apiURL())
+
+      fetch(appEnvironment.apiURL() + '/users/logout', Security.requestOptions(payload))
         .then((resp) => resp.json())
         .then((jsonResp) => {
           if (jsonResp.error) {

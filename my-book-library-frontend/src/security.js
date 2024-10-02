@@ -3,7 +3,7 @@ import { store } from '@/store.js'
 import appEnvironment from '@/environment.js'
 
 let Security = {
-  // Check whether user is authenticated
+  // Check whether a valid token is exists
   requireToken: function() {
     if (store.token === '') {
       router.replace('/')
@@ -11,7 +11,7 @@ let Security = {
     }
   },
 
-  // validate token
+  // validate user token
   validateToken: function() {
     if (store.token !== '') {
       const payload = {
@@ -46,8 +46,10 @@ let Security = {
   // Request options for fetch request
   requestOptions: function(payload) {
     const headers = new Headers()
+
     headers.append('Content-Type', 'application/json')
     headers.append('Authorization', 'Bearer ' + store.token)
+
     return {
       method: 'post',
       body: JSON.stringify(payload),
