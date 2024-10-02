@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainContent from "@/components/MainContent.vue"
 import UserBooks from '@/components/UserBooks.vue'
 import UserProfile from '@/components/UserProfile.vue'
+import AllUsers from '@/components/AllUsers.vue'
+import AllBooks from '@/components/AllBooks.vue'
 
 const routes = [
     {
@@ -19,6 +21,16 @@ const routes = [
         name: 'UserProfile',
         component: UserProfile,
     },
+    {
+        path: '/admin/manage/users',
+        name: 'AllUsers',
+        component: AllUsers,
+    },
+    {
+        path: '/admin/manage/books',
+        name: 'AllBooks',
+        component: AllBooks,
+    }
 ]
 
 const router = createRouter({
