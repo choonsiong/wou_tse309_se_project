@@ -18,6 +18,13 @@ import LoginDialog from '@/components/LoginDialog.vue'
 import {store} from '@/components/store.js'
 import notie from 'notie'
 
+const getCookie = (name) => {
+  return document.cookie.split('; ').reduce((r, v) => {
+    const parts = v.split('=');
+    return parts[0] === name ? decodeURIComponent(parts[1]) : r
+  }, "")
+}
+
 export default {
   name: 'App',
   components: {
@@ -36,13 +43,14 @@ export default {
       this.showLoginDialog = false
     },
     handleShowLoginEvent() {
-      console.log('handleShowLoginEvent()')
+      //console.log('handleShowLoginEvent()')
       this.showLoginDialog = true
     },
     handleLoginUserEvent(userEmail, userPassword) {
-      console.log('handleLoginUserEvent()')
-      console.log('Email: ' + userEmail)
-      console.log('Password: ' + userPassword)
+      //console.log('handleLoginUserEvent()')
+      //console.log('Email: ' + userEmail)
+      //console.log('Password: ' + userPassword)
+
       this.showLoginDialog = false
 
       const payload = {
@@ -69,7 +77,21 @@ export default {
             //console.log(jsonResp)
             //console.log('token: ', jsonResp.data.token.token)
             store.token = jsonResp.data.token.token
+            store.user = {
+              id: jsonResp.data.user.id,
+              first_name: jsonResp.data.user.first_name,
+              last_name: jsonResp.data.user.last_name,
+              email: jsonResp.data.user.email,
+            }
             store.isLoggedIn = true
+
+            // save user logged in info to cookie
+            let date = new Date()
+            let expiredDays = 1
+            date.setTime(date.getTime() + (expiredDays * 24 * 60 * 60 * 1000))
+            const expires = "expires=" + date.toUTCString()
+            document.cookie = "_mybooklibrary_data=" + JSON.stringify(jsonResp.data) + "; " + expires + "; path=/; SameSite=strict; Secure;"
+
             //router.push('/home')
             notie.alert({
               type: 'success',
@@ -77,6 +99,20 @@ export default {
             })
           }
         })
+    }
+  },
+  beforeMount() {
+    // check if a cookie exists?
+    let cookieData = getCookie('_mybooklibrary_data');
+    if (cookieData !== "") {
+      let data = JSON.parse(cookieData);
+      store.token = data.token.token;
+      store.user = {
+        id: data.user.id,
+        first_name: data.user.first_name,
+        last_name: data.user.last_name,
+        email: data.user.email,
+      }
     }
   }
 }
