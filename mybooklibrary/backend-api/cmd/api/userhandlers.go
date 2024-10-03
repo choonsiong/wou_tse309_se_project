@@ -89,6 +89,33 @@ func (app *application) NewUser(w http.ResponseWriter, r *http.Request) {
 	_ = app.writeJSON(w, http.StatusAccepted, payload)
 }
 
+// DeleteUser handle the API for deleting user
+func (app *application) DeleteUser(w http.ResponseWriter, r *http.Request) {
+	var requestPayload struct {
+		ID int `json:"id"`
+	}
+
+	err := app.readJSON(w, r, &requestPayload)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	err = app.models.User.DeleteById(requestPayload.ID)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+	}
+
+	payload := jsonResponse{
+		Error:   false,
+		Message: "user deleted",
+	}
+
+	_ = app.writeJSON(w, http.StatusAccepted, payload)
+}
+
 // EditUser handle the API for updating an existing user
 func (app *application) EditUser(w http.ResponseWriter, r *http.Request) {
 	var u models.User

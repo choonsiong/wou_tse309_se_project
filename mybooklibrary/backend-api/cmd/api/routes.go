@@ -27,6 +27,7 @@ func (app *application) routes() http.Handler {
 
 	mux.Post("/users/login", app.Login)
 	mux.Post("/users/logout", app.Logout)
+	mux.Post("/users/register", app.NewUser)
 
 	mux.Route("/admin", func(r chi.Router) {
 		r.Use(app.AuthenticateToken)
@@ -34,6 +35,7 @@ func (app *application) routes() http.Handler {
 		// Users
 		r.Post("/users/all", app.GetAllUsers)
 		r.Post("/users/edit", app.EditUser)
+		r.Post("/users/delete", app.DeleteUser)
 		r.Post("/users/new", app.NewUser)
 		r.Post("/users/get/{id}", app.GetUserByID)
 

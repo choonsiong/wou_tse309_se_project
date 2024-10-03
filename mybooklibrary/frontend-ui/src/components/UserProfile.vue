@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     submitEditForm() {
-      console.log(this.firstName, this.lastName, this.email, this.password)
+      //console.log(this.firstName, this.lastName, this.email, this.password)
 
       if (this.password !== this.confirmPassword) {
         notie.alert({
