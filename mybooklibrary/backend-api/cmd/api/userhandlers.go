@@ -2,9 +2,30 @@ package main
 
 import (
 	"app-backend/internal/data/models"
+	"github.com/go-chi/chi/v5"
 	"net/http"
+	"strconv"
 	"time"
 )
+
+// GetUserByID get user by the user id
+func (app *application) GetUserByID(w http.ResponseWriter, r *http.Request) {
+	uid, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	user, err := app.models.User.GetById(uid)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	_ = app.writeJSON(w, http.StatusOK, user)
+}
 
 // GetAllUsers get all users from database
 func (app *application) GetAllUsers(w http.ResponseWriter, r *http.Request) {

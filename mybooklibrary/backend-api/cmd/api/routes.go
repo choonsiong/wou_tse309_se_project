@@ -35,6 +35,7 @@ func (app *application) routes() http.Handler {
 		r.Post("/users/all", app.GetAllUsers)
 		r.Post("/users/edit", app.EditUser)
 		r.Post("/users/new", app.NewUser)
+		r.Post("/users/get/{id}", app.GetUserByID)
 
 		r.Post("/test", func(w http.ResponseWriter, r *http.Request) {
 			payload := jsonResponse{

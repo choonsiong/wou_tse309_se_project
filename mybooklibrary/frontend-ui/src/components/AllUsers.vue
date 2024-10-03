@@ -115,7 +115,6 @@ export default {
   data() {
     return {
       users: [],
-      isSelf: false,
       isAddUser: false,
       isEditUser: false,
       newUserID: '',
