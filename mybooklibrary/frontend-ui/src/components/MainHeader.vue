@@ -108,7 +108,9 @@
                       stroke-width="2"
                       stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
-              {{ store.user.first_name }} {{ store.user.last_name }}
+              <span v-if="store.isAdmin">Admin</span>
+              <span v-else>Profile</span>
+<!--              {{ store.user.first_name }} {{ store.user.last_name }}-->
             </router-link>
           </li>
           <li v-if="!store.isLoggedIn" class="py-1 px-3 hover:bg-green-400 hover:rounded-full cursor-pointer"
@@ -157,20 +159,12 @@ export default {
   emits: ['show-login-event'],
   methods: {
     showLogin() {
-      //console.log('showLogin()')
       this.$emit('show-login-event')
     },
     logoutUser() {
-      //console.log('logoutUser()')
       const payload = {
         token: store.token
       }
-      // const requestOption = {
-      //   method: 'POST',
-      //   body: JSON.stringify(payload)
-      // }
-      //console.log(appEnvironment.apiURL())
-
       fetch(appEnvironment.apiURL() + '/users/logout', Security.requestOptions(payload))
         .then((resp) => resp.json())
         .then((jsonResp) => {

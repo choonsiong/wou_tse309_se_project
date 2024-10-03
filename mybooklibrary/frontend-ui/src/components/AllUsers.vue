@@ -120,6 +120,7 @@ import { store } from '@/store.js'
 
 export default {
   name: 'AllUsers',
+  emits: ['forceUpdateEvent'],
   data() {
     return {
       users: [],
@@ -200,7 +201,7 @@ export default {
                     type: 'success',
                     text: 'User deleted successfully'
                   })
-                  this.$emit('force-update-event')
+                  this.$emit('forceUpdateEvent')
                 }
               })
               .catch((err) => {
@@ -295,7 +296,7 @@ export default {
               type: 'success',
               text: 'User added successfully'
             })
-            this.$emit('force-update-event')
+            this.$emit('forceUpdateEvent')
           }
         })
         .catch((err) => {
@@ -336,7 +337,7 @@ export default {
               type: 'success',
               text: 'User saved successfully'
             })
-            this.$emit('force-update-event')
+            this.$emit('forceUpdateEvent')
           }
         })
         .catch((err) => {
@@ -351,13 +352,11 @@ export default {
       .then((resp) => resp.json())
       .then((jsonResp) => {
         if (jsonResp.error) {
-          //console.log('error: ' + jsonResp.message)
           notie.alert({
             type: 'error',
             text: jsonResp.message
           })
         } else {
-          //console.log(jsonResp)
           this.users = jsonResp.data.users
         }
       })
@@ -370,7 +369,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>
