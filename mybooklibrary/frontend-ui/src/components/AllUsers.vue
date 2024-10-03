@@ -149,6 +149,9 @@ export default {
     }
   },
   methods: {
+    reloadUsers() {
+      console.log('reloadUsers()')
+    },
     handleEditUser(userId) {
       notie.alert({
         type: 'info',
@@ -180,7 +183,7 @@ export default {
           text: 'Are you sure you want to delete the user id: ' + userId,
           submitText: 'Delete',
           submitCallback: () => {
-            console.log('deleting user id: ' + userId)
+            //console.log('deleting user id: ' + userId)
 
             let payload = {
               id: userId,
@@ -198,7 +201,7 @@ export default {
                 } else {
                   notie.alert({
                     type: 'success',
-                    text: 'user deleted successfully'
+                    text: 'User deleted successfully'
                   })
                   router.push('/')
                 }
@@ -264,7 +267,7 @@ export default {
       if (this.newUserFirstName === '' || this.newUserLastName === '' || this.newUserEmail === '') {
         notie.alert({
           type: 'error',
-          text: 'all fields are required'
+          text: 'All fields are required'
         })
         return
       }
@@ -272,7 +275,7 @@ export default {
       if (this.newUserPassword === '' || this.newUserConfirmPassword === '') {
         notie.alert({
           type: 'error',
-          text: 'password and confirm password are required'
+          text: 'Password and confirm password are required'
         })
         return
       }
@@ -280,7 +283,7 @@ export default {
       if (this.newUserPassword !== this.newUserConfirmPassword) {
         notie.alert({
           type: 'error',
-          text: 'password entered does not match'
+          text: 'Password entered does not match'
         })
         return
       }
@@ -305,7 +308,7 @@ export default {
           } else {
             notie.alert({
               type: 'success',
-              text: 'user added successfully'
+              text: 'User added successfully'
             })
           }
         })
@@ -331,7 +334,7 @@ export default {
       if (this.editUserPassword !== this.editUserConfirmPassword) {
         notie.alert({
           type: 'error',
-          text: 'password entered does not match'
+          text: 'Password entered does not match'
         })
         return
       }
@@ -357,7 +360,7 @@ export default {
           } else {
             notie.alert({
               type: 'success',
-              text: 'user saved successfully'
+              text: 'User saved successfully'
             })
           }
         })
@@ -391,7 +394,7 @@ export default {
           text: err
         })
       })
-  }
+  },
 }
 </script>
 

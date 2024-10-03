@@ -61,7 +61,7 @@ export default {
       if (this.password !== this.confirmPassword) {
         notie.alert({
           type: 'error',
-          text: 'password entered does not match'
+          text: 'Password entered does not match'
         })
         return
       }
@@ -87,7 +87,7 @@ export default {
           } else {
             notie.alert({
               type: 'success',
-              text: 'user saved successfully'
+              text: 'User saved successfully'
             })
           }
         })
