@@ -5,7 +5,7 @@
   </login-dialog>
   <main-header @show-login-event="handleShowLoginEvent"></main-header>
   <div>
-    <router-view />
+    <router-view :key="componentKey" @force-update-event="forceUpdateComponent" />
   </div>
   <main-footer></main-footer>
 </template>
@@ -37,10 +37,14 @@ export default {
   data() {
     return {
       showLoginDialog: false,
+      componentKey: 0,
       store,
     }
   },
   methods: {
+    forceUpdateComponent() {
+      this.componentKey++
+    },
     handleCloseEvent() {
       this.showLoginDialog = false
     },
