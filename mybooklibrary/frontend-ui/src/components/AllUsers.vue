@@ -149,6 +149,9 @@ export default {
     }
   },
   methods: {
+    reloadUsers() {
+      console.log('reloadUsers()')
+    },
     handleEditUser(userId) {
       notie.alert({
         type: 'info',
@@ -180,7 +183,7 @@ export default {
           text: 'Are you sure you want to delete the user id: ' + userId,
           submitText: 'Delete',
           submitCallback: () => {
-            console.log('deleting user id: ' + userId)
+            //console.log('deleting user id: ' + userId)
 
             let payload = {
               id: userId,
@@ -391,7 +394,7 @@ export default {
           text: err
         })
       })
-  }
+  },
 }
 </script>
 
