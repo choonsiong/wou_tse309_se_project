@@ -2,16 +2,19 @@
   <section class="bg-green-100">
     <h2 class="pt-10 text-4xl mb-6 font-bold text-center">Users Administration</h2>
     <p class="max-w-xs mx-auto text-center text-gray-800 md:max-w-md">
-      Note: All profile images with red border are <strong>Administrator</strong>, user names grayed out are inactive user and kindly note that user must be in <strong>active</strong> status in
+      Note: All profile images with red border are <strong>Administrator</strong>, user names grayed out are inactive
+      user and kindly note that user must be in <strong>active</strong> status in
       order to login.
     </p>
     <div class="max-w-4xl mx-auto p-6 space-y-6">
       <div v-for="(user, index) in users" :key="user.id">
         <div class="flex flex-col items-center justify-between w-full p-6 bg-green-500/30 rounded-lg md:flex-row">
           <p class="font-bold text-center text-veryDarkViolet md:text-left mr-2">#{{ index + 1 }}</p>
-          <img v-if="user.is_admin" class="h-14 w-14 mr-3 rounded-full p-[1.5px] border-4 border-green-600 hover:scale-110 transition-transform duration-200 ease-out"
+          <img v-if="user.is_admin"
+               class="h-14 w-14 mr-3 rounded-full p-[1.5px] border-4 border-green-600 hover:scale-110 transition-transform duration-200 ease-out"
                :src="'https://i.pravatar.cc/150?img='+user.id" alt="profile image">
-          <img v-else class="h-14 w-14 mr-3 rounded-full p-[1.5px]  hover:scale-110 transition-transform duration-200 ease-out"
+          <img v-else
+               class="h-14 w-14 mr-3 rounded-full p-[1.5px]  hover:scale-110 transition-transform duration-200 ease-out"
                :src="'https://i.pravatar.cc/150?img='+user.id" alt="profile image">
           <p v-if="user.active" class="font-bold text-center text-veryDarkViolet md:text-left">{{ user.first_name }}
             {{ user.last_name }}</p>
@@ -22,12 +25,15 @@
             <button class="p-2 px-8 text-white bg-cyan rounded-lg hover:opacity-70 focus:outline-none"
                     @click="handleEditUser(user.id)">Edit
             </button>
-            <button class="p-2 px-8 text-white bg-red rounded-lg hover:opacity-70 focus:outline-none">Delete</button>
+            <button class="p-2 px-8 text-white bg-red rounded-lg hover:opacity-70 focus:outline-none"
+                    @click="handleDeleteUser(user.id)">Delete
+            </button>
           </div>
         </div>
       </div>
       <div class="text-center pt-10">
-        <button @click="handleAddNewUser" class="p-2 px-8 text-white bg-blue-600 rounded-lg hover:opacity-70 focus:outline-none">Add New User
+        <button @click="handleAddNewUser"
+                class="p-2 px-8 text-white bg-blue-600 rounded-lg hover:opacity-70 focus:outline-none">Add New User
         </button>
       </div>
     </div>
@@ -37,7 +43,8 @@
         Note: All fields are required.
       </p>
       <div>
-        <form @submit.prevent="submitAddForm" class="flex flex-col items-center justify-between w-full p-6 bg-green-500/30 rounded-lg md:flex-col">
+        <form @submit.prevent="submitAddForm"
+              class="flex flex-col items-center justify-between w-full p-6 bg-green-500/30 rounded-lg md:flex-col">
           <input v-model="newUserFirstName" type="text" placeholder="First Name"
                  class="w-full flex-1 px-6 pt-3 pb-2 mb-4 rounded-lg border-1 border-white focus:outline-none" />
           <input v-model="newUserLastName" type="text" placeholder="Last Name"
@@ -162,6 +169,47 @@ export default {
       //console.log(this.users.filter((user) => user.id === userId)[0].is_admin)
       this.editUserIsAdmin = this.users.filter((user) => user.id === userId)[0].is_admin
     },
+    handleDeleteUser(userId) {
+      if (userId === store.user.id) {
+        notie.alert({
+          type: 'error',
+          text: 'You cannot delete yourself!'
+        })
+      } else {
+        notie.confirm({
+          text: 'Are you sure you want to delete the user id: ' + userId,
+          submitText: 'Delete',
+          submitCallback: () => {
+            console.log('deleting user id: ' + userId)
+
+            let payload = {
+              id: userId,
+            }
+
+            fetch(appEnvironment.apiURL() + '/admin/users/delete', Security.requestOptions(payload))
+              .then((resp) => resp.json())
+              .then((jsonResp) => {
+                if (jsonResp.error) {
+                  console.log('error: ' + jsonResp.message)
+                  notie.alert({
+                    type: 'error',
+                    text: jsonResp.message
+                  })
+                } else {
+                  notie.alert({
+                    type: 'success',
+                    text: 'user deleted successfully'
+                  })
+                  router.push('/')
+                }
+              })
+              .catch((err) => {
+                console.log(err)
+              })
+          }
+        })
+      }
+    },
     handleAddNewUser() {
       this.isEditUser = false
       this.isAddUser = true
@@ -243,7 +291,7 @@ export default {
         email: this.newUserEmail,
         password: this.newUserPassword,
         active: this.newUserIsActive,
-        is_admin: this.newUserIsAdmin,
+        is_admin: this.newUserIsAdmin
       }
 
       fetch(appEnvironment.apiURL() + '/admin/users/new', Security.requestOptions(payload))
@@ -318,7 +366,7 @@ export default {
         })
 
       router.push('/')
-    },
+    }
   },
   beforeMount() {
     Security.requireAdmin()
