@@ -109,6 +109,7 @@ import Security from '@/security.js'
 import appEnvironment from '@/environment.js'
 import notie from 'notie'
 import router from '@/router/index.js'
+import { store } from '@/store.js'
 
 export default {
   name: 'AllUsers',
