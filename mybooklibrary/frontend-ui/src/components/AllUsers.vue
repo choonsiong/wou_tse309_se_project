@@ -23,13 +23,15 @@
             <button v-else class="p-2 px-8 text-white bg-gray-500 rounded-lg hover:opacity-70 focus:outline-none">
               Inactive
             </button>
-            <button class="p-2 px-8 text-white bg-cyan rounded-lg hover:opacity-70 focus:outline-none">Edit</button>
+            <button class="p-2 px-8 text-white bg-cyan rounded-lg hover:opacity-70 focus:outline-none"
+                    @click="handleEditUser(user.id)">Edit
+            </button>
             <button class="p-2 px-8 text-white bg-red rounded-lg hover:opacity-70 focus:outline-none">Delete</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="max-w-2xl mx-auto p-6 space-y-6">
+    <div v-if="isAddUser" class="max-w-2xl mx-auto p-6 space-y-6">
       <h2 class="pt-10 text-4xl mb-6 font-bold text-center">Add New User</h2>
       <p class="max-w-xs mx-auto text-center text-gray-800 md:max-w-md">
         Note: All fields are required.
@@ -50,7 +52,46 @@
             <input type="checkbox"> User Active&nbsp;&nbsp;
             <input type="checkbox"> Administrator
           </div>
-          <button class="w-full p-3 px-8 text-white bg-blue-600 rounded-lg hover:opacity-70 focus:outline-none">Submit</button>
+          <button class="w-full p-3 px-8 text-white bg-red-600 rounded-lg hover:opacity-70 focus:outline-none">Submit
+          </button>
+        </form>
+      </div>
+    </div>
+    <div v-if="isEditUser" class="max-w-2xl mx-auto p-6 space-y-6">
+      <h2 class="pt-10 text-4xl mb-6 font-bold text-center">Edit User ID ({{ editUserID }})</h2>
+      <p class="max-w-xs mx-auto text-center text-gray-800 md:max-w-md">
+        Note: All fields are required.
+      </p>
+      <div>
+        <form @submit.prevent="submitEditForm"
+              class="flex flex-col items-center justify-between w-full p-6 bg-green-500/30 rounded-lg md:flex-col">
+          <input v-model="editUserFirstName" type="text" placeholder="First Name"
+                 class="w-full flex-1 px-6 pt-3 pb-2 mb-4 rounded-lg border-1 border-white focus:outline-none" />
+          <input v-model="editUserLastName" type="text" placeholder="Last Name"
+                 class="w-full flex-1 px-6 pt-3 pb-2 mb-4 rounded-lg border-1 border-white focus:outline-none" />
+          <input v-model="editUserEmail" type="email" placeholder="Email"
+                 class="w-full flex-1 px-6 pt-3 pb-2 mb-4 rounded-lg border-1 border-white focus:outline-none" />
+          <div class="w-full flex-1">
+            <p class="mb-2">Leave the password field empty to use existing password.</p>
+            <input v-model="editUserPassword" type="password" placeholder="Password"
+                   class="w-full flex-1 px-6 pt-3 pb-2 mb-4 rounded-lg border-1 border-white focus:outline-none" />
+          </div>
+          <div class="w-full flex-1">
+            <p class="mb-2">Leave the confirm password field empty to use existing password.</p>
+            <input v-model="editUserConfirmPassword" type="password" placeholder="Confirm Password"
+                   class="w-full flex-1 px-6 pt-3 pb-2 mb-4 rounded-lg border-1 border-white focus:outline-none" />
+          </div>
+          <div class="px-6 pt-3 pb-2 mb-4">
+            <input type="checkbox" :checked="editUserIsActive" @change="setEditUserIsActive"> User Active&nbsp;&nbsp;
+            <input type="checkbox" :checked="editUserIsAdmin" @change="setEditUserIsAdmin"> Administrator
+          </div>
+          <div class="flex flex-row justify-between w-full gap-4">
+            <button class="w-full p-3 px-8 text-white bg-blue-600 rounded-lg hover:opacity-70 focus:outline-none"
+                    @click="cancelEdit">Cancel
+            </button>
+            <button class="w-full p-3 px-8 text-white bg-red rounded-lg hover:opacity-70 focus:outline-none">Submit
+            </button>
+          </div>
         </form>
       </div>
     </div>
@@ -67,7 +108,110 @@ export default {
   name: 'AllUsers',
   data() {
     return {
-      users: []
+      users: [],
+      isAddUser: false,
+      isEditUser: false,
+      editUserID: '',
+      editUserFirstName: '',
+      editUserLastName: '',
+      editUserEmail: '',
+      editUserPassword: '',
+      editUserConfirmPassword: '',
+      editUserIsActive: 0,
+      editUserIsAdmin: 0
+    }
+  },
+  methods: {
+    handleEditUser(userId) {
+      notie.alert({
+        type: 'info',
+        text: 'Editing user id: ' + userId
+      })
+      this.isEditUser = true
+      this.editUserID = userId
+      this.editUserFirstName = this.users.filter((user) => user.id === userId)[0].first_name
+      this.editUserLastName = this.users.filter((user) => user.id === userId)[0].last_name
+      this.editUserEmail = this.users.filter((user) => user.id === userId)[0].email
+      this.editUserPassword = ''
+      this.editUserConfirmPassword = ''
+      //this.editUserPassword = 'this.users.filter((user) => user.id === userId)[0].password'
+      //this.editUserConfirmPassword = this.users.filter((user) => user.id === userId)[0].password
+      console.log(this.users.filter((user) => user.id === userId)[0].active)
+      this.editUserIsActive = this.users.filter((user) => user.id === userId)[0].active
+      console.log(this.users.filter((user) => user.id === userId)[0].is_admin)
+      this.editUserIsAdmin = this.users.filter((user) => user.id === userId)[0].is_admin
+    },
+    cancelEdit() {
+      this.isEditUser = false
+    },
+    setEditUserIsActive() {
+      if (this.editUserIsActive === 0) {
+        this.editUserIsActive = 1
+      } else if (this.editUserIsActive === 1) {
+        this.editUserIsActive = 0
+      }
+    },
+    setEditUserIsAdmin() {
+      if (this.editUserIsAdmin === 0) {
+        this.editUserIsAdmin = 1
+      } else if (this.editUserIsAdmin === 1) {
+        this.editUserIsAdmin = 0
+      }
+    },
+    submitEditForm() {
+      console.log('submitEditForm')
+
+      this.isEditUser = false
+
+      console.log(this.editUserFirstName)
+      console.log(this.editUserLastName)
+      console.log(this.editUserEmail)
+      console.log(this.editUserPassword)
+      console.log(this.editUserConfirmPassword)
+      console.log(this.editUserIsActive)
+      console.log(this.editUserIsAdmin)
+
+      if (this.editUserPassword !== this.editUserConfirmPassword) {
+        notie.alert({
+          type: 'error',
+          text: 'password entered does not match',
+        })
+        return
+      }
+
+      const payload = {
+        id: parseInt(String(this.editUserID), 10),
+        first_name: this.editUserFirstName,
+        last_name: this.editUserLastName,
+        email: this.editUserEmail,
+        password: this.editUserPassword,
+        active: this.editUserIsActive,
+        is_admin: this.editUserIsAdmin,
+      }
+
+      console.log(payload)
+
+      fetch(appEnvironment.apiURL() + '/admin/users/save', Security.requestOptions())
+        .then((resp) => resp.json())
+        .then((jsonResp) => {
+          if (jsonResp.error) {
+            notie.alert({
+              type: 'error',
+              text: jsonResp.message
+            })
+          } else {
+            notie.alert({
+              type: 'success',
+              text: 'user saved successfully',
+            })
+          }
+        })
+        .catch((err) => {
+          notie.alert({
+            type: 'error',
+            text: err
+          })
+        })
     }
   },
   beforeMount() {
