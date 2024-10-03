@@ -70,10 +70,13 @@ let Security = {
     headers.append('Content-Type', 'application/json')
     headers.append('Authorization', 'Bearer ' + store.token)
 
+    //console.log(payload)
+    //console.log(JSON.stringify(payload))
+
     return {
       method: 'post',
       body: JSON.stringify(payload),
-      headers: headers
+      headers: headers,
     }
   }
 }

@@ -26,6 +26,11 @@ const routes = [
     name: 'AllUsers',
     component: AllUsers
   },
+  // {
+  //   path: '/admin/manage/users/:userID',
+  //   name: 'ManageUser',
+  //   redirect: '/'
+  // },
   {
     path: '/admin/manage/books',
     name: 'AllBooks',

@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"golang.org/x/crypto/bcrypt"
+	"log"
 	"time"
 )
 
@@ -18,6 +19,18 @@ type User struct {
 	Active    int       `json:"active"`
 	IsAdmin   int       `json:"is_admin"`
 	Token     Token     `json:"token"`
+}
+
+func (u *User) Description() {
+	log.Println("id:", u.ID)
+	log.Println("first name:", u.FirstName)
+	log.Println("last name:", u.LastName)
+	log.Println("email:", u.Email)
+	log.Println("password:", u.Password)
+	log.Println("created at:", u.CreatedAt)
+	log.Println("updated at:", u.UpdatedAt)
+	log.Println("active:", u.Active)
+	log.Println("is admin:", u.IsAdmin)
 }
 
 // GetAll returns a slice of pointer to User or error
