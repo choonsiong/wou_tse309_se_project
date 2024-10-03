@@ -156,9 +156,9 @@ export default {
       this.editUserConfirmPassword = ''
       //this.editUserPassword = 'this.users.filter((user) => user.id === userId)[0].password'
       //this.editUserConfirmPassword = this.users.filter((user) => user.id === userId)[0].password
-      console.log(this.users.filter((user) => user.id === userId)[0].active)
+      //console.log(this.users.filter((user) => user.id === userId)[0].active)
       this.editUserIsActive = this.users.filter((user) => user.id === userId)[0].active
-      console.log(this.users.filter((user) => user.id === userId)[0].is_admin)
+      //console.log(this.users.filter((user) => user.id === userId)[0].is_admin)
       this.editUserIsAdmin = this.users.filter((user) => user.id === userId)[0].is_admin
     },
     handleAddNewUser() {
@@ -200,17 +200,17 @@ export default {
       }
     },
     submitAddForm() {
-      console.log('submitAddForm')
+      //console.log('submitAddForm')
 
       this.isAddUser = false
 
-      console.log(this.newUserFirstName)
-      console.log(this.newUserLastName)
-      console.log(this.newUserEmail)
-      console.log(this.newUserPassword)
-      console.log(this.newUserConfirmPassword)
-      console.log(this.newUserIsActive)
-      console.log(this.newUserIsAdmin)
+      // console.log(this.newUserFirstName)
+      // console.log(this.newUserLastName)
+      // console.log(this.newUserEmail)
+      // console.log(this.newUserPassword)
+      // console.log(this.newUserConfirmPassword)
+      // console.log(this.newUserIsActive)
+      // console.log(this.newUserIsAdmin)
 
       if (this.newUserFirstName === '' || this.newUserLastName === '' || this.newUserEmail === '') {
         notie.alert({
