@@ -81,7 +81,7 @@ export default {
       if (this.firstName === '' || this.lastName === '' || this.email === '') {
         notie.alert({
           type: 'error',
-          text: 'all fields are required'
+          text: 'All fields are required'
         })
         return
       }
@@ -89,7 +89,7 @@ export default {
       if (this.password === '' || this.confirmPassword === '') {
         notie.alert({
           type: 'error',
-          text: 'password and confirm password are required'
+          text: 'Password and confirm password are required'
         })
         return
       }
@@ -97,7 +97,7 @@ export default {
       if (this.password !== this.confirmPassword) {
         notie.alert({
           type: 'error',
-          text: 'password entered does not match'
+          text: 'Password entered does not match'
         })
         return
       }
@@ -132,13 +132,19 @@ export default {
           } else {
             notie.alert({
               type: 'success',
-              text: 'register successfully'
+              text: 'User registered successfully'
             })
           }
         })
         .catch((err) => {
           console.log(err)
         })
+
+      this.firstName = ''
+      this.lastName = ''
+      this.email = ''
+      this.password = ''
+      this.confirmPassword = ''
 
       router.push('/')
     }
