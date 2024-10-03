@@ -56,8 +56,6 @@ export default {
   },
   methods: {
     submitEditForm() {
-      //console.log(this.firstName, this.lastName, this.email, this.password)
-
       if (this.password !== this.confirmPassword) {
         notie.alert({
           type: 'error',
@@ -104,8 +102,6 @@ export default {
   beforeMount() {
     Security.requireToken()
 
-    // console.log(store.user.id)
-
     fetch(appEnvironment.apiURL() + '/admin/users/get/' + store.user.id, Security.requestOptions(''))
     .then((resp) => resp.json())
     .then((jsonResp) => {
@@ -115,7 +111,6 @@ export default {
           text: jsonResp.message
         })
       } else {
-        //console.log(jsonResp)
         this.firstName = jsonResp.first_name
         this.lastName = jsonResp.last_name
         this.email = jsonResp.email

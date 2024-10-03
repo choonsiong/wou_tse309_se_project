@@ -31,4 +31,9 @@ go: added github.com/jackc/pgx/v4 v4.18.3
 
 [mbp2022 20:07:13:91] go get github.com/jackc/pgx/v4/stdlib
 [mbp2022 20:07:24:91]  
+
+[mbp2022 20:50:33:89] go get -u github.com/mozillazg/go-slugify
+go: added github.com/mozillazg/go-slugify v0.2.0
+go: added github.com/mozillazg/go-unidecode v0.2.0
+[mbp2022 20:50:54:89] 
 ```

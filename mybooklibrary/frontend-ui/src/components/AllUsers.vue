@@ -120,6 +120,7 @@ import { store } from '@/store.js'
 
 export default {
   name: 'AllUsers',
+  emits: ['forceUpdateEvent'],
   data() {
     return {
       users: [],
@@ -183,12 +184,9 @@ export default {
           text: 'Are you sure you want to delete the user id: ' + userId,
           submitText: 'Delete',
           submitCallback: () => {
-            //console.log('deleting user id: ' + userId)
-
             let payload = {
               id: userId,
             }
-
             fetch(appEnvironment.apiURL() + '/admin/users/delete', Security.requestOptions(payload))
               .then((resp) => resp.json())
               .then((jsonResp) => {
@@ -203,7 +201,7 @@ export default {
                     type: 'success',
                     text: 'User deleted successfully'
                   })
-                  router.push('/')
+                  this.$emit('forceUpdateEvent')
                 }
               })
               .catch((err) => {
@@ -252,17 +250,7 @@ export default {
       }
     },
     submitAddForm() {
-      //console.log('submitAddForm')
-
       this.isAddUser = false
-
-      // console.log(this.newUserFirstName)
-      // console.log(this.newUserLastName)
-      // console.log(this.newUserEmail)
-      // console.log(this.newUserPassword)
-      // console.log(this.newUserConfirmPassword)
-      // console.log(this.newUserIsActive)
-      // console.log(this.newUserIsAdmin)
 
       if (this.newUserFirstName === '' || this.newUserLastName === '' || this.newUserEmail === '') {
         notie.alert({
@@ -271,7 +259,6 @@ export default {
         })
         return
       }
-
       if (this.newUserPassword === '' || this.newUserConfirmPassword === '') {
         notie.alert({
           type: 'error',
@@ -279,7 +266,6 @@ export default {
         })
         return
       }
-
       if (this.newUserPassword !== this.newUserConfirmPassword) {
         notie.alert({
           type: 'error',
@@ -310,26 +296,15 @@ export default {
               type: 'success',
               text: 'User added successfully'
             })
+            this.$emit('forceUpdateEvent')
           }
         })
         .catch((err) => {
           console.log(err)
         })
-
-      router.push('/')
     },
     submitEditForm() {
-      //console.log('submitEditForm')
-
       this.isEditUser = false
-
-      // console.log(this.editUserFirstName)
-      // console.log(this.editUserLastName)
-      // console.log(this.editUserEmail)
-      // console.log(this.editUserPassword)
-      // console.log(this.editUserConfirmPassword)
-      // console.log(this.editUserIsActive)
-      // console.log(this.editUserIsAdmin)
 
       if (this.editUserPassword !== this.editUserConfirmPassword) {
         notie.alert({
@@ -362,13 +337,12 @@ export default {
               type: 'success',
               text: 'User saved successfully'
             })
+            this.$emit('forceUpdateEvent')
           }
         })
         .catch((err) => {
           console.log(err)
         })
-
-      router.push('/')
     }
   },
   beforeMount() {
@@ -378,13 +352,11 @@ export default {
       .then((resp) => resp.json())
       .then((jsonResp) => {
         if (jsonResp.error) {
-          //console.log('error: ' + jsonResp.message)
           notie.alert({
             type: 'error',
             text: jsonResp.message
           })
         } else {
-          //console.log(jsonResp)
           this.users = jsonResp.data.users
         }
       })
@@ -397,7 +369,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>
