@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     submitHandler() {
-      console.log(this.firstName, this.lastName, this.email, this.password)
+      //console.log(this.firstName, this.lastName, this.email, this.password)
 
       if (this.firstName === '' || this.lastName === '' || this.email === '') {
         notie.alert({
