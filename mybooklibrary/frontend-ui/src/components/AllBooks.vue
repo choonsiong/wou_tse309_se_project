@@ -15,7 +15,9 @@
               <p class="mb-5">{{ book.description }}</p>
               <p class="font-light">Publisher: <span class="text-gray-500 font-light">{{ book.publisher.publisher_name }}</span></p>
               <p class="font-light mb-5">Publication Year: <span class="text-gray-500 font-light">{{ book.publication_year }}</span></p>
-              <span class="p-2 rounded-full border-slate-200 border-2 me-2 text-gray-500 font-light" v-for="genre in book.genres">{{ genre.genre_name }}</span>
+              <div class="flex flex-wrap">
+                <span class="p-1 me-2 mb-2 border-slate-200 border-2 me-2 text-gray-500 font-light" v-for="genre in book.genres">{{ genre.genre_name }}</span>
+              </div>
             </div>
           </div>
           <div>
