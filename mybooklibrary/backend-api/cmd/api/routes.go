@@ -29,6 +29,12 @@ func (app *application) routes() http.Handler {
 	mux.Post("/users/logout", app.Logout)
 	mux.Post("/users/register", app.NewUser)
 
+	mux.Get("/books", app.AllBooks)
+	mux.Post("/books", app.AllBooks)
+
+	mux.Get("/genres", app.AllGenres)
+	mux.Post("/genres", app.AllGenres)
+
 	mux.Route("/admin", func(r chi.Router) {
 		r.Use(app.AuthenticateToken)
 
@@ -53,7 +59,7 @@ func (app *application) routes() http.Handler {
 
 	//mux.Get("/test/users/login", app.Login)
 
-	mux.Get("/test/users/all", app.GetAllUsers)
+	//mux.Get("/test/users/all", app.GetAllUsers)
 
 	mux.Get("/test/users/add", func(w http.ResponseWriter, r *http.Request) {
 		secret := r.URL.Query().Get("secret")
@@ -216,6 +222,10 @@ func (app *application) routes() http.Handler {
 
 		_ = app.writeJSON(w, http.StatusOK, payload)
 	})
+
+	// Serve static files
+	fileServer := http.FileServer(http.Dir("./static/"))
+	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
 
 	return mux
 }
