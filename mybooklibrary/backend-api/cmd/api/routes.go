@@ -47,6 +47,11 @@ func (app *application) routes() http.Handler {
 		r.Post("/users/new", app.NewUser)
 		r.Post("/users/get/{id}", app.GetUserByID)
 
+		// Books
+		r.Post("/books/new", app.NewBook)
+		r.Post("/books/edit", app.EditBook)
+		r.Post("/books/delete", app.DeleteBookByID)
+
 		r.Post("/test", func(w http.ResponseWriter, r *http.Request) {
 			payload := jsonResponse{
 				Error:   false,
