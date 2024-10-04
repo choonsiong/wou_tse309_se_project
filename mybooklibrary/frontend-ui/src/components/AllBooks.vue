@@ -1,15 +1,97 @@
 <template>
-  <h1>All Books</h1>
+  <section class="bg-green-100">
+    <h2 class="pt-10 text-4xl mb-6 font-bold text-center">Manage All Books</h2>
+    <div class="max-w-4xl mx-auto p-6 space-y-6">
+      <div v-for="(book, index) in books" :key="book.id">
+        <div class="px-5 py-5 flex flex-col h-full bg-white items-center">
+          <div class="flex flex-row w-full items-start gap-5 mb-10">
+            <div class="">
+              <img class="w-full h-full object-scale-down" :src="appEnvironment.imageURL() + '/' + book.slug + '.jpg'"
+                   alt="book image">
+            </div>
+            <div class="flex-1">
+              <p class="mb-2 font-bold text-4xl">{{ book.title }}</p>
+              <p class="mb-2"><span class="font-bold text-xl">{{ allAuthors(book) }}</span></p>
+              <p class="mb-5">{{ book.description }}</p>
+              <p class="font-light">Publisher: {{ book.publisher.publisher_name }}</p>
+              <p class="font-light">Publication Year: {{ book.publication_year }}</p>
+            </div>
+          </div>
+          <div>
+            <router-link :to="`/admin/manage/books/edit/${book.id}`" class="p-3 px-8 text-white bg-cyan rounded-lg hover:opacity-70 focus:outline-none me-4" @click="handleEditBook">Edit</router-link>
+            <button class="p-2 px-8 text-white bg-red rounded-lg hover:opacity-70 focus:outline-none" @click="handleDeleteBook">Delete</button>
+          </div>
+        </div>
+      </div>
+      <div class="text-center pt-10">
+        <router-link to="/admin/manage/books/new" class="p-4 px-8 text-white bg-blue-600 rounded-lg hover:opacity-70 focus:outline-none">Add New Book</router-link>
+      </div>
+    </div>
+    <div class="p-10">&nbsp;</div>
+  </section>
 </template>
 
 <script>
 import Security from '@/security.js'
+import appEnvironment from '@/environment.js'
 
 export default {
   name: 'AllBooks',
+  computed: {
+    appEnvironment() {
+      return appEnvironment
+    }
+  },
+  data() {
+    return {
+      books: []
+    }
+  },
+  methods: {
+    allAuthors(book) {
+      let result = ''
+      if (book.authors.length == 1) {
+        return book.authors[0].author_name
+      } else {
+        for (let i = 0; i < book.authors.length; i++) {
+          result += book.authors[i].author_name
+          if (i !== book.authors.length - 1) {
+            result += ', '
+          }
+        }
+        return result
+      }
+    },
+    handleEditBook() {
+      console.log('handleEditBook')
+    },
+    handleDeleteBook() {
+      console.log('handleDeleteBook')
+    },
+  },
   beforeMount() {
     Security.requireAdmin()
-  },
+
+    fetch(appEnvironment.apiURL() + '/books')
+      .then((resp) => resp.json())
+      .then((jsonResp) => {
+        if (jsonResp.error) {
+          notie.alert({
+            type: 'error',
+            text: jsonResp.message
+          })
+        } else {
+          this.books = jsonResp.data.books
+          console.log(this.books)
+        }
+      })
+      .catch((err) => {
+        notie.alert({
+          type: 'error',
+          text: err
+        })
+      })
+  }
 }
 </script>
 

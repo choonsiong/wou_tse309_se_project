@@ -30,10 +30,12 @@ func (app *application) routes() http.Handler {
 	mux.Post("/users/register", app.NewUser)
 
 	mux.Get("/books", app.AllBooks)
-	mux.Post("/books", app.AllBooks)
+	//mux.Post("/books", app.AllBooks)
+	mux.Get("/books/{id}", app.GetBookByID)
+	//mux.Post("/books/{id}", app.GetBookByID)
 
 	mux.Get("/genres", app.AllGenres)
-	mux.Post("/genres", app.AllGenres)
+	//mux.Post("/genres", app.AllGenres)
 
 	mux.Route("/admin", func(r chi.Router) {
 		r.Use(app.AuthenticateToken)
