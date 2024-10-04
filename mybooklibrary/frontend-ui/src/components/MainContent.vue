@@ -12,7 +12,7 @@
                        :title="book.title"
                        :description="book.description"
                        :genres="book.genres"
-                       :author="book.authors[0].author_name"
+                       :author="allAuthors(book)"
                        :publication-year="book.publication_year"
                        @show-book-dialog-event="handleShowBookDialogEvent">
 
@@ -73,7 +73,21 @@ export default {
     setFilter: function(filter) {
       this.currentFilter = filter
       console.log(this.currentFilter)
-    }
+    },
+    allAuthors(book) {
+      let result = ''
+      if (book.authors.length == 1) {
+        return book.authors[0].author_name
+      } else {
+        for (let i = 0; i < book.authors.length; i++) {
+          result += book.authors[i].author_name
+          if (i !== book.authors.length - 1) {
+            result += ', '
+          }
+        }
+        return result
+      }
+    },
   },
   beforeMount() {
     // Fetch all genres
