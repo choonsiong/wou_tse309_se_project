@@ -30,7 +30,8 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, data in
 	return nil
 }
 
-// writeJSON is a helper function to write JSON data into HTTP response body. httpHeaders parameter accepts zero or one value.
+// writeJSON is a helper function to write JSON data into HTTP response body.
+// httpHeaders parameter accepts zero or one value.
 func (app *application) writeJSON(w http.ResponseWriter, status int, data interface{}, httpHeaders ...http.Header) error {
 	var output []byte
 
@@ -67,7 +68,8 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data interf
 	return nil
 }
 
-// errorJSON is a helper function to write JSON data into HTTP response body for communicating error message. httpStatusCodes accepts zero or one value.
+// errorJSON is a helper function to write JSON data into HTTP response body for communicating error message.
+// httpStatusCodes accepts zero or one value.
 func (app *application) errorJSON(w http.ResponseWriter, err error, httpStatusCodes ...int) error {
 	httpStatusCode := http.StatusBadRequest
 
@@ -98,11 +100,22 @@ func (app *application) errorJSON(w http.ResponseWriter, err error, httpStatusCo
 	return app.writeJSON(w, httpStatusCode, payload)
 }
 
-// checkTestSecret check secret string for protected routes
+// checkTestSecret checks whether string s matches the secret string defined in the configuration.
 func (app *application) checkTestSecret(s string) bool {
 	if s != app.cfg.Secret {
 		return false
 	}
-
 	return true
+}
+
+// checkTwoStringsAreEqual checks whether string s1 and s2 are equal.
+func (app *application) checkTwoStringsAreEqual(s1 string, s2 string) bool {
+	n1 := strings.TrimSpace(strings.ToLower(s1))
+	n2 := strings.TrimSpace(strings.ToLower(s2))
+	return n1 == n2
+}
+
+// normalizedString returns a normalized version of string s.
+func (app *application) normalizedString(s string) string {
+	return strings.TrimSpace(strings.ToLower(s))
 }

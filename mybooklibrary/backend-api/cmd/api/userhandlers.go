@@ -110,7 +110,7 @@ func (app *application) DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	payload := jsonResponse{
 		Error:   false,
-		Message: "user deleted",
+		Message: "success",
 	}
 
 	_ = app.writeJSON(w, http.StatusAccepted, payload)

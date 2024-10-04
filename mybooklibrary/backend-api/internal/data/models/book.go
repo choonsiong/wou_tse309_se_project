@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/mozillazg/go-slugify"
+	"log"
 	"time"
 )
 
@@ -22,6 +23,30 @@ type Book struct {
 	GenreIDs        []int     `json:"genre_ids,omitempty"`
 	CreatedAt       time.Time `json:"created_at"`
 	UpdatedAt       time.Time `json:"updated_at"`
+}
+
+func (b *Book) Details() {
+	log.Println("ID:", b.ID)
+	log.Println("Title:", b.Title)
+	log.Println("Publisher:", b.PublisherID)
+	log.Println("Publication Year:", b.PublicationYear)
+	log.Println("Description:", b.Description)
+	log.Println("Slug:", b.Slug)
+	log.Println("Publisher:", b.Publisher.PublisherName)
+	for i, author := range b.Authors {
+		log.Println("Index:", i, ", Author:", author.AuthorName, ", Author ID: ", author.ID)
+	}
+	for i, authorId := range b.AuthorIDs {
+		log.Println("Index:", i, ", AuthorID:", authorId)
+	}
+	for i, genre := range b.Genres {
+		log.Println("Index:", i, ", Genre:", genre.GenreName, ", Genre ID: ", genre.ID)
+	}
+	for i, genreId := range b.GenreIDs {
+		log.Println("Index:", i, ", GenreID:", genreId)
+	}
+	log.Println("CreatedAt:", b.CreatedAt)
+	log.Println("UpdatedAt:", b.UpdatedAt)
 }
 
 // GetOneById returns one book by its id
@@ -307,7 +332,9 @@ func (b *Book) Update() error {
 		updated_at = $6
 		where id = $7`
 
-	_, err := db.ExecContext(ctx, stmt,
+	_, err := db.ExecContext(
+		ctx,
+		stmt,
 		b.Title,
 		b.PublisherID,
 		b.PublicationYear,

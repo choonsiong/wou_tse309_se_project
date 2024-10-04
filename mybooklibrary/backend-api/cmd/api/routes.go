@@ -30,10 +30,12 @@ func (app *application) routes() http.Handler {
 	mux.Post("/users/register", app.NewUser)
 
 	mux.Get("/books", app.AllBooks)
-	mux.Post("/books", app.AllBooks)
+	//mux.Post("/books", app.AllBooks)
+	mux.Get("/books/{id}", app.GetBookByID)
+	//mux.Post("/books/{id}", app.GetBookByID)
 
 	mux.Get("/genres", app.AllGenres)
-	mux.Post("/genres", app.AllGenres)
+	//mux.Post("/genres", app.AllGenres)
 
 	mux.Route("/admin", func(r chi.Router) {
 		r.Use(app.AuthenticateToken)
@@ -44,6 +46,11 @@ func (app *application) routes() http.Handler {
 		r.Post("/users/delete", app.DeleteUser)
 		r.Post("/users/new", app.NewUser)
 		r.Post("/users/get/{id}", app.GetUserByID)
+
+		// Books
+		r.Post("/books/new", app.NewBook)
+		r.Post("/books/edit", app.EditBook)
+		r.Post("/books/delete", app.DeleteBook)
 
 		r.Post("/test", func(w http.ResponseWriter, r *http.Request) {
 			payload := jsonResponse{

@@ -4,6 +4,8 @@ import UserBooks from '@/components/UserBooks.vue'
 import UserProfile from '@/components/UserProfile.vue'
 import AllUsers from '@/components/AllUsers.vue'
 import AllBooks from '@/components/AllBooks.vue'
+import AddBook from '@/components/AddBook.vue'
+import EditBook from '@/components/EditBook.vue'
 
 const routes = [
   {
@@ -30,6 +32,16 @@ const routes = [
     path: '/admin/manage/books',
     name: 'AllBooks',
     component: AllBooks
+  },
+  {
+    path: '/admin/manage/books/new',
+    name: 'AddBook',
+    component: AddBook
+  },
+  {
+    path: '/admin/manage/books/edit/:id',
+    name: 'EditBook',
+    component: EditBook
   },
   {
     path: '/:notFound(.*)',
