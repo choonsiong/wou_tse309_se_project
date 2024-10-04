@@ -13,12 +13,13 @@
               <p class="mb-2 font-bold text-4xl">{{ book.title }}</p>
               <p class="mb-2"><span class="font-bold text-xl">{{ allAuthors(book) }}</span></p>
               <p class="mb-5">{{ book.description }}</p>
-              <p class="font-light">Publisher: {{ book.publisher.publisher_name }}</p>
-              <p class="font-light">Publication Year: {{ book.publication_year }}</p>
+              <p class="font-light">Publisher: <span class="text-gray-500 font-light">{{ book.publisher.publisher_name }}</span></p>
+              <p class="font-light mb-5">Publication Year: <span class="text-gray-500 font-light">{{ book.publication_year }}</span></p>
+              <span class="p-2 rounded-full border-slate-200 border-2 me-2 text-gray-500 font-light" v-for="genre in book.genres">{{ genre.genre_name }}</span>
             </div>
           </div>
           <div>
-            <router-link :to="`/admin/manage/books/edit/${book.id}`" class="p-3 px-8 text-white bg-cyan rounded-lg hover:opacity-70 focus:outline-none me-4" @click="handleEditBook">Edit</router-link>
+            <router-link :to="`/admin/manage/books/edit/${book.id}`" class="p-3 px-8 text-white bg-cyan rounded-lg hover:opacity-70 focus:outline-none me-4">Edit</router-link>
             <button class="p-2 px-8 text-white bg-red rounded-lg hover:opacity-70 focus:outline-none" @click="handleDeleteBook">Delete</button>
           </div>
         </div>
@@ -61,9 +62,6 @@ export default {
         }
         return result
       }
-    },
-    handleEditBook() {
-      console.log('handleEditBook')
     },
     handleDeleteBook() {
       console.log('handleDeleteBook')
