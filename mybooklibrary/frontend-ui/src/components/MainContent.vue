@@ -22,10 +22,12 @@
       </transition-group>
     </div>
     <div v-if="store.isLoggedIn">
-      <div class="mt-10 filters text-center">
-        <span class="filter me-2" :class="{active: currentFilter === 0}" @click="setFilter(0)">ALL</span>
-        <span v-for="genre in genres" :key="genre.id" class="filter me-2" :class="{active: currentFilter === genre.id}"
+      <div class="mt-10 filters text-center mb-10">
+        <div class="flex flex-wrap items-center justify-center">
+          <span class="filter me-2 mb-2" :class="{active: currentFilter === 0}" @click="setFilter(0)">ALL</span>
+          <span v-for="genre in genres" :key="genre.id" class="filter me-2 mb-2" :class="{active: currentFilter === genre.id}"
               @click="setFilter(genre.id)">{{ genre.genre_name }}</span>
+        </div>
       </div>
     </div>
   </main>
@@ -122,6 +124,7 @@ export default {
 
 .filter {
   padding: 6px 6px;
+  //margin: 8px 4px;
   cursor: pointer;
   border-radius: 6px;
   transition: all 0.35s;
