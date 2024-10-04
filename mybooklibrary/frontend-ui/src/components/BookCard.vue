@@ -6,7 +6,7 @@
       </div>
       <div class="p-4">
         <div class="relative flex flex-row flex-wrap gap-2">
-          <div v-for="genre in genres" :key="genre.id" class="mb-4 rounded-full bg-green-300 py-0.5 px-2.5 border border-transparent text-xs text-white transition-all shadow-sm w-20 text-center">
+          <div v-for="genre in genres" :key="genre.id" class="mb-4 rounded-full bg-green-400 py-0.5 px-2.5 border border-transparent text-xs text-white transition-all shadow-sm w-20 text-center">
             {{ genre.genre_name }}
           </div>
         </div>
