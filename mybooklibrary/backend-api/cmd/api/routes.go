@@ -32,6 +32,9 @@ func (app *application) routes() http.Handler {
 	mux.Get("/books", app.AllBooks)
 	mux.Post("/books", app.AllBooks)
 
+	mux.Get("/genres", app.AllGenres)
+	mux.Post("/genres", app.AllGenres)
+
 	mux.Route("/admin", func(r chi.Router) {
 		r.Use(app.AuthenticateToken)
 
@@ -56,7 +59,7 @@ func (app *application) routes() http.Handler {
 
 	//mux.Get("/test/users/login", app.Login)
 
-	mux.Get("/test/users/all", app.GetAllUsers)
+	//mux.Get("/test/users/all", app.GetAllUsers)
 
 	mux.Get("/test/users/add", func(w http.ResponseWriter, r *http.Request) {
 		secret := r.URL.Query().Get("secret")

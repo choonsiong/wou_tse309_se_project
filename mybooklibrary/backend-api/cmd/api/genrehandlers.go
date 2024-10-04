@@ -2,9 +2,9 @@ package main
 
 import "net/http"
 
-// AllBooks handle HTTP API calls to get all books
-func (app *application) AllBooks(w http.ResponseWriter, r *http.Request) {
-	books, err := app.models.Book.GetAll()
+// AllGenres handles HTTP API call to get all genres
+func (app *application) AllGenres(w http.ResponseWriter, r *http.Request) {
+	genres, err := app.models.Genre.All()
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)
@@ -15,7 +15,7 @@ func (app *application) AllBooks(w http.ResponseWriter, r *http.Request) {
 		Error:   false,
 		Message: "success",
 		Data: envelop{
-			"books": books,
+			"genres": genres,
 		},
 	}
 

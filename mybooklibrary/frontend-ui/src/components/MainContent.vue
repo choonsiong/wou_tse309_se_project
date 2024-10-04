@@ -1,78 +1,30 @@
 <template>
   <main-hero v-if="!store.isLoggedIn"></main-hero>
   <main class="bg-green-50 m-0 p-10">
-    <div class="grid grid-cols-4 grid-flow-row gap-3">
-      <div
-        class="w-[320px] mb-5 bg-white rounded-sm mx-auto shadow-md hover:bg-green-200 hover:-translate-y-3 cursor-pointer">
-        <img class="w-[320px]" src="../assets/images/object-oriented-java-script.png">
-        <div class="mt-3 p-3">
-          <h3 class="font-bold text-center">The Principles of Object-Oriented Java Script</h3>
-          <p class="pt-2 font-light text-center">by Teiva Harsanyi</p>
-          <p class="pt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+    <div v-if="isLoading" class="text-center text-4xl">Loading...</div>
+    <div v-else class="flex flex-wrap items-start justify-center">
+      <div v-for="book in books" :key="book.id">
+        <div v-if="book.genre_ids.includes(currentFilter) || currentFilter === 0">
+          <book-card :image-path="imagePath + book.slug + '.jpg'"
+                     :title="book.title"
+                     :description="book.description"
+                     :genres="book.genres"
+                     :author="book.authors[0].author_name"
+                     :publication-year="book.publication_year">
+
+          </book-card>
         </div>
       </div>
-      <div
-        class="w-[320px] mb-5 bg-white rounded-sm mx-auto shadow-md hover:bg-green-200 hover:-translate-y-3 cursor-pointer">
-        <img class="w-[320px]" src="../assets/images/object-oriented-java-script.png">
-        <div class="mt-3 p-3">
-          <h3 class="font-bold text-center">The Principles of Object-Oriented Java Script</h3>
-          <p class="pt-2 font-light text-center">by Teiva Harsanyi</p>
-          <p class="pt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-        </div>
-      </div>
-      <div
-        class="w-[320px] mb-5 bg-white rounded-sm mx-auto shadow-md hover:bg-green-200 hover:-translate-y-3 cursor-pointer">
-        <img class="w-[320px]" src="../assets/images/object-oriented-java-script.png">
-        <div class="mt-3 p-3">
-          <h3 class="font-bold text-center">The Principles of Object-Oriented Java Script</h3>
-          <p class="pt-2 font-light text-center">by Teiva Harsanyi</p>
-          <p class="pt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-        </div>
-      </div>
-      <div
-        class="w-[320px] mb-5 bg-white rounded-sm mx-auto shadow-md hover:bg-green-200 hover:-translate-y-3 cursor-pointer">
-        <img class="w-[320px]" src="../assets/images/object-oriented-java-script.png">
-        <div class="mt-3 p-3">
-          <h3 class="font-bold text-center">The Principles of Object-Oriented Java Script</h3>
-          <p class="pt-2 font-light text-center">by Teiva Harsanyi</p>
-          <p class="pt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-        </div>
-      </div>
-      <div
-        class="w-[320px] mb-5 bg-white rounded-sm mx-auto shadow-md hover:bg-green-200 hover:-translate-y-3 cursor-pointer">
-        <img class="w-[320px]" src="../assets/images/object-oriented-java-script.png">
-        <div class="mt-3 p-3">
-          <h3 class="font-bold text-center">The Principles of Object-Oriented Java Script</h3>
-          <p class="pt-2 font-light text-center">by Teiva Harsanyi</p>
-          <p class="pt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-        </div>
-      </div>
-      <div
-        class="w-[320px] mb-5 bg-white rounded-sm mx-auto shadow-md hover:bg-green-200 hover:-translate-y-3 cursor-pointer">
-        <img class="w-[320px]" src="../assets/images/object-oriented-java-script.png">
-        <div class="mt-3 p-3">
-          <h3 class="font-bold text-center">The Principles of Object-Oriented Java Script</h3>
-          <p class="pt-2 font-light text-center">by Teiva Harsanyi</p>
-          <p class="pt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-        </div>
-      </div>
-      <div
-        class="w-[320px] mb-5 bg-white rounded-sm mx-auto shadow-md hover:bg-green-200 hover:-translate-y-3 cursor-pointer">
-        <img class="w-[320px]" src="../assets/images/object-oriented-java-script.png">
-        <div class="mt-3 p-3">
-          <h3 class="font-bold text-center">The Principles of Object-Oriented Java Script</h3>
-          <p class="pt-2 font-light text-center">by Teiva Harsanyi</p>
-          <p class="pt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-        </div>
-      </div>
-      <div
-        class="w-[320px] mb-5 bg-white rounded-sm mx-auto shadow-md hover:bg-green-200 hover:-translate-y-3 cursor-pointer">
-        <img class="w-[320px]" src="../assets/images/object-oriented-java-script.png">
-        <div class="mt-3 p-3">
-          <h3 class="font-bold text-center">The Principles of Object-Oriented Java Script</h3>
-          <p class="pt-2 font-light text-center">by Teiva Harsanyi</p>
-          <p class="pt-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-        </div>
+    </div>
+    <div v-if="store.isLoggedIn">
+      <div class="mt-10 filters text-center">
+        <span class="filter me-2" :class="{active: currentFilter === 0}" @click="setFilter(0)">ALL</span>
+<!--        <span class="filter me-2" :class="{active: currentFilter === 7}" @click="setFilter(7)">CLASSIC</span>-->
+<!--        <span class="filter me-2" :class="{active: currentFilter === 6}" @click="setFilter(6)">HORROR</span>-->
+<!--        <span class="filter me-2" :class="{active: currentFilter === 4}" @click="setFilter(4)">THRILLER</span>-->
+
+          <span v-for="genre in genres" :key="genre.id" class="filter me-2" :class="{active: currentFilter === genre.id}" @click="setFilter(genre.id)">{{ genre.genre_name }}</span>
+
       </div>
     </div>
   </main>
@@ -81,16 +33,91 @@
 <script>
 import MainHero from '@/components/MainHero.vue'
 import { store } from '@/store.js'
+import appEnvironment from '@/environment.js'
+import BookCard from '@/components/BookCard.vue'
 
 export default {
   name: 'MainContent',
   components: {
-    MainHero
+    MainHero,
+    BookCard
   },
   data() {
     return {
-      store
+      store,
+      imagePath: appEnvironment.imageURL(),
+      books: [{}],
+      genres: [{}],
+      currentFilter: 0,
+      isLoading: true
     }
+  },
+  methods: {
+    setFilter: function(filter) {
+      this.currentFilter = filter
+      console.log(this.currentFilter)
+    }
+  },
+  beforeMount() {
+    // Fetch all genres
+    fetch(appEnvironment.apiURL() + '/genres')
+      .then((resp) => resp.json())
+      .then((jsonResp) => {
+        if (jsonResp.error) {
+          notie.alert({
+            type: 'error',
+            text: jsonResp.message
+          })
+        } else {
+          this.genres = jsonResp.data.genres
+          //this.isLoading = false
+          console.log(this.genres)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+    // Fetch all books
+    fetch(appEnvironment.apiURL() + '/books')
+      .then((resp) => resp.json())
+      .then((jsonResp) => {
+        if (jsonResp.error) {
+          notie.alert({
+            type: 'error',
+            text: jsonResp.message
+          })
+        } else {
+          this.books = jsonResp.data.books
+          this.isLoading = false
+          console.log(this.books)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 }
 </script>
+
+<style scoped>
+.filters {
+  height: 2.5em;
+}
+
+.filter {
+  padding: 6px 6px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.35s;
+  border: 1px solid lightgreen;
+}
+
+.filter.active {
+  background: lightgreen;
+}
+
+.filter:hover {
+  background: lightyellow;
+}
+</style>
