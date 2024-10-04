@@ -61,12 +61,20 @@ import appEnvironment from '@/environment.js'
 
 export default {
   name: 'AddBook',
+  data() {
+    return {
+      book: {},
+      authors: '',
+      genres: '',
+      bookCover: null,
+    }
+  },
   computed: {
     appEnvironment() {
       return appEnvironment
     },
     allAuthors() {
-      if (this.book.authors.length == 1) {
+      if (this.book.authors.length === 1) {
         return this.book.authors[0].author_name
       } else {
         let result = ""
@@ -80,7 +88,7 @@ export default {
       }
     },
     allGenres() {
-      if (this.book.genres.length == 1) {
+      if (this.book.genres.length === 1) {
         return this.book.genres[0].genre_name.toLowerCase()
       } else {
         let result = ""
@@ -94,23 +102,15 @@ export default {
       }
     }
   },
-  data() {
-    return {
-      book: {},
-      authors: '',
-      genres: '',
-      bookCover: null,
-    }
-  },
   methods: {
     addNewBook() {
       console.log('addNewBook')
-      console.log(this.title)
-      console.log(this.authors)
-      console.log(this.description)
-      console.log(this.publisher)
-      console.log(this.publicationYear)
-      console.log(this.genres)
+      console.log(this.book.title)
+      console.log(this.book.publication_year)
+      console.log(this.book.publisher.publisher_name)
+      console.log(this.book.authors.length)
+      console.log(this.book.genres.length)
+      console.log(this.book.description)
       console.log(this.bookCover)
     },
     handleCancel() {
