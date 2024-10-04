@@ -50,7 +50,7 @@ func (app *application) routes() http.Handler {
 		// Books
 		r.Post("/books/new", app.NewBook)
 		r.Post("/books/edit", app.EditBook)
-		r.Post("/books/delete", app.DeleteBookByID)
+		r.Post("/books/delete", app.DeleteBook)
 
 		r.Post("/test", func(w http.ResponseWriter, r *http.Request) {
 			payload := jsonResponse{

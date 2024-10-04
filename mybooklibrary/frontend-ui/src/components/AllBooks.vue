@@ -20,7 +20,7 @@
           </div>
           <div>
             <router-link :to="`/admin/manage/books/edit/${book.id}`" class="p-3 px-8 text-white bg-cyan rounded-lg hover:opacity-70 focus:outline-none me-4">Edit</router-link>
-            <button class="p-2 px-8 text-white bg-red rounded-lg hover:opacity-70 focus:outline-none" @click="handleDeleteBook">Delete</button>
+            <button class="p-2 px-8 text-white bg-red rounded-lg hover:opacity-70 focus:outline-none" @click="handleDeleteBook(book.id)">Delete</button>
           </div>
         </div>
       </div>
@@ -35,6 +35,7 @@
 <script>
 import Security from '@/security.js'
 import appEnvironment from '@/environment.js'
+import { store } from '@/store.js'
 
 export default {
   name: 'AllBooks',
@@ -63,8 +64,36 @@ export default {
         return result
       }
     },
-    handleDeleteBook() {
-      console.log('handleDeleteBook')
+    handleDeleteBook(bookId) {
+      notie.confirm({
+        text: 'Are you sure you want to delete the book id: ' + bookId,
+        submitText: 'Delete',
+        submitCallback: () => {
+          let payload = {
+            id: bookId,
+          }
+          fetch(appEnvironment.apiURL() + '/admin/books/delete', Security.requestOptions(payload))
+            .then((resp) => resp.json())
+            .then((jsonResp) => {
+              if (jsonResp.error) {
+                console.log('error: ' + jsonResp.message)
+                notie.alert({
+                  type: 'error',
+                  text: jsonResp.message
+                })
+              } else {
+                notie.alert({
+                  type: 'success',
+                  text: 'Book deleted successfully'
+                })
+                this.$emit('forceUpdateEvent')
+              }
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        }
+      })
     },
   },
   beforeMount() {
