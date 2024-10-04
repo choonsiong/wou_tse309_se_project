@@ -1,4 +1,5 @@
 <template>
+  <book-dialog v-if="showBookDialog" @close-event="handleCloseEvent" :book="book"></book-dialog>
   <main-hero v-if="!store.isLoggedIn"></main-hero>
   <main class="bg-green-50 m-0 p-10">
     <div v-if="isLoading" class="text-center text-4xl">Loading...</div>
@@ -7,11 +8,13 @@
         <div v-for="book in books" :key="book.id">
           <div v-if="book.genre_ids.includes(currentFilter) || currentFilter === 0">
             <book-card :image-path="imagePath + book.slug + '.jpg'"
+                       :id="book.id"
                        :title="book.title"
                        :description="book.description"
                        :genres="book.genres"
                        :author="book.authors[0].author_name"
-                       :publication-year="book.publication_year">
+                       :publication-year="book.publication_year"
+                       @show-book-dialog-event="handleShowBookDialogEvent">
 
             </book-card>
           </div>
@@ -33,24 +36,38 @@ import MainHero from '@/components/MainHero.vue'
 import { store } from '@/store.js'
 import appEnvironment from '@/environment.js'
 import BookCard from '@/components/BookCard.vue'
+import BookDialog from '@/components/BookDialog.vue'
 
 export default {
   name: 'MainContent',
   components: {
     MainHero,
-    BookCard
+    BookCard,
+    BookDialog,
   },
   data() {
     return {
       store,
       imagePath: appEnvironment.imageURL(),
+      book: {},
       books: [{}],
       genres: [{}],
       currentFilter: 0,
-      isLoading: true
+      isLoading: true,
+      showBookDialog: false,
     }
   },
   methods: {
+    handleCloseEvent() {
+      console.log('handleCloseEvent')
+      this.showBookDialog = false
+    },
+    handleShowBookDialogEvent(id) {
+      console.log('handleShowBookDialogEvent')
+      console.log(id)
+      this.showBookDialog = true
+      this.book = this.books.find(book => book.id === id)
+    },
     setFilter: function(filter) {
       this.currentFilter = filter
       console.log(this.currentFilter)

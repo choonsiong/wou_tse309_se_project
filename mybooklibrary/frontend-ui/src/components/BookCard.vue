@@ -1,5 +1,5 @@
 <template>
-  <a href="javascript:void(0)">
+  <a href="javascript:void(0)" @click="showBookDialog">
     <div class="relative flex flex-col my-6 bg-green-100 shadow-sm border border-green-200 h-[600px] w-96 m-2">
       <div class="relative text-center m-2.5 overflow-hidden text-white">
         <img :src="imagePath" alt="card-image" class="w-full h-full object-cover object-center"/>
@@ -37,10 +37,17 @@
 <script>
 export default {
   name: 'BookCard',
-  props: ['title', 'description', 'imagePath', 'author', 'publicationYear', 'genres'],
+  props: ['id', 'title', 'description', 'imagePath', 'author', 'publicationYear', 'genres'],
+  emits: ['show-book-dialog-event'],
   computed: {
     shortDescription() {
       return this.description.length > 200 ? this.description.slice(0, 200-1) + '...' : this.description;
+    }
+  },
+  methods: {
+    showBookDialog() {
+      console.log('showBookDialog')
+      this.$emit('show-book-dialog-event', this.id)
     }
   }
 }
