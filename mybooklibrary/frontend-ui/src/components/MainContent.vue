@@ -61,22 +61,22 @@ export default {
   },
   methods: {
     handleCloseEvent() {
-      console.log('handleCloseEvent')
+      //console.log('handleCloseEvent')
       this.showBookDialog = false
     },
     handleShowBookDialogEvent(id) {
-      console.log('handleShowBookDialogEvent')
-      console.log(id)
+      //console.log('handleShowBookDialogEvent')
+      //console.log(id)
       this.showBookDialog = true
       this.book = this.books.find(book => book.id === id)
     },
     setFilter: function(filter) {
       this.currentFilter = filter
-      console.log(this.currentFilter)
+      //console.log(this.currentFilter)
     },
     allAuthors(book) {
       let result = ''
-      if (book.authors.length == 1) {
+      if (book.authors.length === 1) {
         return this.capitalizedEachWord(book.authors[0].author_name)
       } else {
         for (let i = 0; i < book.authors.length; i++) {
@@ -116,7 +116,7 @@ export default {
         } else {
           this.genres = jsonResp.data.genres
           //this.isLoading = false
-          console.log(this.genres)
+          //console.log(this.genres)
         }
       })
       .catch((err) => {
@@ -135,7 +135,7 @@ export default {
         } else {
           this.books = jsonResp.data.books
           this.isLoading = false
-          console.log(this.books)
+          //console.log(this.books)
         }
       })
       .catch((err) => {

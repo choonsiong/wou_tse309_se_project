@@ -119,7 +119,7 @@ export default {
           })
         } else {
           this.books = jsonResp.data.books
-          console.log(this.books)
+          //console.log(this.books)
         }
       })
       .catch((err) => {

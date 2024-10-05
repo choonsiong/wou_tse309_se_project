@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     showBookDialog() {
-      console.log('showBookDialog')
+      //console.log('showBookDialog')
       this.$emit('show-book-dialog-event', this.id)
     },
     capitalizedEachWord(words) {

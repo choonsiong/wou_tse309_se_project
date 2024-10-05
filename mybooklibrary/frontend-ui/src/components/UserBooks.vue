@@ -56,7 +56,7 @@ export default {
   methods: {
     allAuthors(book) {
       let result = ''
-      if (book.authors.length == 1) {
+      if (book.authors.length === 1) {
         return this.capitalizedEachWord(book.authors[0].author_name)
       } else {
         for (let i = 0; i < book.authors.length; i++) {
@@ -127,8 +127,8 @@ export default {
         } else {
           this.books = jsonResp.data.books
           this.bookIds = jsonResp.data.bookIds
-          console.log(this.books)
-          console.log(this.bookIds)
+          // console.log(this.books)
+          // console.log(this.bookIds)
         }
       })
       .catch((err) => {

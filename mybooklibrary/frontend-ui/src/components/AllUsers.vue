@@ -151,7 +151,7 @@ export default {
   },
   methods: {
     reloadUsers() {
-      console.log('reloadUsers()')
+      //console.log('reloadUsers()')
     },
     handleEditUser(userId) {
       notie.alert({
