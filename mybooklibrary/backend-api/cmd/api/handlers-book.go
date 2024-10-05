@@ -35,28 +35,18 @@ func (app *application) AllBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) AllBooksByUserID(w http.ResponseWriter, r *http.Request) {
-	var idStr string
-
-	// Supports both GET and POST in dev environment
-	if app.cfg.ENV == "dev" {
-		if r.Method == "GET" {
-			idStr = r.URL.Query().Get("id")
-
-		} else if r.Method == "POST" {
-			idStr = chi.URLParam(r, "id")
-		}
-	} else { // Only POST allowed in prod environment
-		idStr = chi.URLParam(r, "id")
+	var requestPayload struct {
+		ID int `json:"id"`
 	}
 
-	id, err := strconv.Atoi(idStr)
+	err := app.readJSON(w, r, &requestPayload)
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)
 		return
 	}
 
-	books, bookIds, err := app.models.Book.GetAllByUserID(id)
+	books, bookIds, err := app.models.Book.GetAllByUserID(requestPayload.ID)
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)
