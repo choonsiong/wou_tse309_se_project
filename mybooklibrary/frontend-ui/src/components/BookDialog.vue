@@ -12,13 +12,16 @@
           </div>
           <div class="p-4">
             <h5 class="mb-2 text-slate-800 text-2xl font-semibold">{{ book.title }} <span class="font-bold text-xl">({{ book.publication_year }})</span></h5>
-            <div class="border-b pb-3">
+            <div class="pb-3">
               <span class="text-slate-600 text-md font-bold">{{ allAuthors }}</span>
+            </div>
+            <div class="border-b mb-2 pb-2">
+              <span class="font-bold text-xl">{{ normalizedPublisherName }}</span>
             </div>
             <p class="pt-3 text-slate-600 leading-normal font-light">{{ book.description }}</p>
           </div>
           <div class="flex flex-wrap mx-3 border-t border-slate-200 pb-3 pt-2 px-1">
-            <span v-for="genre in book.genres" class="text-sm text-slate-600 font-medium me-2 mb-2 border-2 rounded-md p-1">{{ genre.genre_name }}</span>
+            <span v-for="genre in book.genres" class="text-sm text-slate-600 font-medium me-2 mb-2 border-2 rounded-md p-1">{{ this.capitalizedEachWord(genre.genre_name) }}</span>
           </div>
         </div>
       </section>
@@ -31,6 +34,8 @@ import appEnvironment from '@/environment.js'
 
 export default {
   name: 'BookDialog',
+  emits: ['close-event'],
+  props: ['book'],
   computed: {
     appEnvironment() {
       return appEnvironment
@@ -38,7 +43,7 @@ export default {
     allAuthors() {
       let result = ''
       if (this.book.authors.length == 1) {
-        return this.book.authors[0].author_name
+        return this.capitalizedEachWord(this.book.authors[0].author_name)
       } else {
         for (let i = 0; i < this.book.authors.length; i++) {
           result += this.book.authors[i].author_name
@@ -46,12 +51,22 @@ export default {
             result += ', '
           }
         }
-        return result
+        return this.capitalizedEachWord(result)
       }
     },
+    normalizedPublisherName() {
+      return this.capitalizedEachWord(this.book.publisher.publisher_name)
+    },
   },
-  emits: ['close-event'],
-  props: ['book']
+  methods: {
+    capitalizedEachWord(words) {
+      const arr = words.split(" ")
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = arr[i][0].toUpperCase() + arr[i].substring(1)
+      }
+      return arr.join(" ")
+    }
+  }
 }
 </script>
 

@@ -26,7 +26,7 @@
         <div class="flex flex-wrap items-center justify-center">
           <span class="filter me-2 mb-2" :class="{active: currentFilter === 0}" @click="setFilter(0)">ALL</span>
           <span v-for="genre in genres" :key="genre.id" class="filter me-2 mb-2" :class="{active: currentFilter === genre.id}"
-              @click="setFilter(genre.id)">{{ genre.genre_name }}</span>
+              @click="setFilter(genre.id)">{{ this.capitalizedEachWord(genre.genre_name) }}</span>
         </div>
       </div>
     </div>
@@ -77,7 +77,7 @@ export default {
     allAuthors(book) {
       let result = ''
       if (book.authors.length == 1) {
-        return book.authors[0].author_name
+        return this.capitalizedEachWord(book.authors[0].author_name)
       } else {
         for (let i = 0; i < book.authors.length; i++) {
           result += book.authors[i].author_name
@@ -85,9 +85,16 @@ export default {
             result += ', '
           }
         }
-        return result
+        return this.capitalizedEachWord(result)
       }
     },
+    capitalizedEachWord(words) {
+      const arr = words.split(" ")
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = arr[i][0].toUpperCase() + arr[i].substring(1)
+      }
+      return arr.join(" ")
+    }
   },
   beforeMount() {
     // Fetch all genres
