@@ -293,6 +293,84 @@ Indexes:
 mybooklibrarydb=# 
 ```
 
+#### `users_mybooks` table
+
+```
+bookappdb=# 
+bookappdb=# CREATE TABLE users_mybooks (
+bookappdb(# id SERIAL PRIMARY KEY NOT NULL,
+bookappdb(# user_id INT,
+bookappdb(# book_id INT,
+bookappdb(# created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
+bookappdb(# updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW());
+CREATE TABLE
+bookappdb=# 
+bookappdb=# 
+bookappdb=# \d 
+                   List of relations
+ Schema |          Name          |   Type   |  Owner   
+--------+------------------------+----------+----------
+ public | authors                | table    | postgres
+ public | authors_id_seq         | sequence | postgres
+ public | books                  | table    | postgres
+ public | books_genres           | table    | postgres
+ public | books_genres_id_seq    | sequence | postgres
+ public | books_id_seq           | sequence | postgres
+ public | genres                 | table    | postgres
+ public | genres_id_seq          | sequence | postgres
+ public | mybooks                | table    | postgres
+ public | mybooks_authors        | table    | postgres
+ public | mybooks_authors_id_seq | sequence | postgres
+ public | mybooks_genres         | table    | postgres
+ public | mybooks_genres_id_seq  | sequence | postgres
+ public | mybooks_id_seq         | sequence | postgres
+ public | publishers             | table    | postgres
+ public | publishers_id_seq      | sequence | postgres
+ public | tokens                 | table    | postgres
+ public | tokens_id_seq          | sequence | postgres
+ public | users                  | table    | postgres
+ public | users_id_seq           | sequence | postgres
+ public | users_mybooks          | table    | postgres
+ public | users_mybooks_id_seq   | sequence | postgres
+(22 rows)
+
+bookappdb=# 
+bookappdb=# \d users_mybooks
+                                        Table "public.users_mybooks"
+   Column   |            Type             | Collation | Nullable |                  Default                  
+------------+-----------------------------+-----------+----------+-------------------------------------------
+ id         | integer                     |           | not null | nextval('users_mybooks_id_seq'::regclass)
+ user_id    | integer                     |           |          | 
+ book_id    | integer                     |           |          | 
+ created_at | timestamp without time zone |           |          | now()
+ updated_at | timestamp without time zone |           |          | now()
+Indexes:
+    "users_mybooks_pkey" PRIMARY KEY, btree (id)
+
+bookappdb=# 
+bookappdb=# ALTER TABLE users_mybooks ADD CONSTRAINT fk_users_user_id FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE
+bookappdb=# ALTER TABLE users_mybooks ADD CONSTRAINT fk_mybooks_book_id FOREIGN KEY (book_id) REFERENCES mybooks(id);
+ALTER TABLE
+bookappdb=# 
+bookappdb=# \d users_mybooks
+                                        Table "public.users_mybooks"
+   Column   |            Type             | Collation | Nullable |                  Default                  
+------------+-----------------------------+-----------+----------+-------------------------------------------
+ id         | integer                     |           | not null | nextval('users_mybooks_id_seq'::regclass)
+ user_id    | integer                     |           |          | 
+ book_id    | integer                     |           |          | 
+ created_at | timestamp without time zone |           |          | now()
+ updated_at | timestamp without time zone |           |          | now()
+Indexes:
+    "users_mybooks_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "fk_mybooks_book_id" FOREIGN KEY (book_id) REFERENCES mybooks(id)
+    "fk_users_user_id" FOREIGN KEY (user_id) REFERENCES users(id)
+
+bookappdb=#
+```
+
 #### Foreign Keys
 
 ```
