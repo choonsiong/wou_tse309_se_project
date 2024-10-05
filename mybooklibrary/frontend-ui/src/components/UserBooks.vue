@@ -13,7 +13,7 @@
               <p class="mb-2 font-bold text-4xl">{{ book.title }}</p>
               <p class="mb-2"><span class="font-bold text-xl">{{ allAuthors(book) }}</span></p>
               <p class="mb-5">{{ book.description }}</p>
-              <p class="font-light">Publisher: <span class="text-gray-500 font-light">{{ book.publisher.publisher_name }}</span></p>
+              <p class="font-light">Publisher: <span class="text-gray-500 font-light">{{ this.capitalizedEachWord(book.publisher.publisher_name) }}</span></p>
               <p class="font-light mb-5">Publication Year: <span class="text-gray-500 font-light">{{ book.publication_year }}</span></p>
               <div class="flex flex-wrap">
                 <span class="p-1 me-2 mb-2 border-slate-200 border-2 me-2 text-gray-500 font-light" v-for="genre in book.genres">{{ genre.genre_name }}</span>
@@ -56,8 +56,8 @@ export default {
   methods: {
     allAuthors(book) {
       let result = ''
-      if (book.authors.length == 1) {
-        return book.authors[0].author_name
+      if (book.authors.length === 1) {
+        return this.capitalizedEachWord(book.authors[0].author_name)
       } else {
         for (let i = 0; i < book.authors.length; i++) {
           result += book.authors[i].author_name
@@ -65,8 +65,15 @@ export default {
             result += ', '
           }
         }
-        return result
+        return this.capitalizedEachWord(result)
       }
+    },
+    capitalizedEachWord(words) {
+      const arr = words.split(" ")
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = arr[i][0].toUpperCase() + arr[i].substring(1)
+      }
+      return arr.join(" ")
     },
     handleDeleteBook(bookId) {
       notie.confirm({
@@ -120,8 +127,8 @@ export default {
         } else {
           this.books = jsonResp.data.books
           this.bookIds = jsonResp.data.bookIds
-          console.log(this.books)
-          console.log(this.bookIds)
+          // console.log(this.books)
+          // console.log(this.bookIds)
         }
       })
       .catch((err) => {

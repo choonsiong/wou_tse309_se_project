@@ -89,7 +89,7 @@ export default {
         book_cover: this.bookCover
       }
 
-      console.log(payload)
+      //console.log(payload)
 
       fetch(appEnvironment.apiURL() + '/admin/books/new', Security.requestOptions(payload))
         .then((resp) => resp.json())

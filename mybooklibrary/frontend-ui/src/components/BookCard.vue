@@ -2,7 +2,7 @@
   <a href="javascript:void(0)" @click="showBookDialog">
     <div class="relative flex flex-col my-6 bg-green-100 shadow-sm border border-green-200 h-[600px] w-96 m-2">
       <div class="relative text-center m-2.5 overflow-hidden text-white">
-        <img :src="imagePath" alt="card-image" class="w-full h-full object-cover object-center"/>
+        <img :src="imagePath" alt="card-image" class="w-full h-[280px] object-scale-down"/>
       </div>
       <div class="p-4">
 <!--        <div class="relative flex flex-row flex-wrap gap-2">-->
@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     showBookDialog() {
-      console.log('showBookDialog')
+      //console.log('showBookDialog')
       this.$emit('show-book-dialog-event', this.id)
     },
     capitalizedEachWord(words) {
