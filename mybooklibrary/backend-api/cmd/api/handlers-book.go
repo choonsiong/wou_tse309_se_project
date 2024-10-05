@@ -136,13 +136,14 @@ func (app *application) DeleteBook(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) NewBook(w http.ResponseWriter, r *http.Request) {
 	var requestPayload struct {
-		Authors         string `json:"authors"`
-		BookCoverBase64 string `json:"book_cover"`
+		UserID          int    `json:"user_id"`
+		Title           string `json:"title"`
 		Description     string `json:"description"`
-		Genres          string `json:"genres"`
 		PublisherName   string `json:"publisher_name"`
 		PublicationYear int    `json:"publication_year"`
-		Title           string `json:"title"`
+		Authors         string `json:"authors"`
+		Genres          string `json:"genres"`
+		BookCoverBase64 string `json:"book_cover"`
 	}
 
 	err := app.readJSON(w, r, &requestPayload)
@@ -152,12 +153,13 @@ func (app *application) NewBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//app.infoLog.Println(requestPayload.UserID)
 	//app.infoLog.Println(requestPayload.Title)
 	//app.infoLog.Println(requestPayload.PublisherName)
 	//app.infoLog.Println(requestPayload.PublicationYear)
+	//app.infoLog.Println(requestPayload.Description)
 	//app.infoLog.Println(requestPayload.Authors)
 	//app.infoLog.Println(requestPayload.Genres)
-	//app.infoLog.Println(requestPayload.Description)
 	//app.infoLog.Println(requestPayload.BookCoverBase64)
 
 	// Handle publisher
@@ -355,6 +357,14 @@ func (app *application) NewBook(w http.ResponseWriter, r *http.Request) {
 	b.Details()
 
 	bookId, err := app.models.Book.Insert(b)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	// Now we need to update users_mybooks table to keep track of books belong to the user
+	_, err = app.models.UserBook.Insert(requestPayload.UserID, bookId)
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)

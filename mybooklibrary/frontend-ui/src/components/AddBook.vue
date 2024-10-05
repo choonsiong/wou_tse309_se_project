@@ -79,6 +79,7 @@ export default {
   methods: {
     addNewBook() {
       const payload = {
+        user_id: store.user.id,
         title: this.title,
         description: this.description,
         publisher_name: this.publisherName,
@@ -87,6 +88,8 @@ export default {
         genres: this.genres,
         book_cover: this.bookCover
       }
+
+      console.log(payload)
 
       fetch(appEnvironment.apiURL() + '/admin/books/new', Security.requestOptions(payload))
         .then((resp) => resp.json())
