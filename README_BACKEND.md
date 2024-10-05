@@ -36,4 +36,8 @@ go: added github.com/jackc/pgx/v4 v4.18.3
 go: added github.com/mozillazg/go-slugify v0.2.0
 go: added github.com/mozillazg/go-unidecode v0.2.0
 [mbp2022 20:50:54:89] 
+
+[mbp2022 14:24:18:87] go get github.com/DATA-DOG/go-sqlmock
+go: added github.com/DATA-DOG/go-sqlmock v1.5.2
+[mbp2022 14:24:37:87] 
 ```
