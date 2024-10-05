@@ -61,6 +61,7 @@
 import router from '@/router/index.js'
 import appEnvironment from '@/environment.js'
 import Security from '@/security.js'
+import { store } from '@/store.js'
 
 export default {
   name: 'AddBook',
@@ -111,7 +112,11 @@ export default {
         })
     },
     handleCancel() {
-      router.push('/admin/manage/books')
+      if (store.isAdmin) {
+        router.push('/admin/manage/books')
+      } else {
+        router.push('/manage/books')
+      }
     },
     uploadBookCoverImage() {
       // Get a reference to the input using ref
