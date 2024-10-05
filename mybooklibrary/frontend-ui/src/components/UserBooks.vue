@@ -68,6 +68,37 @@ export default {
         return result
       }
     },
+    handleDeleteBook(bookId) {
+      notie.confirm({
+        text: 'Are you sure you want to delete the book id: ' + bookId,
+        submitText: 'Delete',
+        submitCallback: () => {
+          let payload = {
+            id: bookId,
+          }
+          fetch(appEnvironment.apiURL() + '/admin/books/delete', Security.requestOptions(payload))
+            .then((resp) => resp.json())
+            .then((jsonResp) => {
+              if (jsonResp.error) {
+                console.log('error: ' + jsonResp.message)
+                notie.alert({
+                  type: 'error',
+                  text: jsonResp.message
+                })
+              } else {
+                notie.alert({
+                  type: 'success',
+                  text: 'Book deleted successfully'
+                })
+                this.$emit('forceUpdateEvent')
+              }
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        }
+      })
+    },
   },
   beforeMount() {
     Security.requireToken()
@@ -101,7 +132,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>
