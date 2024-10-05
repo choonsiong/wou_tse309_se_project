@@ -102,6 +102,16 @@ func (app *application) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// First, get all books of the given user by the users_mybooks table
+	userBooks, err := app.models.UserBook.GetAllBooksByUserID(requestPayload.ID)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	// Then, delete all the records related to the given user id
+	// in the users_mybooks table
 	err = app.models.UserBook.DeleteByUserID(requestPayload.ID)
 	if err != nil {
 		app.errorLog.Println(err)
@@ -109,6 +119,35 @@ func (app *application) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Now, delete all the related references for each book owned by the given
+	// user id
+	for _, userBook := range userBooks {
+		app.infoLog.Println("book id:", userBook.BookID)
+
+		var err error
+		err = app.models.Genre.DeleteForBookId(userBook.BookID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
+
+		err = app.models.Author.DeleteForBookId(userBook.BookID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
+
+		err = app.models.Book.DeleteByID(userBook.BookID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
+	}
+
+	// Finally delete the user from the database
 	err = app.models.User.DeleteById(requestPayload.ID)
 	if err != nil {
 		app.errorLog.Println(err)
