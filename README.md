@@ -1,7 +1,11 @@
-# Notes
+# About
 
-- Install [Vue Router](https://router.vuejs.org/installation.html) if you didn't select it while setting up the project.
+This is a project developed for **WOU TSE 309/10** course.
 
-```
-npm install vue-router@4
-```
+The application consists of a backend and a frontend. The backend is developed using [Go programming language](https://go.dev), and the frontend is developed using [Vue.js](https://vuejs.org).
+
+The backend server also make use of [PostgreSQL](https://www.postgresql.org) database for data storage.
+
+### Demo Screenshot
+
+![image](img/github_image.png)
