@@ -34,6 +34,47 @@ func (app *application) AllBooks(w http.ResponseWriter, r *http.Request) {
 	_ = app.writeJSON(w, http.StatusOK, payload)
 }
 
+func (app *application) AllBooksByUserID(w http.ResponseWriter, r *http.Request) {
+	var idStr string
+
+	// Supports both GET and POST in dev environment
+	if app.cfg.ENV == "dev" {
+		if r.Method == "GET" {
+			idStr = r.URL.Query().Get("id")
+
+		} else if r.Method == "POST" {
+			idStr = chi.URLParam(r, "id")
+		}
+	} else { // Only POST allowed in prod environment
+		idStr = chi.URLParam(r, "id")
+	}
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	books, bookIds, err := app.models.Book.GetAllByUserID(id)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	payload := jsonResponse{
+		Error:   false,
+		Message: "success",
+		Data: envelop{
+			"books":   books,
+			"bookIds": bookIds,
+		},
+	}
+
+	_ = app.writeJSON(w, http.StatusOK, payload)
+}
+
 // GetBookByID is the HTTP handler to get a book by its id
 func (app *application) GetBookByID(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))

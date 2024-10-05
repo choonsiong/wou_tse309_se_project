@@ -398,6 +398,43 @@ func (b *Book) DeleteByID(id int) error {
 	return nil
 }
 
+// GetAllByUserID get all books for the given user id.
+func (b *Book) GetAllByUserID(id int) ([]*Book, []int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	query := `SELECT id, title, publisher_id, publication_year, description, slug, created_at, updated_at FROM mybooks WHERE id IN (SELECT book_id FROM users_mybooks WHERE user_id = $1) ORDER BY id`
+	dbRows, err := db.QueryContext(ctx, query, id)
+	if err != nil && err != sql.ErrNoRows {
+		return nil, nil, err
+	}
+	defer dbRows.Close()
+
+	var books []*Book
+	var bookIds []int
+
+	var book Book
+
+	for dbRows.Next() {
+		err = dbRows.Scan(
+			&book.ID,
+			&book.Title,
+			&book.PublisherID,
+			&book.PublicationYear,
+			&book.Description,
+			&book.Slug,
+			&book.CreatedAt,
+			&book.UpdatedAt)
+		if err != nil {
+			return nil, nil, err
+		}
+		books = append(books, &book)
+		bookIds = append(bookIds, book.ID)
+	}
+
+	return books, bookIds, nil
+}
+
 // genresForBook returns all genres for a given book id
 func (b *Book) genresForBook(id int) ([]Genre, []int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
@@ -416,7 +453,6 @@ func (b *Book) genresForBook(id int) ([]Genre, []int, error) {
 
 	var genre Genre
 	for gRows.Next() {
-
 		err = gRows.Scan(
 			&genre.ID,
 			&genre.GenreName,
