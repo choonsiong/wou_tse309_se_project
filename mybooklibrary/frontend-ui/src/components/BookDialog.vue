@@ -21,7 +21,7 @@
             <p class="pt-3 text-slate-600 leading-normal font-light">{{ book.description }}</p>
           </div>
           <div class="flex flex-wrap mx-3 border-t border-slate-200 pb-3 pt-2 px-1">
-            <span v-for="genre in book.genres" class="text-sm text-slate-600 font-medium me-2 mb-2 border-2 rounded-md p-1">{{ this.capitalizedEachWord(genre.genre_name) }}</span>
+            <span v-for="genre in book.genres" class="text-sm text-slate-600 font-medium me-2 mb-2 border-2 rounded-md p-1">{{ genre.genre_name.toLowerCase() }}</span>
           </div>
         </div>
       </section>

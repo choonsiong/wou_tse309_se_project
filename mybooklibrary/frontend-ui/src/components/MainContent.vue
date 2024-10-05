@@ -26,7 +26,7 @@
         <div class="flex flex-wrap items-center justify-center">
           <span class="filter me-2 mb-2" :class="{active: currentFilter === 0}" @click="setFilter(0)">ALL</span>
           <span v-for="genre in genres" :key="genre.id" class="filter me-2 mb-2" :class="{active: currentFilter === genre.id}"
-              @click="setFilter(genre.id)">{{ this.capitalizedEachWord(genre.genre_name) }}</span>
+              @click="setFilter(genre.id)">{{ genre.genre_name.toLowerCase() }}</span>
         </div>
       </div>
     </div>
@@ -92,6 +92,13 @@ export default {
       const arr = words.split(" ")
       for (let i = 0; i < arr.length; i++) {
         arr[i] = arr[i][0].toUpperCase() + arr[i].substring(1)
+      }
+      return arr.join(" ")
+    },
+    lowercasedEachWord(words) {
+      const arr = words.split(" ")
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = arr[i][0].toLowerCase() + arr[i].substring(1)
       }
       return arr.join(" ")
     }
