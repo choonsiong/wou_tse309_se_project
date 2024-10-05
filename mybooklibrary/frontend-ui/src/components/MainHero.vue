@@ -11,7 +11,7 @@
                    class="w-8 h-8 mr-4 inline-block bg-green-200/20 text-green-400 rounded-md">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
               </svg>
-              Manage your personal book collection anywhere, anytime
+              Manage your personal book collection
             </p>
             <p class="text-2xl mt-5 pl-8">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.0"
@@ -19,16 +19,16 @@
                    class="w-8 h-8 mr-4 inline-block bg-green-200/20 text-green-400 rounded-md">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
               </svg>
-              Review other user books and discover more books to read
+              Discover what other users read
             </p>
-            <p class="text-2xl mt-5 pl-8 whitespace-nowrap">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.0"
-                   stroke="currentColor"
-                   class="w-8 h-8 mr-4 inline-block bg-green-200/20 text-green-400 rounded-md">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-              </svg>
-              Keep track of your books borrowing so that you will never lost it
-            </p>
+<!--            <p class="text-2xl mt-5 pl-8 whitespace-nowrap">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.0"-->
+<!--                   stroke="currentColor"-->
+<!--                   class="w-8 h-8 mr-4 inline-block bg-green-200/20 text-green-400 rounded-md">-->
+<!--                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />-->
+<!--              </svg>-->
+<!--              Keep track of your books borrowing so that you will never lost it-->
+<!--            </p>-->
           </div>
           <div>
             <form @submit.prevent="submitHandler" class="bg-green-900/70 p-8 rounded-md">
