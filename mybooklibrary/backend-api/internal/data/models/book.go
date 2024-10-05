@@ -413,9 +413,9 @@ func (b *Book) GetAllByUserID(id int) ([]*Book, []int, error) {
 	var books []*Book
 	var bookIds []int
 
-	var book Book
-
 	for dbRows.Next() {
+		var book Book
+
 		err = dbRows.Scan(
 			&book.ID,
 			&book.Title,
