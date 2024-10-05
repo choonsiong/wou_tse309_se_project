@@ -34,6 +34,37 @@ func (app *application) AllBooks(w http.ResponseWriter, r *http.Request) {
 	_ = app.writeJSON(w, http.StatusOK, payload)
 }
 
+func (app *application) AllBooksByUserID(w http.ResponseWriter, r *http.Request) {
+	var requestPayload struct {
+		ID int `json:"id"`
+	}
+
+	err := app.readJSON(w, r, &requestPayload)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	books, bookIds, err := app.models.Book.GetAllByUserID(requestPayload.ID)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	payload := jsonResponse{
+		Error:   false,
+		Message: "success",
+		Data: envelop{
+			"books":   books,
+			"bookIds": bookIds,
+		},
+	}
+
+	_ = app.writeJSON(w, http.StatusOK, payload)
+}
+
 // GetBookByID is the HTTP handler to get a book by its id
 func (app *application) GetBookByID(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
@@ -61,10 +92,11 @@ func (app *application) GetBookByID(w http.ResponseWriter, r *http.Request) {
 	_ = app.writeJSON(w, http.StatusOK, payload)
 }
 
-// DeleteBookByID is the HTTP handler to delete a book by its id
+// DeleteBook is the HTTP handler to delete a book by its id
 func (app *application) DeleteBook(w http.ResponseWriter, r *http.Request) {
 	var requestPayload struct {
-		ID int `json:"id"`
+		UserID int `json:"user_id"`
+		BookID int `json:"book_id"`
 	}
 
 	err := app.readJSON(w, r, &requestPayload)
@@ -74,21 +106,28 @@ func (app *application) DeleteBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.models.Genre.DeleteForBookId(requestPayload.ID)
+	err = app.models.Genre.DeleteForBookId(requestPayload.BookID)
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)
 		return
 	}
 
-	err = app.models.Author.DeleteForBookId(requestPayload.ID)
+	err = app.models.Author.DeleteForBookId(requestPayload.BookID)
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)
 		return
 	}
 
-	err = app.models.Book.DeleteByID(requestPayload.ID)
+	err = app.models.UserBook.DeleteByBookID(requestPayload.BookID)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	err = app.models.Book.DeleteByID(requestPayload.BookID)
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)
@@ -105,13 +144,14 @@ func (app *application) DeleteBook(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) NewBook(w http.ResponseWriter, r *http.Request) {
 	var requestPayload struct {
-		Authors         string `json:"authors"`
-		BookCoverBase64 string `json:"book_cover"`
+		UserID          int    `json:"user_id"`
+		Title           string `json:"title"`
 		Description     string `json:"description"`
-		Genres          string `json:"genres"`
 		PublisherName   string `json:"publisher_name"`
 		PublicationYear int    `json:"publication_year"`
-		Title           string `json:"title"`
+		Authors         string `json:"authors"`
+		Genres          string `json:"genres"`
+		BookCoverBase64 string `json:"book_cover"`
 	}
 
 	err := app.readJSON(w, r, &requestPayload)
@@ -121,12 +161,13 @@ func (app *application) NewBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//app.infoLog.Println(requestPayload.UserID)
 	//app.infoLog.Println(requestPayload.Title)
 	//app.infoLog.Println(requestPayload.PublisherName)
 	//app.infoLog.Println(requestPayload.PublicationYear)
+	//app.infoLog.Println(requestPayload.Description)
 	//app.infoLog.Println(requestPayload.Authors)
 	//app.infoLog.Println(requestPayload.Genres)
-	//app.infoLog.Println(requestPayload.Description)
 	//app.infoLog.Println(requestPayload.BookCoverBase64)
 
 	// Handle publisher
@@ -324,6 +365,14 @@ func (app *application) NewBook(w http.ResponseWriter, r *http.Request) {
 	b.Details()
 
 	bookId, err := app.models.Book.Insert(b)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	// Now we need to update users_mybooks table to keep track of books belong to the user
+	_, err = app.models.UserBook.Insert(requestPayload.UserID, bookId)
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)

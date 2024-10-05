@@ -12,7 +12,7 @@
                        :title="book.title"
                        :description="book.description"
                        :genres="book.genres"
-                       :author="book.authors[0].author_name"
+                       :author="allAuthors(book)"
                        :publication-year="book.publication_year"
                        @show-book-dialog-event="handleShowBookDialogEvent">
 
@@ -22,10 +22,12 @@
       </transition-group>
     </div>
     <div v-if="store.isLoggedIn">
-      <div class="mt-10 filters text-center">
-        <span class="filter me-2" :class="{active: currentFilter === 0}" @click="setFilter(0)">ALL</span>
-        <span v-for="genre in genres" :key="genre.id" class="filter me-2" :class="{active: currentFilter === genre.id}"
+      <div class="mt-10 filters text-center mb-10">
+        <div class="flex flex-wrap items-center justify-center">
+          <span class="filter me-2 mb-2" :class="{active: currentFilter === 0}" @click="setFilter(0)">ALL</span>
+          <span v-for="genre in genres" :key="genre.id" class="filter me-2 mb-2" :class="{active: currentFilter === genre.id}"
               @click="setFilter(genre.id)">{{ genre.genre_name }}</span>
+        </div>
       </div>
     </div>
   </main>
@@ -71,7 +73,21 @@ export default {
     setFilter: function(filter) {
       this.currentFilter = filter
       console.log(this.currentFilter)
-    }
+    },
+    allAuthors(book) {
+      let result = ''
+      if (book.authors.length == 1) {
+        return book.authors[0].author_name
+      } else {
+        for (let i = 0; i < book.authors.length; i++) {
+          result += book.authors[i].author_name
+          if (i !== book.authors.length - 1) {
+            result += ', '
+          }
+        }
+        return result
+      }
+    },
   },
   beforeMount() {
     // Fetch all genres
@@ -122,6 +138,7 @@ export default {
 
 .filter {
   padding: 6px 6px;
+  //margin: 8px 4px;
   cursor: pointer;
   border-radius: 6px;
   transition: all 0.35s;

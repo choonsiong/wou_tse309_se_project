@@ -102,10 +102,18 @@ func (app *application) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = app.models.UserBook.DeleteByUserID(requestPayload.ID)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
 	err = app.models.User.DeleteById(requestPayload.ID)
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)
+		return
 	}
 
 	payload := jsonResponse{
