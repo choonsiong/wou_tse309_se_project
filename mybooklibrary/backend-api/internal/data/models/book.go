@@ -160,6 +160,7 @@ func (b *Book) GetAll() ([]*Book, error) {
 
 	for rows.Next() {
 		var book Book
+
 		err := rows.Scan(
 			&book.ID,
 			&book.Title,
@@ -428,6 +429,23 @@ func (b *Book) GetAllByUserID(id int) ([]*Book, []int, error) {
 		if err != nil {
 			return nil, nil, err
 		}
+
+		// Get genres
+		genres, ids, err := b.genresForBook(book.ID)
+		if err != nil {
+			return nil, nil, err
+		}
+		book.Genres = genres
+		book.GenreIDs = ids
+
+		// Get authors
+		authors, ids, err := b.authorsForBook(book.ID)
+		if err != nil {
+			return nil, nil, err
+		}
+		book.Authors = authors
+		book.AuthorIDs = ids
+
 		books = append(books, &book)
 		bookIds = append(bookIds, book.ID)
 	}

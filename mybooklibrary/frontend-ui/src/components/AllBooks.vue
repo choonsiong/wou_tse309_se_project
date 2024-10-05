@@ -37,7 +37,6 @@
 <script>
 import Security from '@/security.js'
 import appEnvironment from '@/environment.js'
-import { store } from '@/store.js'
 
 export default {
   name: 'AllBooks',
