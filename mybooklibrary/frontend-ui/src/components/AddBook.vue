@@ -104,7 +104,11 @@ export default {
               type: 'success',
               text: 'Book added successfully'
             })
-            router.push('/admin/manage/books')
+            if (store.isAdmin) {
+              router.push('/admin/manage/books')
+            } else {
+              router.push('/manage/books')
+            }
           }
         })
         .catch((err) => {

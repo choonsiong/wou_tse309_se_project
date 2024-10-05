@@ -92,10 +92,11 @@ func (app *application) GetBookByID(w http.ResponseWriter, r *http.Request) {
 	_ = app.writeJSON(w, http.StatusOK, payload)
 }
 
-// DeleteBookByID is the HTTP handler to delete a book by its id
+// DeleteBook is the HTTP handler to delete a book by its id
 func (app *application) DeleteBook(w http.ResponseWriter, r *http.Request) {
 	var requestPayload struct {
-		ID int `json:"id"`
+		UserID int `json:"user_id"`
+		BookID int `json:"book_id"`
 	}
 
 	err := app.readJSON(w, r, &requestPayload)
@@ -105,21 +106,28 @@ func (app *application) DeleteBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = app.models.Genre.DeleteForBookId(requestPayload.ID)
+	err = app.models.Genre.DeleteForBookId(requestPayload.BookID)
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)
 		return
 	}
 
-	err = app.models.Author.DeleteForBookId(requestPayload.ID)
+	err = app.models.Author.DeleteForBookId(requestPayload.BookID)
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)
 		return
 	}
 
-	err = app.models.Book.DeleteByID(requestPayload.ID)
+	err = app.models.UserBook.DeleteByBookID(requestPayload.BookID)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	err = app.models.Book.DeleteByID(requestPayload.BookID)
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)

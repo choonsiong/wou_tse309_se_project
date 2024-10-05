@@ -35,13 +35,41 @@ func (r *UserBook) Insert(userID int, bookID int) (int, error) {
 	return newID, nil
 }
 
-// DeleteByID deletes a record by the given id
+// DeleteByID deletes all records by the given id
 func (r *UserBook) DeleteByID(id int) error {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
 	defer cancel()
 
 	stmt := `DELETE FROM users_mybooks WHERE id = $1`
 	_, err := db.ExecContext(ctx, stmt, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DeleteByUserID deletes all records by the given user id
+func (r *UserBook) DeleteByUserID(userID int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	stmt := `DELETE FROM users_mybooks WHERE user_id = $1`
+	_, err := db.ExecContext(ctx, stmt, userID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DeleteByBookID deletes all records by the given book id
+func (r *UserBook) DeleteByBookID(bookID int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	stmt := `DELETE FROM users_mybooks WHERE book_id = $1`
+	_, err := db.ExecContext(ctx, stmt, bookID)
 	if err != nil {
 		return err
 	}

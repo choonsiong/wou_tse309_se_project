@@ -37,6 +37,7 @@
 <script>
 import Security from '@/security.js'
 import appEnvironment from '@/environment.js'
+import { store } from '@/store.js'
 
 export default {
   name: 'AllBooks',
@@ -71,7 +72,8 @@ export default {
         submitText: 'Delete',
         submitCallback: () => {
           let payload = {
-            id: bookId,
+            user_id: store.user.id,
+            book_id: bookId,
           }
           fetch(appEnvironment.apiURL() + '/admin/books/delete', Security.requestOptions(payload))
             .then((resp) => resp.json())
