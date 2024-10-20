@@ -16,6 +16,7 @@ type Models struct {
 	Book      Book
 	Genre     Genre
 	Publisher Publisher
+	Review    Review
 	User      User
 	UserBook  UserBook
 	Token     Token
@@ -29,6 +30,7 @@ func New(dbPool *sql.DB) Models {
 		Book:      Book{},
 		Genre:     Genre{},
 		Publisher: Publisher{},
+		Review:    Review{},
 		User:      User{},
 		UserBook:  UserBook{},
 		Token:     Token{},
