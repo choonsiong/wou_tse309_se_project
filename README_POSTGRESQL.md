@@ -254,6 +254,60 @@ mybooklibrarydb=# \d
 mybooklibrarydb=#
 ```
 
+#### `reviews` table
+
+```
+bookappdb=# CREATE TABLE reviews (
+bookappdb(# id SERIAL PRIMARY KEY NOT NULL,
+bookappdb(# review TEXT,
+bookappdb(# rating INT,
+bookappdb(# created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
+bookappdb(# updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW());
+CREATE TABLE
+bookappdb=# \d reviews
+                                        Table "public.reviews"
+   Column   |            Type             | Collation | Nullable |               Default               
+------------+-----------------------------+-----------+----------+-------------------------------------
+ id         | integer                     |           | not null | nextval('reviews_id_seq'::regclass)
+ review     | text                        |           |          | 
+ rating     | integer                     |           |          | 
+ created_at | timestamp without time zone |           |          | now()
+ updated_at | timestamp without time zone |           |          | now()
+Indexes:
+    "reviews_pkey" PRIMARY KEY, btree (id)
+
+bookappdb=#
+```
+
+#### `book_reviews` table
+
+```
+bookappdb=# 
+bookappdb=# CREATE TABLE book_reviews (
+bookappdb(# id SERIAL PRIMARY KEY NOT NULL,
+bookappdb(# review_id INT,
+bookappdb(# user_id INT,
+bookappdb(# book_id INT,
+bookappdb(# created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
+bookappdb(# updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW());
+CREATE TABLE
+bookappdb=# 
+bookappdb=# \d book_reviews
+                                        Table "public.book_reviews"
+   Column   |            Type             | Collation | Nullable |                 Default                  
+------------+-----------------------------+-----------+----------+------------------------------------------
+ id         | integer                     |           | not null | nextval('book_reviews_id_seq'::regclass)
+ review_id  | integer                     |           |          | 
+ user_id    | integer                     |           |          | 
+ book_id    | integer                     |           |          | 
+ created_at | timestamp without time zone |           |          | now()
+ updated_at | timestamp without time zone |           |          | now()
+Indexes:
+    "book_reviews_pkey" PRIMARY KEY, btree (id)
+
+bookappdb=#
+```
+
 #### `genres` table
 
 ```
@@ -607,4 +661,45 @@ Referenced by:
     TABLE "tokens" CONSTRAINT "fk_users_tokens" FOREIGN KEY (user_id) REFERENCES users(id)
 
 mybooklibrarydb=# 
+```
+
+```
+bookappdb=# \d book_reviews
+                                        Table "public.book_reviews"
+   Column   |            Type             | Collation | Nullable |                 Default                  
+------------+-----------------------------+-----------+----------+------------------------------------------
+ id         | integer                     |           | not null | nextval('book_reviews_id_seq'::regclass)
+ review_id  | integer                     |           |          | 
+ user_id    | integer                     |           |          | 
+ book_id    | integer                     |           |          | 
+ created_at | timestamp without time zone |           |          | now()
+ updated_at | timestamp without time zone |           |          | now()
+Indexes:
+    "book_reviews_pkey" PRIMARY KEY, btree (id)
+
+bookappdb=# 
+bookappdb=# ALTER TABLE book_reviews ADD CONSTRAINT fk_review_id FOREIGN KEY (review_id) REFERENCES reviews(id);
+ALTER TABLE
+bookappdb=# ALTER TABLE book_reviews ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE
+bookappdb=# ALTER TABLE book_reviews ADD CONSTRAINT fk_book_id FOREIGN KEY (book_id) REFERENCES books(id);
+ALTER TABLE
+bookappdb=# \d book_reviews
+                                        Table "public.book_reviews"
+   Column   |            Type             | Collation | Nullable |                 Default                  
+------------+-----------------------------+-----------+----------+------------------------------------------
+ id         | integer                     |           | not null | nextval('book_reviews_id_seq'::regclass)
+ review_id  | integer                     |           |          | 
+ user_id    | integer                     |           |          | 
+ book_id    | integer                     |           |          | 
+ created_at | timestamp without time zone |           |          | now()
+ updated_at | timestamp without time zone |           |          | now()
+Indexes:
+    "book_reviews_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "fk_book_id" FOREIGN KEY (book_id) REFERENCES books(id)
+    "fk_review_id" FOREIGN KEY (review_id) REFERENCES reviews(id)
+    "fk_user_id" FOREIGN KEY (user_id) REFERENCES users(id)
+
+bookappdb=# 
 ```
