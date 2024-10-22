@@ -12,28 +12,30 @@ var db *sql.DB
 
 // Models type define database models used in the application.
 type Models struct {
-	Author    Author
-	Book      Book
-	Genre     Genre
-	Publisher Publisher
-	Review    Review
-	User      User
-	UserBook  UserBook
-	Token     Token
+	Author     Author
+	Book       Book
+	BookReview BookReview
+	Genre      Genre
+	Publisher  Publisher
+	Review     Review
+	User       User
+	UserBook   UserBook
+	Token      Token
 }
 
 // New function returns initialized database models.
 func New(dbPool *sql.DB) Models {
 	db = dbPool
 	return Models{
-		Author:    Author{},
-		Book:      Book{},
-		Genre:     Genre{},
-		Publisher: Publisher{},
-		Review:    Review{},
-		User:      User{},
-		UserBook:  UserBook{},
-		Token:     Token{},
+		Author:     Author{},
+		Book:       Book{},
+		BookReview: BookReview{},
+		Genre:      Genre{},
+		Publisher:  Publisher{},
+		Review:     Review{},
+		User:       User{},
+		UserBook:   UserBook{},
+		Token:      Token{},
 	}
 }
 

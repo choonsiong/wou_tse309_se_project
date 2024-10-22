@@ -4,5 +4,6 @@ export const store = reactive({
   token: '',
   isAdmin: false,
   isLoggedIn: false,
-  user: {}
+  user: {},
+  book: {}
 })

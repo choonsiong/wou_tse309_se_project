@@ -6,12 +6,18 @@ import AllUsers from '@/components/AllUsers.vue'
 import AllBooks from '@/components/AllBooks.vue'
 import AddBook from '@/components/AddBook.vue'
 import EditBook from '@/components/EditBook.vue'
+import BookDetail from '@/components/BookDetail.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: MainContent
+  },
+  {
+    path: '/books/:id',
+    name: 'BookDetail',
+    component: BookDetail,
   },
   {
     path: '/manage/books',

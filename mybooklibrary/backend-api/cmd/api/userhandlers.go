@@ -139,12 +139,26 @@ func (app *application) DeleteUser(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		//err = app.models.BookReview.DeleteByBookID(userBook.BookID)
+		//if err != nil {
+		//	app.errorLog.Println(err)
+		//	_ = app.errorJSON(w, err)
+		//	return
+		//}
+
 		err = app.models.Book.DeleteByID(userBook.BookID)
 		if err != nil {
 			app.errorLog.Println(err)
 			_ = app.errorJSON(w, err)
 			return
 		}
+	}
+
+	err = app.models.BookReview.DeleteByUserID(requestPayload.ID)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
 	}
 
 	// Finally delete the user from the database

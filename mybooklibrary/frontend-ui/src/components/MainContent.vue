@@ -1,7 +1,7 @@
 <template>
   <book-dialog v-if="showBookDialog" @close-event="handleCloseEvent" :book="book"></book-dialog>
   <main-hero v-if="!store.isLoggedIn"></main-hero>
-  <main class="bg-green-50 m-0 p-10">
+  <main class="bg-green-50 m-0 p-5 sm:p-10">
     <div v-if="isLoading" class="text-center text-4xl">Loading...</div>
     <div v-else>
       <transition-group tag="div" appear name="transition-books" class="flex flex-wrap items-start justify-center">
@@ -14,19 +14,20 @@
                        :genres="book.genres"
                        :author="allAuthors(book)"
                        :publication-year="book.publication_year"
-                       @show-book-dialog-event="handleShowBookDialogEvent">
-
+                       @show-book-dialog-event="handleShowBookDialogEvent"
+                       @show-book-detail-event="handleShowBookDetailEvent">
             </book-card>
           </div>
         </div>
       </transition-group>
     </div>
     <div v-if="store.isLoggedIn">
-      <div class="mt-10 filters text-center mb-10">
+      <div class="hidden lg:inline mt-10 filters text-center mb-10">
         <div class="flex flex-wrap items-center justify-center">
           <span class="filter me-2 mb-2" :class="{active: currentFilter === 0}" @click="setFilter(0)">ALL</span>
-          <span v-for="genre in genres" :key="genre.id" class="filter me-2 mb-2" :class="{active: currentFilter === genre.id}"
-              @click="setFilter(genre.id)">{{ genre.genre_name.toLowerCase() }}</span>
+          <span v-for="genre in genres" :key="genre.id" class="filter me-2 mb-2"
+                :class="{active: currentFilter === genre.id}"
+                @click="setFilter(genre.id)">{{ genre.genre_name.toLowerCase() }}</span>
         </div>
       </div>
     </div>
@@ -39,13 +40,14 @@ import { store } from '@/store.js'
 import appEnvironment from '@/environment.js'
 import BookCard from '@/components/BookCard.vue'
 import BookDialog from '@/components/BookDialog.vue'
+import router from '@/router/index.js'
 
 export default {
   name: 'MainContent',
   components: {
     MainHero,
     BookCard,
-    BookDialog,
+    BookDialog
   },
   data() {
     return {
@@ -56,7 +58,7 @@ export default {
       genres: [{}],
       currentFilter: 0,
       isLoading: true,
-      showBookDialog: false,
+      showBookDialog: false
     }
   },
   methods: {
@@ -69,6 +71,13 @@ export default {
       //console.log(id)
       this.showBookDialog = true
       this.book = this.books.find(book => book.id === id)
+    },
+    handleShowBookDetailEvent(id) {
+      this.showBookDetail = true
+      this.book = this.books.find(book => book.id === id)
+      store.book = this.book;
+      console.log(this.book.title)
+      router.push('/books/' + id)
     },
     setFilter: function(filter) {
       this.currentFilter = filter
@@ -89,18 +98,18 @@ export default {
       }
     },
     capitalizedEachWord(words) {
-      const arr = words.split(" ")
+      const arr = words.split(' ')
       for (let i = 0; i < arr.length; i++) {
         arr[i] = arr[i][0].toUpperCase() + arr[i].substring(1)
       }
-      return arr.join(" ")
+      return arr.join(' ')
     },
     lowercasedEachWord(words) {
-      const arr = words.split(" ")
+      const arr = words.split(' ')
       for (let i = 0; i < arr.length; i++) {
         arr[i] = arr[i][0].toLowerCase() + arr[i].substring(1)
       }
-      return arr.join(" ")
+      return arr.join(' ')
     }
   },
   beforeMount() {

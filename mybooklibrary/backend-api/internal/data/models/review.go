@@ -82,7 +82,7 @@ func (r *Review) Update() error {
 	defer cancel()
 
 	stmt := `UPDATE reviews SET review = $1, rating = $2, updated_at = $3 WHERE id = $4`
-	_, err := db.ExecContext(ctx, stmt, r.Review, r.Rating, r.UpdatedAt, r.ID)
+	_, err := db.ExecContext(ctx, stmt, r.Review, r.Rating, time.Now(), r.ID)
 	if err != nil {
 		return err
 	}
