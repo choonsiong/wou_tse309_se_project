@@ -7,10 +7,10 @@
       <div class="mr-8 inline">
         <ul class="flex space-x-2 font-bold font-roboto">
           <li v-if="store.isLoggedIn && store.isAdmin"
-              class="py-1 px-3 hover:bg-green-400 hover:rounded-full cursor-pointer">
+              class="py-1 sm:px-3 hover:bg-green-400 hover:rounded-full cursor-pointer">
             <router-link to="/admin/manage/users">
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-width="1.5"
-                   class="w-8 h-8 inline-block">
+                   class="w-6 h-6 sm:w-8 sm:h-8 inline-block">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
@@ -35,15 +35,15 @@
                   </defs>
                 </g>
               </svg>
-              Manage Users
+              <span class="hidden sm:inline"> Manage Users</span>
             </router-link>
           </li>
           <li v-if="store.isLoggedIn && store.isAdmin"
-              class="py-1 px-3 hover:bg-green-400 hover:rounded-full cursor-pointer">
+              class="py-1 sm:px-3 hover:bg-green-400 hover:rounded-full cursor-pointer">
             <router-link to="/admin/manage/books">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                  xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" enable-background="new 0 0 32 32"
-                 xml:space="preserve" fill="#000000" class="w-8 h-8 inline-block"><g id="SVGRepo_bgCarrier" stroke-width="0" ></g>
+                 xml:space="preserve" fill="#000000" class="w-6 h-6 sm:w-8 sm:h-8 inline-block"><g id="SVGRepo_bgCarrier" stroke-width="0" ></g>
               <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
               <g id="SVGRepo_iconCarrier"> <rect x="6" y="11" fill="none" stroke="#000000" stroke-width="2"
                                                  stroke-miterlimit="10" width="20" height="13"></rect>
@@ -59,12 +59,12 @@
                       y2="11"></line>
                 <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="14" y1="24" x2="14"
                       y2="11"></line> </g></svg>
-            Manage Books
+              <span class="hidden sm:inline"> Manage Books</span>
             </router-link>
           </li>
-          <li v-if="store.isLoggedIn && !store.isAdmin" class="py-1 px-3 hover:bg-green-400 hover:rounded-full cursor-pointer">
+          <li v-if="store.isLoggedIn && !store.isAdmin" class="py-1 sm:px-3 hover:bg-green-400 hover:rounded-full cursor-pointer">
             <router-link to="/manage/books">
-              <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="w-8 h-8 inline-block">
+              <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="w-6 h-6 sm:w-8 sm:h-8 inline-block">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                 <g id="SVGRepo_iconCarrier"><title>ionicons-v5-l</title>
@@ -83,12 +83,12 @@
                     style="fill:none;stroke:#000000;stroke-linejoin:round;stroke-width:32px"></path>
                 </g>
               </svg>
-              My Books
+              <span class="hidden sm:inline"> My Books</span>
             </router-link>
           </li>
-          <li v-if="store.isLoggedIn" class="py-1 px-3 hover:bg-green-400 hover:rounded-full cursor-pointer">
+          <li v-if="store.isLoggedIn" class="py-1 sm:px-3 hover:bg-green-400 hover:rounded-full cursor-pointer">
             <router-link to="/manage/profile">
-              <svg v-if="store.isAdmin" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="w-8 h-8 inline-block">
+              <svg v-if="store.isAdmin" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="w-6 h-6 sm:w-8 sm:h-8 inline-block">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
@@ -100,7 +100,7 @@
                 </g>
               </svg>
               <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                   stroke="currentColor" class="w-8 h-8 inline-block">
+                   stroke="currentColor" class="w-6 h-6 sm:w-8 sm:h-8 inline-block">
                 <path
                   d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z"
                   stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -108,33 +108,33 @@
                       stroke-width="2"
                       stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
-              <span v-if="store.isAdmin">Admin</span>
-              <span v-else>Profile</span>
+              <span v-if="store.isAdmin" class="hidden sm:inline">Admin</span>
+              <span v-else class="hidden sm:inline">Profile</span>
 <!--              {{ store.user.first_name }} {{ store.user.last_name }}-->
             </router-link>
           </li>
-          <li v-if="!store.isLoggedIn" class="py-1 px-3 hover:bg-green-400 hover:rounded-full cursor-pointer"
+          <li v-if="!store.isLoggedIn" class="py-1 sm:px-3 hover:bg-green-400 hover:rounded-full cursor-pointer"
               @click="showLogin">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                 stroke="currentColor" class="w-8 h-8 inline-block">
+                 stroke="currentColor" class="w-6 h-6 sm:w-8 sm:h-8 inline-block">
               <path d="M2.00098 11.999L16.001 11.999M16.001 11.999L12.501 8.99902M16.001 11.999L12.501 14.999"
                     stroke="#1C274C" stroke-linecap="round" stroke-linejoin="round"></path>
               <path
                 d="M9.00195 7C9.01406 4.82497 9.11051 3.64706 9.87889 2.87868C10.7576 2 12.1718 2 15.0002 2L16.0002 2C18.8286 2 20.2429 2 21.1215 2.87868C22.0002 3.75736 22.0002 5.17157 22.0002 8L22.0002 16C22.0002 18.8284 22.0002 20.2426 21.1215 21.1213C20.3531 21.8897 19.1752 21.9862 17 21.9983M9.00195 17C9.01406 19.175 9.11051 20.3529 9.87889 21.1213C10.5202 21.7626 11.4467 21.9359 13 21.9827"
                 stroke="#1C274C" stroke-linecap="round"></path>
             </svg>
-            Login
+            <span class="hidden sm:inline"> Login</span>
           </li>
-          <li v-else class="py-1 px-3 hover:bg-green-400 hover:rounded-full cursor-pointer" @click="logoutUser">
+          <li v-else class="py-1 sm:px-3 hover:bg-green-400 hover:rounded-full cursor-pointer" @click="logoutUser">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                 stroke="currentColor" class="w-8 h-8 inline-block">
+                 stroke="currentColor" class="w-6 h-6 sm:w-8 sm:h-8 inline-block">
               <path d="M15 12L2 12M2 12L5.5 9M2 12L5.5 15" stroke="#1C274C" stroke-linecap="round"
                     stroke-linejoin="round"></path>
               <path
                 d="M9.00195 7C9.01406 4.82497 9.11051 3.64706 9.87889 2.87868C10.7576 2 12.1718 2 15.0002 2L16.0002 2C18.8286 2 20.2429 2 21.1215 2.87868C22.0002 3.75736 22.0002 5.17157 22.0002 8L22.0002 16C22.0002 18.8284 22.0002 20.2426 21.1215 21.1213C20.3531 21.8897 19.1752 21.9862 17 21.9983M9.00195 17C9.01406 19.175 9.11051 20.3529 9.87889 21.1213C10.5202 21.7626 11.4467 21.9359 13 21.9827"
                 stroke="#1C274C" stroke-linecap="round"></path>
             </svg>
-            Logout
+            <span class="hidden sm:inline"> Logout</span>
           </li>
         </ul>
       </div>
