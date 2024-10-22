@@ -5,11 +5,13 @@
       <div v-for="(book, index) in books" :key="book.id">
         <div class="px-5 py-5 flex flex-col h-full bg-white items-center">
           <div class="flex flex-row w-full items-start gap-5 mb-10">
-            <div class="">
+            <div class="hidden sm:inline">
               <img class="w-56 p-2 bg-white object-fill border-2 border-gray-100" :src="appEnvironment.imageURL() + '/' + book.slug + '.jpg'"
                    alt="book image">
             </div>
             <div class="flex-1">
+              <img class="sm:hidden w-56 m-2 p-2 bg-white object-fill border-2 border-gray-100" :src="appEnvironment.imageURL() + '/' + book.slug + '.jpg'"
+                   alt="book image">
               <p class="mb-2 font-bold text-4xl">{{ book.title }}</p>
               <p class="mb-2"><span class="font-bold text-xl">{{ allAuthors(book) }}</span></p>
               <p class="mb-5">{{ book.description }}</p>
