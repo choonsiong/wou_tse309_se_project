@@ -7,6 +7,7 @@ import AllBooks from '@/components/AllBooks.vue'
 import AddBook from '@/components/AddBook.vue'
 import EditBook from '@/components/EditBook.vue'
 import BookDetail from '@/components/BookDetail.vue'
+import AddReview from '@/components/AddReview.vue'
 
 const routes = [
   {
@@ -28,6 +29,11 @@ const routes = [
     path: '/manage/profile',
     name: 'UserProfile',
     component: UserProfile
+  },
+  {
+    path: '/manage/reviews/new',
+    name: 'AddReview',
+    component: AddReview,
   },
   {
     path: '/admin/manage/users',
