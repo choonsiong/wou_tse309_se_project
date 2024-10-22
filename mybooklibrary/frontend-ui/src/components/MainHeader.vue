@@ -2,9 +2,9 @@
   <div class="bg-green-200">
     <div class="flex justify-between items-center">
       <div class="ml-8">
-        <router-link to="/"><img src="../assets/logo.png" alt="logo" class="cursor-pointer w-56"></router-link>
+        <router-link to="/"><img src="../assets/logo.png" alt="logo" class="cursor-pointer w-32 md:w-56"></router-link>
       </div>
-      <div class="mr-8 hidden md:inline">
+      <div class="mr-8 inline">
         <ul class="flex space-x-2 font-bold font-roboto">
           <li v-if="store.isLoggedIn && store.isAdmin"
               class="py-1 px-3 hover:bg-green-400 hover:rounded-full cursor-pointer">
