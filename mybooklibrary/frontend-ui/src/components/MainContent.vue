@@ -1,7 +1,7 @@
 <template>
   <book-dialog v-if="showBookDialog" @close-event="handleCloseEvent" :book="book"></book-dialog>
   <main-hero v-if="!store.isLoggedIn"></main-hero>
-  <main class="bg-green-50 m-0 p-10">
+  <main class="bg-green-50 m-0 p-5 sm:p-10">
     <div v-if="isLoading" class="text-center text-4xl">Loading...</div>
     <div v-else>
       <transition-group tag="div" appear name="transition-books" class="flex flex-wrap items-start justify-center">
