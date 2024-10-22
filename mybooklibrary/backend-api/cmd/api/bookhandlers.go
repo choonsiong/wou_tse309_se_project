@@ -127,6 +127,13 @@ func (app *application) DeleteBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = app.models.BookReview.DeleteByBookID(requestPayload.BookID)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
 	err = app.models.Book.DeleteByID(requestPayload.BookID)
 	if err != nil {
 		app.errorLog.Println(err)
