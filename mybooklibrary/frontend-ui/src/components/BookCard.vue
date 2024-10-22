@@ -56,7 +56,7 @@
 export default {
   name: 'BookCard',
   props: ['id', 'title', 'description', 'imagePath', 'author', 'publicationYear', 'genres'],
-  emits: ['show-book-dialog-event'],
+  emits: ['show-book-dialog-event', 'show-book-detail-event'],
   computed: {
     shortDescription() {
       return this.description.length > 200 ? this.description.slice(0, 200 - 1) + '...' : this.description
