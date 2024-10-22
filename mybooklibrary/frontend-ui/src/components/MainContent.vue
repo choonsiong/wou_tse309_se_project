@@ -22,7 +22,7 @@
       </transition-group>
     </div>
     <div v-if="store.isLoggedIn">
-      <div class="mt-10 filters text-center mb-10">
+      <div class="hidden lg:inline mt-10 filters text-center mb-10">
         <div class="flex flex-wrap items-center justify-center">
           <span class="filter me-2 mb-2" :class="{active: currentFilter === 0}" @click="setFilter(0)">ALL</span>
           <span v-for="genre in genres" :key="genre.id" class="filter me-2 mb-2" :class="{active: currentFilter === genre.id}"
