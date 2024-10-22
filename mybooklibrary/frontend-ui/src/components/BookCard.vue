@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="relative flex flex-col mb-4 sm:my-4 bg-green-100 shadow-sm border border-green-200 h-[600px] w-[100%] sm:w-96 sm:m-2">
+    <div class="relative flex flex-col mb-4 sm:my-4 bg-green-100 shadow-sm border border-green-200 h-[600px] w-80 sm:w-96 sm:m-2">
       <div class="flex justify-end">
-        <div class="hidden md:inline m-4 cursor-pointer justify-end" @click="showBookDialog">
+        <div class="hidden xl:inline m-4 cursor-pointer justify-end" @click="showBookDialog">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor"
                class="size-6">
@@ -10,7 +10,7 @@
                   d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
           </svg>
         </div>
-        <div class="md:hidden m-4 cursor-pointer justify-end" @click="showBookDetail">
+        <div class="xl:hidden m-4 cursor-pointer justify-end" @click="showBookDetail">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                stroke="currentColor"
                class="size-6">
