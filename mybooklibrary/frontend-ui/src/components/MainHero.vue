@@ -1,9 +1,9 @@
 <template>
   <section class="bg-[url('/src/assets/images/header-bg.jpg')] bg-center bg-cover">
     <div class="bg-slate-900/60">
-      <div class="py-12 mx-40 text-white">
-        <div class="flex justify-center items-center space-x-10">
-          <div class="lg:w-[65%] hidden md:inline">
+      <div class="py-12 mx-3 sm:mx-40 text-white">
+        <div class="flex justify-center items-center sm:space-x-10">
+          <div class="lg:w-[65%] hidden lg:inline">
             <h1 class="text-6xl font-bold">Manage your book collections and sharing with other</h1>
             <p class="text-2xl mt-8 pl-8">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.0"
@@ -21,14 +21,14 @@
               </svg>
               Discover what other users read
             </p>
-<!--            <p class="text-2xl mt-5 pl-8 whitespace-nowrap">-->
-<!--              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.0"-->
-<!--                   stroke="currentColor"-->
-<!--                   class="w-8 h-8 mr-4 inline-block bg-green-200/20 text-green-400 rounded-md">-->
-<!--                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />-->
-<!--              </svg>-->
-<!--              Keep track of your books borrowing so that you will never lost it-->
-<!--            </p>-->
+            <p class="text-2xl mt-5 pl-8 whitespace-nowrap">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.0"
+                   stroke="currentColor"
+                   class="w-8 h-8 mr-4 inline-block bg-green-200/20 text-green-400 rounded-md">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+              Review your favorite book and share with others
+            </p>
           </div>
           <div>
             <form @submit.prevent="submitHandler" class="bg-green-900/70 p-8 rounded-md">
