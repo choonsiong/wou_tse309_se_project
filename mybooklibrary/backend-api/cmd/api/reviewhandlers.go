@@ -12,6 +12,7 @@ type ResponsePayload struct {
 	ID        int       `json:"id"`
 	Review    string    `json:"review"`
 	Rating    int       `json:"rating"`
+	Bookname  string    `json:"book_name"`
 	Username  string    `json:"user_name"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
@@ -35,6 +36,12 @@ func (app *application) AllReviews(w http.ResponseWriter, r *http.Request) {
 			_ = app.errorJSON(w, err)
 			return
 		}
+		b, err := app.models.Book.GetOneById(r.BookID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
 		u, err := app.models.User.GetById(r.UserID)
 		if err != nil {
 			app.errorLog.Println(err)
@@ -47,6 +54,7 @@ func (app *application) AllReviews(w http.ResponseWriter, r *http.Request) {
 		p.Rating = review.Rating
 		p.CreatedAt = review.CreatedAt
 		p.UpdatedAt = review.UpdatedAt
+		p.Bookname = b.Title
 		p.Username = u.FirstName + " " + u.LastName
 		results = append(results, p)
 	}
@@ -237,6 +245,12 @@ func (app *application) AllReviewsByBookID(w http.ResponseWriter, r *http.Reques
 			_ = app.errorJSON(w, err)
 			return
 		}
+		b, err := app.models.Book.GetOneById(r.BookID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
 		u, err := app.models.User.GetById(r.UserID)
 		if err != nil {
 			app.errorLog.Println(err)
@@ -249,6 +263,7 @@ func (app *application) AllReviewsByBookID(w http.ResponseWriter, r *http.Reques
 		p.Rating = review.Rating
 		p.CreatedAt = review.CreatedAt
 		p.UpdatedAt = review.UpdatedAt
+		p.Bookname = b.Title
 		p.Username = u.FirstName + " " + u.LastName
 		results = append(results, p)
 	}
