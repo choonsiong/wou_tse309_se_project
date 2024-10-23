@@ -38,6 +38,8 @@ func (app *application) routes() http.Handler {
 	mux.Get("/genres", app.AllGenres)
 	//mux.Post("/genres", app.AllGenres)
 
+	mux.Get("/reviews/{id}", app.AllReviewsByBookID)
+
 	mux.Route("/admin", func(r chi.Router) {
 		r.Use(app.AuthenticateToken)
 
