@@ -56,8 +56,6 @@ export default {
         rating: this.rating,
       }
 
-      console.log(payload)
-
       fetch(appEnvironment.apiURL() + '/admin/reviews/new', Security.requestOptions(payload))
         .then((resp) => resp.json())
         .then((jsonResp) => {

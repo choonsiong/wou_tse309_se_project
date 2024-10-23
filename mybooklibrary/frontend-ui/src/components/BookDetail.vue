@@ -91,7 +91,6 @@ export default {
           })
         } else {
           this.reviews = jsonResp.data.results
-          //console.log(this.reviews)
         }
       })
       .catch((err) => {

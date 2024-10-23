@@ -8,6 +8,15 @@ import (
 	"time"
 )
 
+type ResponsePayload struct {
+	ID        int       `json:"id"`
+	Review    string    `json:"review"`
+	Rating    int       `json:"rating"`
+	Username  string    `json:"user_name"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 // AllReviews handles API call to get all reviews
 func (app *application) AllReviews(w http.ResponseWriter, r *http.Request) {
 	reviews, err := app.models.Review.All()
@@ -17,11 +26,36 @@ func (app *application) AllReviews(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var results []ResponsePayload
+
+	for _, review := range reviews {
+		r, err := app.models.BookReview.GetByReviewID(review.ID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
+		u, err := app.models.User.GetById(r.UserID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
+		var p ResponsePayload
+		p.ID = review.ID
+		p.Review = review.Review
+		p.Rating = review.Rating
+		p.CreatedAt = review.CreatedAt
+		p.UpdatedAt = review.UpdatedAt
+		p.Username = u.FirstName + " " + u.LastName
+		results = append(results, p)
+	}
+
 	payload := jsonResponse{
 		Error:   false,
 		Message: "success",
 		Data: envelop{
-			"reviews": reviews,
+			"results": results,
 		},
 	}
 
@@ -112,6 +146,13 @@ func (app *application) DeleteReviewById(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
+	err = app.models.BookReview.DeleteByReviewID(requestPayload.ID)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
 	err = app.models.Review.DeleteReviewByID(requestPayload.ID)
 	if err != nil {
 		app.errorLog.Println(err)
@@ -156,15 +197,6 @@ func (app *application) AllReviewsByUserID(w http.ResponseWriter, r *http.Reques
 	}
 
 	_ = app.writeJSON(w, http.StatusOK, payload)
-}
-
-type ResponsePayload struct {
-	ID        int       `json:"id"`
-	Review    string    `json:"review"`
-	Rating    int       `json:"rating"`
-	Username  string    `json:"user_name"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
 }
 
 // AllReviewsByBookID handles API call to get all reviews according to book id
