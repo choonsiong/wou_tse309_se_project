@@ -139,12 +139,28 @@ func (app *application) DeleteUser(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//err = app.models.BookReview.DeleteByBookID(userBook.BookID)
-		//if err != nil {
-		//	app.errorLog.Println(err)
-		//	_ = app.errorJSON(w, err)
-		//	return
-		//}
+		bookReviews, err := app.models.BookReview.GetByBookID(userBook.BookID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
+
+		err = app.models.BookReview.DeleteByBookID(userBook.BookID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
+
+		for _, bookReview := range bookReviews {
+			err := app.models.Review.DeleteReviewByID(bookReview.ReviewID)
+			if err != nil {
+				app.errorLog.Println(err)
+				_ = app.errorJSON(w, err)
+				return
+			}
+		}
 
 		err = app.models.Book.DeleteByID(userBook.BookID)
 		if err != nil {
