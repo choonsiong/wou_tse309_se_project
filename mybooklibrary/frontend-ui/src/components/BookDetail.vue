@@ -17,7 +17,10 @@
         </div>
       </div>
       <div v-if="reviews.length > 0">
-<!--        <p>Got Review</p>-->
+        <div v-for="review in reviews" :key="review.id" class="p-5 bg-green-50 mb-3 rounded-2xl">
+          <p class="mb-1 font-light">{{ review.created_at.slice(0, 19).replace('T', ' ') }} by Foo</p>
+          <em>{{ review.review }}</em>
+        </div>
       </div>
       <div class="text-center">
         <button v-if="store.isLoggedIn" class="bg-green-400 p-3 rounded-xl font-bold text-white" @click="handleWriteReview">Write a Review</button>
