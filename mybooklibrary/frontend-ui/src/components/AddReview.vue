@@ -17,8 +17,7 @@
           <button class="p-3 px-8 text-white bg-blue-600 rounded-lg hover:opacity-70 focus:outline-none me-4"
                   @click="handleCancel">Cancel
           </button>
-          <button class="p-3 px-8 text-white bg-rose-500 rounded-lg hover:opacity-70 focus:outline-none" @click="addNewReview">Submit Review
-          </button>
+          <button class="p-3 px-8 text-white bg-rose-500 rounded-lg hover:opacity-70 focus:outline-none">Submit Review</button>
         </div>
       </form>
     </div>
@@ -44,7 +43,8 @@ export default {
   data() {
     return {
       book: store.book,
-      review: ''
+      review: '',
+      rating: 0
     }
   },
   methods: {
@@ -52,7 +52,8 @@ export default {
       const payload = {
         user_id: store.user.id,
         book_id: this.book.id,
-        review: this.review
+        review: this.review,
+        rating: this.rating,
       }
 
       console.log(payload)
@@ -70,11 +71,13 @@ export default {
               type: 'success',
               text: 'Review added successfully'
             })
-            // if (store.isAdmin) {
-            //   router.push('/admin/manage/reviews')
-            // } else {
-            //   router.push('/manage/reviews')
-            // }
+            if (store.isAdmin) {
+              //router.push('/admin/manage/reviews')
+              router.push('/')
+            } else {
+              //router.push('/manage/reviews')
+              router.push('/')
+            }
           }
         })
         .catch((err) => {

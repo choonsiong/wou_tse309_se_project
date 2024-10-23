@@ -25,6 +25,42 @@ func (app *application) AllReviews(w http.ResponseWriter, r *http.Request) {
 	_ = app.writeJSON(w, http.StatusOK, payload)
 }
 
+// NewReview handles API call to inserts a new review
+func (app *application) NewReview(w http.ResponseWriter, r *http.Request) {
+	var requestPayload struct {
+		BookId int    `json:"book_id"`
+		UserId int    `json:"user_id"`
+		Review string `json:"review"`
+		Rating int    `json:"rating"`
+	}
+
+	err := app.readJSON(w, r, &requestPayload)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	review := &models.Review{
+		Review: requestPayload.Review,
+		Rating: requestPayload.Rating,
+	}
+
+	_, _, err = app.models.Review.Insert(review.Review, review.Rating, requestPayload.UserId, requestPayload.BookId)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	payload := jsonResponse{
+		Error:   false,
+		Message: "success",
+	}
+
+	_ = app.writeJSON(w, http.StatusOK, payload)
+}
+
 // EditReview handles API call to update review
 func (app *application) EditReview(w http.ResponseWriter, r *http.Request) {
 	var requestPayload struct {
