@@ -2,7 +2,9 @@ package main
 
 import (
 	"app-backend/internal/data/models"
+	"github.com/go-chi/chi/v5"
 	"net/http"
+	"strconv"
 )
 
 // AllReviews handles API call to get all reviews
@@ -157,18 +159,27 @@ func (app *application) AllReviewsByUserID(w http.ResponseWriter, r *http.Reques
 
 // AllReviewsByBookID handles API call to get all reviews according to book id
 func (app *application) AllReviewsByBookID(w http.ResponseWriter, r *http.Request) {
-	var requestPayload struct {
-		ID int `json:"id"`
-	}
+	//var requestPayload struct {
+	//	ID int `json:"id"`
+	//}
+	//
+	//err := app.readJSON(w, r, &requestPayload)
+	//if err != nil {
+	//	app.errorLog.Println(err)
+	//	_ = app.errorJSON(w, err)
+	//	return
+	//}
 
-	err := app.readJSON(w, r, &requestPayload)
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)
 		return
 	}
 
-	reviews, err := app.models.Review.ReviewsByBookID(requestPayload.ID)
+	app.infoLog.Println("book id:", id)
+
+	reviews, err := app.models.Review.ReviewsByBookID(id)
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)

@@ -16,6 +16,9 @@
             }}</span>
         </div>
       </div>
+      <div v-if="reviews.length > 0">
+<!--        <p>Got Review</p>-->
+      </div>
       <div class="text-center">
         <button v-if="store.isLoggedIn" class="bg-green-400 p-3 rounded-xl font-bold text-white" @click="handleWriteReview">Write a Review</button>
       </div>
@@ -31,7 +34,8 @@ export default {
   name: 'BookDetail',
   data() {
     return {
-      book: store.book
+      book: store.book,
+      reviews: {}
     }
   },
   computed: {
@@ -71,6 +75,28 @@ export default {
       store.book = this.book
       router.push('/manage/reviews/new')
     }
+  },
+  beforeMount() {
+    //console.log('book id:' + store.book.id)
+    fetch(appEnvironment.apiURL() + '/reviews/' + store.book.id)
+      .then((resp) => resp.json())
+      .then((jsonResp) => {
+        if (jsonResp.error) {
+          notie.alert({
+            type: 'error',
+            text: jsonResp.message
+          })
+        } else {
+          this.reviews = jsonResp.data.reviews
+          console.log(this.reviews)
+        }
+      })
+      .catch((err) => {
+        notie.alert({
+          type: 'error',
+          text: err
+        })
+      })
   }
 }
 </script>
