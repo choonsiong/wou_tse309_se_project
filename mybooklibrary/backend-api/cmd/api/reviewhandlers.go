@@ -2,7 +2,10 @@ package main
 
 import (
 	"app-backend/internal/data/models"
+	"github.com/go-chi/chi/v5"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // AllReviews handles API call to get all reviews
@@ -20,6 +23,42 @@ func (app *application) AllReviews(w http.ResponseWriter, r *http.Request) {
 		Data: envelop{
 			"reviews": reviews,
 		},
+	}
+
+	_ = app.writeJSON(w, http.StatusOK, payload)
+}
+
+// NewReview handles API call to inserts a new review
+func (app *application) NewReview(w http.ResponseWriter, r *http.Request) {
+	var requestPayload struct {
+		BookId int    `json:"book_id"`
+		UserId int    `json:"user_id"`
+		Review string `json:"review"`
+		Rating int    `json:"rating"`
+	}
+
+	err := app.readJSON(w, r, &requestPayload)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	review := &models.Review{
+		Review: requestPayload.Review,
+		Rating: requestPayload.Rating,
+	}
+
+	_, _, err = app.models.Review.Insert(review.Review, review.Rating, requestPayload.UserId, requestPayload.BookId)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	payload := jsonResponse{
+		Error:   false,
+		Message: "success",
 	}
 
 	_ = app.writeJSON(w, http.StatusOK, payload)
@@ -119,31 +158,74 @@ func (app *application) AllReviewsByUserID(w http.ResponseWriter, r *http.Reques
 	_ = app.writeJSON(w, http.StatusOK, payload)
 }
 
+type ResponsePayload struct {
+	ID        int       `json:"id"`
+	Review    string    `json:"review"`
+	Rating    int       `json:"rating"`
+	Username  string    `json:"user_name"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 // AllReviewsByBookID handles API call to get all reviews according to book id
 func (app *application) AllReviewsByBookID(w http.ResponseWriter, r *http.Request) {
-	var requestPayload struct {
-		ID int `json:"id"`
-	}
+	//var requestPayload struct {
+	//	ID int `json:"id"`
+	//}
+	//
+	//err := app.readJSON(w, r, &requestPayload)
+	//if err != nil {
+	//	app.errorLog.Println(err)
+	//	_ = app.errorJSON(w, err)
+	//	return
+	//}
 
-	err := app.readJSON(w, r, &requestPayload)
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)
 		return
 	}
 
-	reviews, err := app.models.Review.ReviewsByBookID(requestPayload.ID)
+	app.infoLog.Println("book id:", id)
+
+	reviews, err := app.models.Review.ReviewsByBookID(id)
 	if err != nil {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)
 		return
+	}
+
+	var results []ResponsePayload
+
+	for _, review := range reviews {
+		r, err := app.models.BookReview.GetByReviewID(review.ID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
+		u, err := app.models.User.GetById(r.UserID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
+		var p ResponsePayload
+		p.ID = review.ID
+		p.Review = review.Review
+		p.Rating = review.Rating
+		p.CreatedAt = review.CreatedAt
+		p.UpdatedAt = review.UpdatedAt
+		p.Username = u.FirstName + " " + u.LastName
+		results = append(results, p)
 	}
 
 	payload := jsonResponse{
 		Error:   false,
 		Message: "success",
 		Data: envelop{
-			"reviews": reviews,
+			"results": results,
 		},
 	}
 

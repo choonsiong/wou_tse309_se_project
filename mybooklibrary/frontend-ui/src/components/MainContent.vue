@@ -1,5 +1,6 @@
 <template>
-  <book-dialog v-if="showBookDialog" @close-event="handleCloseEvent" :book="book"></book-dialog>
+<!--  <book-dialog v-if="showBookDialog" @close-event="handleCloseEvent" @write-review-event="handleWriteReviewEvent" :book="book"></book-dialog>-->
+<!--  <review-dialog v-if="showWriteReviewDialog" @close-event="handleCloseEvent" :book="book"></review-dialog>-->
   <main-hero v-if="!store.isLoggedIn"></main-hero>
   <main class="bg-green-50 m-0 p-5 sm:p-10">
     <div v-if="isLoading" class="text-center text-4xl">Loading...</div>
@@ -41,13 +42,15 @@ import appEnvironment from '@/environment.js'
 import BookCard from '@/components/BookCard.vue'
 import BookDialog from '@/components/BookDialog.vue'
 import router from '@/router/index.js'
+import ReviewDialog from '@/components/ReviewDialog.vue'
 
 export default {
   name: 'MainContent',
   components: {
     MainHero,
     BookCard,
-    BookDialog
+    BookDialog,
+    ReviewDialog
   },
   data() {
     return {
@@ -58,14 +61,16 @@ export default {
       genres: [{}],
       currentFilter: 0,
       isLoading: true,
-      showBookDialog: false
+      showBookDialog: false,
+      showWriteReviewDialog: false
     }
   },
   methods: {
-    handleCloseEvent() {
-      //console.log('handleCloseEvent')
-      this.showBookDialog = false
-    },
+    // handleCloseEvent() {
+    //   //console.log('handleCloseEvent')
+    //   this.showBookDialog = false
+    //   this.showWriteReviewDialog = false
+    // },
     handleShowBookDialogEvent(id) {
       //console.log('handleShowBookDialogEvent')
       //console.log(id)
@@ -75,10 +80,15 @@ export default {
     handleShowBookDetailEvent(id) {
       this.showBookDetail = true
       this.book = this.books.find(book => book.id === id)
-      store.book = this.book;
+      store.book = this.book
       console.log(this.book.title)
       router.push('/books/' + id)
     },
+    // handleWriteReviewEvent() {
+    //   console.log('handle write review event')
+    //   this.showBookDialog = false
+    //   this.showWriteReviewDialog = true
+    // },
     setFilter: function(filter) {
       this.currentFilter = filter
       //console.log(this.currentFilter)

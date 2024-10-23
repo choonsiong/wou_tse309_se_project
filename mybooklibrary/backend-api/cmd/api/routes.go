@@ -38,6 +38,8 @@ func (app *application) routes() http.Handler {
 	mux.Get("/genres", app.AllGenres)
 	//mux.Post("/genres", app.AllGenres)
 
+	mux.Get("/reviews/{id}", app.AllReviewsByBookID)
+
 	mux.Route("/admin", func(r chi.Router) {
 		r.Use(app.AuthenticateToken)
 
@@ -53,6 +55,9 @@ func (app *application) routes() http.Handler {
 		r.Post("/books/new", app.NewBook)
 		r.Post("/books/edit", app.EditBook)
 		r.Post("/books/delete", app.DeleteBook)
+
+		// Reviews
+		r.Post("/reviews/new", app.NewReview)
 
 		r.Post("/test", func(w http.ResponseWriter, r *http.Request) {
 			payload := jsonResponse{

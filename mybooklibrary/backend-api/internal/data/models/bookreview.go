@@ -117,6 +117,24 @@ func (b *BookReview) GetByBookID(id int) ([]*BookReview, error) {
 	return bookReviews, nil
 }
 
+// GetByReviewID returns rows by review id
+func (b *BookReview) GetByReviewID(id int) (*BookReview, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	query := `SELECT id, review_id, user_id, book_id, created_at, updated_at FROM book_reviews WHERE review_id = $1`
+
+	var bookReview BookReview
+
+	row := db.QueryRowContext(ctx, query, id)
+	err := row.Scan(&bookReview.ID, &bookReview.ReviewID, &bookReview.UserID, &bookReview.BookID, &bookReview.CreatedAt, &bookReview.UpdatedAt)
+	if err != nil {
+		return nil, err
+	}
+
+	return &bookReview, nil
+}
+
 // DeleteByID delete row by id
 func (b *BookReview) DeleteByID(id int) error {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)

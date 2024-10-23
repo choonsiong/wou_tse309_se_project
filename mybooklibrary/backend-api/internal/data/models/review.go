@@ -2,6 +2,7 @@ package models
 
 import (
 	"context"
+	"log"
 	"time"
 )
 
@@ -57,6 +58,8 @@ func (r *Review) Insert(review string, rating int, userID int, bookID int) (int,
 	if err != nil {
 		return -1, -1, err
 	}
+
+	log.Println(reviewID, userID, bookID)
 
 	// Insert into book_reviews table then
 	stmt2 := `INSERT INTO book_reviews (review_id, user_id, book_id, created_at, updated_at) VALUES ($1, $2, $3, $4, $5) RETURNING id`
