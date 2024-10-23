@@ -18,7 +18,7 @@
       </div>
       <div v-if="reviews.length > 0">
         <div v-for="review in reviews" :key="review.id" class="p-5 bg-green-50 mb-3 rounded-2xl">
-          <p class="mb-1 font-light">{{ review.created_at.slice(0, 19).replace('T', ' ') }} by Foo</p>
+          <p class="mb-1 font-light">{{ review.created_at.slice(0, 19).replace('T', ' ') }} by {{ review.user_name }}</p>
           <em>{{ review.review }}</em>
         </div>
       </div>
@@ -90,7 +90,7 @@ export default {
             text: jsonResp.message
           })
         } else {
-          this.reviews = jsonResp.data.reviews
+          this.reviews = jsonResp.data.results
           console.log(this.reviews)
         }
       })
