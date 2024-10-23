@@ -54,6 +54,9 @@ func (app *application) routes() http.Handler {
 		r.Post("/books/edit", app.EditBook)
 		r.Post("/books/delete", app.DeleteBook)
 
+		// Reviews
+		r.Post("/reviews/new", app.NewReview)
+
 		r.Post("/test", func(w http.ResponseWriter, r *http.Request) {
 			payload := jsonResponse{
 				Error:   false,
