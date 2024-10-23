@@ -5,7 +5,8 @@
       <div v-for="(review, index) in reviews" :key="review.id">
         <div class="flex flex-col items-center justify-between w-full p-6 bg-green-500/30 rounded-lg md:flex-row">
           <div class="flex-row space-y-2">
-            <p class="text-center text-veryDarkViolet md:text-left mr-2">#{{ index + 1 }} - <span class="font-semibold">{{ review.book_name }}</span></p>
+            <p class="text-center text-veryDarkViolet md:text-left mr-2">#{{ index + 1 }} - <span class="font-semibold">{{ review.book_name
+              }}</span></p>
             <p class="mb-1 font-light">{{ review.created_at.slice(0, 19).replace('T', ' ') }} by {{ review.user_name
               }}</p>
             <p>{{ review.review }}</p>
