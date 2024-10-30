@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="text-center">
-        <button v-if="store.isLoggedIn" class="bg-green-400 p-3 rounded-xl font-bold text-white" @click="handleWriteReview">Write a Review</button>
+        <button v-if="store.isLoggedIn && showWriteReview" class="bg-green-400 p-3 rounded-xl font-bold text-white" @click="handleWriteReview">Write a Review</button>
       </div>
     </div>
   </div>
@@ -32,12 +32,14 @@
 import { store } from '@/store.js'
 import appEnvironment from '@/environment.js'
 import router from '@/router/index.js'
+import Security from '@/security.js'
 
 export default {
   name: 'BookDetail',
   data() {
     return {
       book: store.book,
+      showWriteReview: true,
       reviews: {}
     }
   },
@@ -77,10 +79,9 @@ export default {
     handleWriteReview() {
       store.book = this.book
       router.push('/manage/reviews/new')
-    }
+    },
   },
   beforeMount() {
-    //console.log('book id:' + store.book.id)
     fetch(appEnvironment.apiURL() + '/reviews/' + store.book.id)
       .then((resp) => resp.json())
       .then((jsonResp) => {
@@ -99,6 +100,32 @@ export default {
           text: err
         })
       })
+
+    if (store.isLoggedIn) {
+      const payload = {
+        user_id: store.user.id,
+        book_id: store.book.id,
+      }
+
+      fetch(appEnvironment.apiURL() + '/admin/reviews/exists', Security.requestOptions(payload))
+        .then((resp) => resp.json())
+        .then((jsonResp) => {
+          if (jsonResp.error) {
+            notie.alert({
+              type: 'error',
+              text: jsonResp.message
+            })
+          } else {
+            this.showWriteReview = !jsonResp.data.exists;
+          }
+        })
+        .catch((err) => {
+          notie.alert({
+            type: 'error',
+            text: err
+          })
+        })
+    }
   }
 }
 </script>

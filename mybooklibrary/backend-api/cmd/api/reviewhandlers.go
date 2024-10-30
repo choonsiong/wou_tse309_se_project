@@ -2,6 +2,7 @@ package main
 
 import (
 	"app-backend/internal/data/models"
+	"database/sql"
 	"github.com/go-chi/chi/v5"
 	"net/http"
 	"strconv"
@@ -64,6 +65,46 @@ func (app *application) AllReviews(w http.ResponseWriter, r *http.Request) {
 		Message: "success",
 		Data: envelop{
 			"results": results,
+		},
+	}
+
+	_ = app.writeJSON(w, http.StatusOK, payload)
+}
+
+// IsReviewExistsForSameUserAndBook handles API call to check whether review exists for same user id and book id
+func (app *application) IsReviewExistsForSameUserAndBook(w http.ResponseWriter, r *http.Request) {
+	var requestPayload struct {
+		BookId int `json:"book_id"`
+		UserId int `json:"user_id"`
+	}
+
+	err := app.readJSON(w, r, &requestPayload)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	review, err := app.models.BookReview.GetOneByUserIdAndBookId(requestPayload.UserId, requestPayload.BookId)
+	if err != nil && err != sql.ErrNoRows {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
+	}
+
+	var isReviewExists bool
+
+	if review == nil {
+		isReviewExists = false
+	} else {
+		isReviewExists = true
+	}
+
+	payload := jsonResponse{
+		Error:   false,
+		Message: "success",
+		Data: envelop{
+			"exists": isReviewExists,
 		},
 	}
 
