@@ -148,7 +148,7 @@ func (b *Book) GetAll() ([]*Book, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
 	defer cancel()
 
-	query := `SELECT b.id, b.title, b.publisher_id, b.publication_year, b.description, b.slug, b.created_at, b.updated_at, a.id, a.publisher_name, a.created_at, a.updated_at FROM mybooks b LEFT JOIN publishers a ON (b.publisher_id = a.id) ORDER BY b.title`
+	query := `SELECT b.id, b.title, b.publisher_id, b.publication_year, b.description, b.slug, b.created_at, b.updated_at, a.id, a.publisher_name, a.created_at, a.updated_at FROM mybooks b LEFT JOIN publishers a ON (b.publisher_id = a.id) ORDER BY b.created_at DESC`
 
 	var books []*Book
 
@@ -404,7 +404,7 @@ func (b *Book) GetAllByUserID(id int) ([]*Book, []int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
 	defer cancel()
 
-	query := `SELECT id, title, publisher_id, publication_year, description, slug, created_at, updated_at FROM mybooks WHERE id IN (SELECT book_id FROM users_mybooks WHERE user_id = $1) ORDER BY id`
+	query := `SELECT id, title, publisher_id, publication_year, description, slug, created_at, updated_at FROM mybooks WHERE id IN (SELECT book_id FROM users_mybooks WHERE user_id = $1) ORDER BY id DESC`
 	dbRows, err := db.QueryContext(ctx, query, id)
 	if err != nil && err != sql.ErrNoRows {
 		return nil, nil, err
