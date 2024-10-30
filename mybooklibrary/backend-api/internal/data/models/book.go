@@ -270,6 +270,10 @@ func (b *Book) Insert(book Book) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
 	defer cancel()
 
+	if book.PublicationYear == 0 || book.PublicationYear < 1000 || book.PublicationYear > time.Now().Year() {
+		book.PublicationYear = time.Now().Year()
+	}
+
 	stmt := `INSERT INTO mybooks (title, publisher_id, publication_year, description, isbn, slug, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`
 
 	var newID int
@@ -286,6 +290,8 @@ func (b *Book) Insert(book Book) (int, error) {
 	if err != nil {
 		return 0, err
 	}
+
+	fmt.Println(book.PublicationYear)
 
 	// Update genres using genre ids
 	if len(book.GenreIDs) > 0 {
@@ -330,6 +336,10 @@ func (b *Book) Insert(book Book) (int, error) {
 func (b *Book) Update() error {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
 	defer cancel()
+
+	if b.PublicationYear == 0 || b.PublicationYear < 1000 || b.PublicationYear > time.Now().Year() {
+		b.PublicationYear = time.Now().Year()
+	}
 
 	stmt := `UPDATE mybooks SET
 		title = $1,
