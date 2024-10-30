@@ -57,6 +57,9 @@
           </div>
         </div>
       </div>
+<!--      <div class="flex justify-end p-4">-->
+<!--        <p class="font-light text-sm text-slate-600"><em>30-10-2024 12:34 by Foo Bar</em></p>-->
+<!--      </div>-->
     </div>
   </div>
 </template>
