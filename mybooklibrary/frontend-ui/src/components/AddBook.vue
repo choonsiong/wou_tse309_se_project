@@ -41,7 +41,7 @@
                     placeholder="Enter book description"></textarea>
         </div>
         <div class="mb-5">
-          <label for="formImageFile" class="block mb-2 text-sm text-slate-600">Book Cover Image</label>
+          <label for="formImageFile" class="block mb-2 text-sm text-slate-600">Book Cover Image <span class="text-red font-semibold text-xs"><br/><em>Maximum file size is 1MB, JPEG only</em></span></label>
           <input ref="bookCoverRef" type="file" id="formImageFile" accept="image/jpeg" @change="uploadBookCoverImage"
                  class="bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
                  required />

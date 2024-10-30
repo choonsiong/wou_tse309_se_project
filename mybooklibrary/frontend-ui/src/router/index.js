@@ -8,6 +8,7 @@ import AddBook from '@/components/AddBook.vue'
 import EditBook from '@/components/EditBook.vue'
 import BookDetail from '@/components/BookDetail.vue'
 import AddReview from '@/components/AddReview.vue'
+import AllReviews from '@/components/AllReviews.vue'
 
 const routes = [
   {
@@ -39,6 +40,11 @@ const routes = [
     path: '/admin/manage/users',
     name: 'AllUsers',
     component: AllUsers
+  },
+  {
+    path: '/admin/manage/reviews',
+    name: 'AllReviews',
+    component: AllReviews
   },
   {
     path: '/admin/manage/books',
