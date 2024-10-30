@@ -39,7 +39,7 @@ func (u *User) GetAll() ([]*User, error) {
 	defer cancel()
 
 	//query := `SELECT id, email, first_name, last_name, password, created_at, updated_at, user_active case when (select count(id) from tokens t where user_id = users.id and t.expiry > now()) > 0 then 1 else 0 end as has_token FROM users ORDER BY last_name`
-	query := `SELECT id, email, first_name, last_name, password, created_at, updated_at, user_active, is_admin FROM users ORDER BY last_name`
+	query := `SELECT id, email, first_name, last_name, password, created_at, updated_at, user_active, is_admin FROM users ORDER BY id`
 	rows, err := db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
