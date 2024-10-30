@@ -14,6 +14,7 @@
                        :description="book.description"
                        :genres="book.genres"
                        :author="allAuthors(book)"
+                       :isbn="book.isbn"
                        :publication-year="book.publication_year"
                        @show-book-dialog-event="handleShowBookDialogEvent"
                        @show-book-detail-event="handleShowBookDetailEvent">
