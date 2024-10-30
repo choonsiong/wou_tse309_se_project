@@ -61,6 +61,7 @@ func (app *application) routes() http.Handler {
 		// Reviews
 		r.Post("/reviews/new", app.NewReview)
 		r.Post("/reviews/delete", app.DeleteReviewById)
+		r.Post("/reviews/exists", app.IsReviewExistsForSameUserAndBook)
 
 		r.Post("/test", func(w http.ResponseWriter, r *http.Request) {
 			payload := jsonResponse{

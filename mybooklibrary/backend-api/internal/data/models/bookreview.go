@@ -53,6 +53,24 @@ func (b *BookReview) GetByID(id int) (*BookReview, error) {
 	return &bookReview, nil
 }
 
+// GetOneByUserIdAndBookId get row by user and book id
+func (b *BookReview) GetOneByUserIdAndBookId(userId int, bookId int) (*BookReview, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
+	defer cancel()
+
+	query := `SELECT id, review_id, user_id, book_id, created_at, updated_at FROM book_reviews WHERE user_id = $1 AND book_id = $2`
+
+	var bookReview BookReview
+
+	row := db.QueryRowContext(ctx, query, userId, bookId)
+	err := row.Scan(&bookReview.ID, &bookReview.ReviewID, &bookReview.UserID, &bookReview.BookID, &bookReview.CreatedAt, &bookReview.UpdatedAt)
+	if err != nil {
+		return nil, err
+	}
+
+	return &bookReview, nil
+}
+
 // GetByUserID returns rows by user id
 func (b *BookReview) GetByUserID(id int) ([]*BookReview, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
