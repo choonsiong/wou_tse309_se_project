@@ -88,7 +88,7 @@ func (t *Token) AuthenticateToken(r *http.Request) (*User, error) {
 		return nil, errors.New("authorization header not found")
 	}
 
-	log.Println("authorizationHeader =", authorizationHeader)
+	//log.Println("authorizationHeader =", authorizationHeader)
 
 	headerParts := strings.Split(authorizationHeader, " ")
 	if len(headerParts) != 2 || headerParts[0] != "Bearer" {
@@ -96,7 +96,7 @@ func (t *Token) AuthenticateToken(r *http.Request) (*User, error) {
 	}
 
 	tokenStr := headerParts[1]
-	log.Println("tokenStr =", tokenStr)
+	//log.Println("tokenStr =", tokenStr)
 
 	if len(tokenStr) != 26 {
 		return nil, errors.New("invalid token length")
