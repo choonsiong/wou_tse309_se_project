@@ -15,6 +15,7 @@ type Book struct {
 	PublisherID     int       `json:"publisher_id"`
 	PublicationYear int       `json:"publication_year"`
 	Description     string    `json:"description"`
+	ISBN            string    `json:"isbn"`
 	Slug            string    `json:"slug"`
 	Publisher       Publisher `json:"publisher"`
 	Authors         []Author  `json:"authors"`
@@ -31,6 +32,7 @@ func (b *Book) Details() {
 	log.Println("Publisher:", b.PublisherID)
 	log.Println("Publication Year:", b.PublicationYear)
 	log.Println("Description:", b.Description)
+	log.Println("ISBN:", b.ISBN)
 	log.Println("Slug:", b.Slug)
 	log.Println("Publisher:", b.Publisher.PublisherName)
 	for i, author := range b.Authors {
@@ -54,7 +56,7 @@ func (b *Book) GetOneById(id int) (*Book, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
 	defer cancel()
 
-	query := `SELECT b.id, b.title, b.publisher_id, b.publication_year, b.description, b.slug, b.created_at, b.updated_at, a.id, a.publisher_name, a.created_at, a.updated_at FROM mybooks b LEFT JOIN publishers a ON (b.publisher_id = a.id) WHERE b.id = $1`
+	query := `SELECT b.id, b.title, b.publisher_id, b.publication_year, b.description, b.isbn, b.slug, b.created_at, b.updated_at, a.id, a.publisher_name, a.created_at, a.updated_at FROM mybooks b LEFT JOIN publishers a ON (b.publisher_id = a.id) WHERE b.id = $1`
 
 	row := db.QueryRowContext(ctx, query, id)
 
@@ -66,6 +68,7 @@ func (b *Book) GetOneById(id int) (*Book, error) {
 		&book.PublisherID,
 		&book.PublicationYear,
 		&book.Description,
+		&book.ISBN,
 		&book.Slug,
 		&book.CreatedAt,
 		&book.UpdatedAt,
@@ -101,7 +104,7 @@ func (b *Book) GetOneBySlug(slug string) (*Book, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
 	defer cancel()
 
-	query := `SELECT b.id, b.title, b.publisher_id, b.publication_year, b.description, b.slug, b.created_at, b.updated_at, a.id, a.publisher_name, a.created_at, a.updated_at FROM mybooks b LEFT JOIN publishers a ON (b.publisher_id = a.id) WHERE b.slug = $1`
+	query := `SELECT b.id, b.title, b.publisher_id, b.publication_year, b.description, b.isbn, b.slug, b.created_at, b.updated_at, a.id, a.publisher_name, a.created_at, a.updated_at FROM mybooks b LEFT JOIN publishers a ON (b.publisher_id = a.id) WHERE b.slug = $1`
 
 	row := db.QueryRowContext(ctx, query, slug)
 
@@ -113,6 +116,7 @@ func (b *Book) GetOneBySlug(slug string) (*Book, error) {
 		&book.PublisherID,
 		&book.PublicationYear,
 		&book.Description,
+		&book.ISBN,
 		&book.Slug,
 		&book.CreatedAt,
 		&book.UpdatedAt,
@@ -148,7 +152,7 @@ func (b *Book) GetAll() ([]*Book, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
 	defer cancel()
 
-	query := `SELECT b.id, b.title, b.publisher_id, b.publication_year, b.description, b.slug, b.created_at, b.updated_at, a.id, a.publisher_name, a.created_at, a.updated_at FROM mybooks b LEFT JOIN publishers a ON (b.publisher_id = a.id) ORDER BY b.created_at DESC`
+	query := `SELECT b.id, b.title, b.publisher_id, b.publication_year, b.description, b.isbn, b.slug, b.created_at, b.updated_at, a.id, a.publisher_name, a.created_at, a.updated_at FROM mybooks b LEFT JOIN publishers a ON (b.publisher_id = a.id) ORDER BY b.created_at DESC`
 
 	var books []*Book
 
@@ -167,6 +171,7 @@ func (b *Book) GetAll() ([]*Book, error) {
 			&book.PublisherID,
 			&book.PublicationYear,
 			&book.Description,
+			&book.ISBN,
 			&book.Slug,
 			&book.CreatedAt,
 			&book.UpdatedAt,
@@ -208,7 +213,7 @@ func (b *Book) GetAllPaginated(page, pageSize int) ([]*Book, error) {
 	limit := pageSize
 	offset := (page - 1) * pageSize
 
-	query := `SELECT b.id, b.title, b.publisher_id, b.publication_year, b.description, b.slug, b.created_at, b.updated_at, a.id, a.publisher_name, a.created_at, a.updated_at FROM mybooks b LEFT JOIN publishers a ON (b.publisher_id = a.id) ORDER BY b.title LIMIT $1 OFFSET $2`
+	query := `SELECT b.id, b.title, b.publisher_id, b.publication_year, b.description, b.isbn, b.slug, b.created_at, b.updated_at, a.id, a.publisher_name, a.created_at, a.updated_at FROM mybooks b LEFT JOIN publishers a ON (b.publisher_id = a.id) ORDER BY b.title LIMIT $1 OFFSET $2`
 
 	var books []*Book
 
@@ -226,6 +231,7 @@ func (b *Book) GetAllPaginated(page, pageSize int) ([]*Book, error) {
 			&book.PublisherID,
 			&book.PublicationYear,
 			&book.Description,
+			&book.ISBN,
 			&book.Slug,
 			&book.CreatedAt,
 			&book.UpdatedAt,
@@ -264,7 +270,7 @@ func (b *Book) Insert(book Book) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
 	defer cancel()
 
-	stmt := `INSERT INTO mybooks (title, publisher_id, publication_year, description, slug, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`
+	stmt := `INSERT INTO mybooks (title, publisher_id, publication_year, description, isbn, slug, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`
 
 	var newID int
 	err := db.QueryRowContext(ctx, stmt,
@@ -272,6 +278,7 @@ func (b *Book) Insert(book Book) (int, error) {
 		book.PublisherID,
 		book.PublicationYear,
 		book.Description,
+		book.ISBN,
 		slugify.Slugify(book.Title),
 		time.Now(),
 		time.Now(),
@@ -329,9 +336,10 @@ func (b *Book) Update() error {
 		publisher_id = $2,
 		publication_year = $3,
 		description = $4,
-        slug = $5,
-		updated_at = $6
-		where id = $7`
+		isbn = $5,
+        slug = $6,
+		updated_at = $7
+		where id = $8`
 
 	_, err := db.ExecContext(
 		ctx,
@@ -340,6 +348,7 @@ func (b *Book) Update() error {
 		b.PublisherID,
 		b.PublicationYear,
 		b.Description,
+		b.ISBN,
 		slugify.Slugify(b.Title),
 		time.Now(),
 		b.ID)
@@ -404,7 +413,7 @@ func (b *Book) GetAllByUserID(id int) ([]*Book, []int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
 	defer cancel()
 
-	query := `SELECT id, title, publisher_id, publication_year, description, slug, created_at, updated_at FROM mybooks WHERE id IN (SELECT book_id FROM users_mybooks WHERE user_id = $1) ORDER BY id DESC`
+	query := `SELECT id, title, publisher_id, publication_year, description, isbn, slug, created_at, updated_at FROM mybooks WHERE id IN (SELECT book_id FROM users_mybooks WHERE user_id = $1) ORDER BY id DESC`
 	dbRows, err := db.QueryContext(ctx, query, id)
 	if err != nil && err != sql.ErrNoRows {
 		return nil, nil, err
@@ -423,6 +432,7 @@ func (b *Book) GetAllByUserID(id int) ([]*Book, []int, error) {
 			&book.PublisherID,
 			&book.PublicationYear,
 			&book.Description,
+			&book.ISBN,
 			&book.Slug,
 			&book.CreatedAt,
 			&book.UpdatedAt)
