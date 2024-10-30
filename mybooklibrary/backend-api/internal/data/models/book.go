@@ -291,8 +291,6 @@ func (b *Book) Insert(book Book) (int, error) {
 		return 0, err
 	}
 
-	fmt.Println(book.PublicationYear)
-
 	// Update genres using genre ids
 	if len(book.GenreIDs) > 0 {
 		stmt = `DELETE FROM mybooks_genres WHERE book_id = $1`
