@@ -19,7 +19,7 @@ func (r *Review) All() ([]*Review, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), databaseTimeout)
 	defer cancel()
 
-	query := `SELECT id, review, rating, created_at, updated_at FROM reviews ORDER BY id`
+	query := `SELECT id, review, rating, created_at, updated_at FROM reviews ORDER BY id DESC`
 	rows, err := db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err

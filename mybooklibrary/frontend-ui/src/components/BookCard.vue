@@ -39,11 +39,11 @@
         <h6 class="mb-2 text-slate-800 text-xl font-semibold">
           {{ title }}
         </h6>
+        <p class="mb-2 font-light">ISBN {{isbn}}</p>
         <p class="text-slate-600 leading-normal font-light">
           {{ shortDescription }}
         </p>
       </div>
-
       <div class="flex items-center justify-between p-4">
         <div class="flex items-center">
           <!--          <img-->
@@ -63,7 +63,7 @@
 <script>
 export default {
   name: 'BookCard',
-  props: ['id', 'title', 'description', 'imagePath', 'author', 'publicationYear', 'genres'],
+  props: ['id', 'title', 'description', 'imagePath', 'author', 'isbn', 'publicationYear', 'genres'],
   emits: ['show-book-dialog-event', 'show-book-detail-event'],
   computed: {
     shortDescription() {

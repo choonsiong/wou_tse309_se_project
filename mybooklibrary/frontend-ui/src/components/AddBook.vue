@@ -23,6 +23,12 @@
                  placeholder="Publisher" />
         </div>
         <div class="w-full max-w-md min-w-[200px] mb-5">
+          <label class="block mb-2 text-sm text-slate-600">ISBN</label>
+          <input v-model="isbn" type="text"
+                 class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+                 placeholder="ISBN" />
+        </div>
+        <div class="w-full max-w-md min-w-[200px] mb-5">
           <label class="block mb-2 text-sm text-slate-600">Book Authors</label>
           <input v-model="authors" type="text"
                  class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
@@ -69,6 +75,7 @@ export default {
     return {
       title: '',
       description: '',
+      isbn: '',
       publisherName: '',
       publicationYear: '',
       authors: '',
@@ -82,6 +89,7 @@ export default {
         user_id: store.user.id,
         title: this.title,
         description: this.description,
+        isbn: this.isbn,
         publisher_name: this.publisherName,
         publication_year: parseInt(this.publicationYear, 10),
         authors: this.authors,

@@ -425,6 +425,59 @@ Foreign-key constraints:
 bookappdb=#
 ```
 
+```
+mybooklibrarydb=# \d mybooks
+                                           Table "public.mybooks"
+      Column      |            Type             | Collation | Nullable |               Default               
+------------------+-----------------------------+-----------+----------+-------------------------------------
+ id               | integer                     |           | not null | nextval('mybooks_id_seq'::regclass)
+ title            | character varying(512)      |           |          | 
+ publisher_id     | integer                     |           |          | 
+ publication_year | integer                     |           |          | 
+ description      | text                        |           |          | 
+ slug             | character varying(512)      |           |          | 
+ created_at       | timestamp without time zone |           |          | now()
+ updated_at       | timestamp without time zone |           |          | now()
+Indexes:
+    "mybooks_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "fk_publishers_publisher_id" FOREIGN KEY (publisher_id) REFERENCES publishers(id)
+Referenced by:
+    TABLE "book_reviews" CONSTRAINT "fk_book_id" FOREIGN KEY (book_id) REFERENCES mybooks(id)
+    TABLE "mybooks_genres" CONSTRAINT "fk_mybooks_book_id" FOREIGN KEY (book_id) REFERENCES mybooks(id)
+    TABLE "mybooks_authors" CONSTRAINT "fk_mybooks_book_id" FOREIGN KEY (book_id) REFERENCES mybooks(id)
+    TABLE "users_mybooks" CONSTRAINT "fk_mybooks_book_id" FOREIGN KEY (book_id) REFERENCES mybooks(id)
+
+mybooklibrarydb=# ALTER TABLE mybooks ADD isbn VARCHAR(512);
+ALTER TABLE
+mybooklibrarydb=# 
+mybooklibrarydb=# \d mybooks
+                                           Table "public.mybooks"
+      Column      |            Type             | Collation | Nullable |               Default               
+------------------+-----------------------------+-----------+----------+-------------------------------------
+ id               | integer                     |           | not null | nextval('mybooks_id_seq'::regclass)
+ title            | character varying(512)      |           |          | 
+ publisher_id     | integer                     |           |          | 
+ publication_year | integer                     |           |          | 
+ description      | text                        |           |          | 
+ slug             | character varying(512)      |           |          | 
+ created_at       | timestamp without time zone |           |          | now()
+ updated_at       | timestamp without time zone |           |          | now()
+ isbn             | character varying(512)      |           |          | 
+Indexes:
+    "mybooks_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "fk_publishers_publisher_id" FOREIGN KEY (publisher_id) REFERENCES publishers(id)
+Referenced by:
+    TABLE "book_reviews" CONSTRAINT "fk_book_id" FOREIGN KEY (book_id) REFERENCES mybooks(id)
+    TABLE "mybooks_genres" CONSTRAINT "fk_mybooks_book_id" FOREIGN KEY (book_id) REFERENCES mybooks(id)
+    TABLE "mybooks_authors" CONSTRAINT "fk_mybooks_book_id" FOREIGN KEY (book_id) REFERENCES mybooks(id)
+    TABLE "users_mybooks" CONSTRAINT "fk_mybooks_book_id" FOREIGN KEY (book_id) REFERENCES mybooks(id)
+
+mybooklibrarydb=# 
+mybooklibrarydb=#
+```
+
 #### Foreign Keys
 
 ```

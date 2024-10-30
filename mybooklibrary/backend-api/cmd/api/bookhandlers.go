@@ -170,6 +170,7 @@ func (app *application) NewBook(w http.ResponseWriter, r *http.Request) {
 		UserID          int    `json:"user_id"`
 		Title           string `json:"title"`
 		Description     string `json:"description"`
+		ISBN            string `json:"isbn"`
 		PublisherName   string `json:"publisher_name"`
 		PublicationYear int    `json:"publication_year"`
 		Authors         string `json:"authors"`
@@ -362,6 +363,7 @@ func (app *application) NewBook(w http.ResponseWriter, r *http.Request) {
 		PublisherID:     publisherId,
 		PublicationYear: requestPayload.PublicationYear,
 		Description:     requestPayload.Description,
+		ISBN:            requestPayload.ISBN,
 		Slug:            slugify.Slugify(requestPayload.Title),
 		Publisher:       *publisher,
 		Authors:         finalAuthors,
@@ -421,6 +423,7 @@ func (app *application) EditBook(w http.ResponseWriter, r *http.Request) {
 		Genres          string `json:"genres"`
 		PublisherName   string `json:"publisher_name"`
 		PublicationYear int    `json:"publication_year"`
+		ISBN            string `json:"isbn"`
 		Slug            string `json:"slug"`
 		Title           string `json:"title"`
 	}
@@ -612,6 +615,7 @@ func (app *application) EditBook(w http.ResponseWriter, r *http.Request) {
 		PublisherID:     publisherId,
 		PublicationYear: requestPayload.PublicationYear,
 		Description:     requestPayload.Description,
+		ISBN:            requestPayload.ISBN,
 		Slug:            slugify.Slugify(requestPayload.Title),
 		Publisher:       *publisher,
 		Authors:         finalAuthors,

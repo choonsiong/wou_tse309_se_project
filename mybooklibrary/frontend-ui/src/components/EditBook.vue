@@ -26,6 +26,12 @@
                  placeholder="Publisher" />
         </div>
         <div class="w-full max-w-md min-w-[200px] mb-5">
+          <label class="block mb-2 text-sm text-slate-600">ISBN</label>
+          <input v-model.trim="book.isbn" type="text"
+                 class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+                 placeholder="ISBN" />
+        </div>
+        <div class="w-full max-w-md min-w-[200px] mb-5">
           <label class="block mb-2 text-sm text-slate-600">Book Authors</label>
           <input v-model.trim="authors" type="text"
                  class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
@@ -65,7 +71,7 @@ import Security from '@/security.js'
 import router from '@/router/index.js'
 
 export default {
-  name: 'AddBook',
+  name: 'EditBook',
   data() {
     return {
       book: {},
@@ -119,6 +125,7 @@ export default {
         authors: this.authors,
         genres: this.genres,
         description: this.book.description,
+        isbn: this.book.isbn,
         slug: this.book.slug,
         book_cover: this.bookCover
       }

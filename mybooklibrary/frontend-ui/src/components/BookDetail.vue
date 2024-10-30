@@ -7,7 +7,7 @@
              alt="profile-picture" />
       </div>
       <p class="mt-3 text-center font-light text-xl">{{ allAuthors }}</p>
-      <p class="mt-5 text-center font-bold text-2xl">{{ normalizedPublisherName }} ({{ book.publication_year }})</p>
+      <p class="mt-5 text-center font-bold text-2xl">{{ normalizedPublisherName }} ({{ book.publication_year }}) <br><span class="font-light text-xl text-gray-500">ISBN {{ book.isbn }}</span></p>
       <p class="mt-10 font-extralight">{{ book.description }}</p>
       <div class="mt-10">
         <div class="flex flex-wrap mx-3 pb-3 pt-2 px-1">
