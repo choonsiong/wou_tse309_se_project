@@ -268,8 +268,6 @@ func (app *application) AllReviewsByBookID(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	app.infoLog.Println("book id:", id)
-
 	reviews, err := app.models.Review.ReviewsByBookID(id)
 	if err != nil {
 		app.errorLog.Println(err)

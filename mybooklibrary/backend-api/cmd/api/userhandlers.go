@@ -122,9 +122,8 @@ func (app *application) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	// Now, delete all the related references for each book owned by the given
 	// user id
 	for _, userBook := range userBooks {
-		app.infoLog.Println("book id:", userBook.BookID)
-
 		var err error
+
 		err = app.models.Genre.DeleteForBookId(userBook.BookID)
 		if err != nil {
 			app.errorLog.Println(err)
@@ -146,7 +145,21 @@ func (app *application) DeleteUser(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		bookReviewsUser, err := app.models.BookReview.GetByUserID(requestPayload.ID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
+
 		err = app.models.BookReview.DeleteByBookID(userBook.BookID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
+
+		err = app.models.BookReview.DeleteByUserID(requestPayload.ID)
 		if err != nil {
 			app.errorLog.Println(err)
 			_ = app.errorJSON(w, err)
@@ -162,12 +175,30 @@ func (app *application) DeleteUser(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		err = app.models.Book.DeleteByID(userBook.BookID)
-		if err != nil {
-			app.errorLog.Println(err)
-			_ = app.errorJSON(w, err)
-			return
+		for _, bookReview := range bookReviewsUser {
+			err := app.models.Review.DeleteReviewByID(bookReview.ReviewID)
+			if err != nil {
+				app.errorLog.Println(err)
+				_ = app.errorJSON(w, err)
+				return
+			}
 		}
+
+		if userBook.UserID == requestPayload.ID {
+			err = app.models.Book.DeleteByID(userBook.BookID)
+			if err != nil {
+				app.errorLog.Println(err)
+				_ = app.errorJSON(w, err)
+				return
+			}
+		}
+	}
+
+	bookReviewsUser, err := app.models.BookReview.GetByUserID(requestPayload.ID)
+	if err != nil {
+		app.errorLog.Println(err)
+		_ = app.errorJSON(w, err)
+		return
 	}
 
 	err = app.models.BookReview.DeleteByUserID(requestPayload.ID)
@@ -175,6 +206,15 @@ func (app *application) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		app.errorLog.Println(err)
 		_ = app.errorJSON(w, err)
 		return
+	}
+
+	for _, bookReview := range bookReviewsUser {
+		err := app.models.Review.DeleteReviewByID(bookReview.ReviewID)
+		if err != nil {
+			app.errorLog.Println(err)
+			_ = app.errorJSON(w, err)
+			return
+		}
 	}
 
 	// Finally delete the user from the database
