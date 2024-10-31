@@ -23,7 +23,7 @@
         </div>
       </transition-group>
     </div>
-    <div v-if="store.isLoggedIn">
+    <div v-if="store.isLoggedIn && genres.length > 0">
       <div class="hidden lg:inline mt-10 filters text-center mb-10">
         <div class="flex flex-wrap items-center justify-center">
           <span class="filter me-2 mb-2" :class="{active: currentFilter === 0}" @click="setFilter(0)">ALL</span>
@@ -58,8 +58,8 @@ export default {
       store,
       imagePath: appEnvironment.imageURL(),
       book: {},
-      books: [{}],
-      genres: [{}],
+      books: {},
+      genres: {},
       currentFilter: 0,
       isLoading: true,
       showBookDialog: false,
@@ -73,8 +73,6 @@ export default {
     //   this.showWriteReviewDialog = false
     // },
     handleShowBookDialogEvent(id) {
-      //console.log('handleShowBookDialogEvent')
-      //console.log(id)
       this.showBookDialog = true
       this.book = this.books.find(book => book.id === id)
     },
@@ -82,7 +80,6 @@ export default {
       this.showBookDetail = true
       this.book = this.books.find(book => book.id === id)
       store.book = this.book
-      //console.log(this.book.title)
       router.push('/books/' + id)
     },
     // handleWriteReviewEvent() {
