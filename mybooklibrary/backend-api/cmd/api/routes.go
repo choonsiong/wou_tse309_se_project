@@ -25,7 +25,7 @@ func (app *application) routes() http.Handler {
 		MaxAge:           300, // seconds
 	})) // For cross-site server request
 
-	mux.Get("/users/books", app.AllBooksByUserID)
+	//mux.Get("/users/books", app.AllBooksByUserID)
 	mux.Post("/users/login", app.Login)
 	mux.Post("/users/logout", app.Logout)
 	mux.Post("/users/register", app.NewUser)
@@ -38,7 +38,7 @@ func (app *application) routes() http.Handler {
 	mux.Get("/genres", app.AllGenres)
 	//mux.Post("/genres", app.AllGenres)
 
-	mux.Get("/reviews", app.AllReviews)
+	//mux.Get("/reviews", app.AllReviews)
 	mux.Post("/reviews", app.AllReviews)
 	mux.Get("/reviews/{id}", app.AllReviewsByBookID)
 

@@ -89,7 +89,7 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// TODO: Authenticate user
-	app.infoLog.Println("Authenticating user: ", cred.Email, cred.Password)
+	//app.infoLog.Println("Authenticating user: ", cred.Email, cred.Password)
 
 	// Search user by email
 	u, err := app.models.User.GetByEmail(cred.Email)

@@ -12,10 +12,10 @@
           <p class="font-bold text-center text-veryDarkViolet md:text-left mr-2">#{{ index + 1 }}</p>
           <img v-if="user.is_admin"
                class="h-14 w-14 mr-3 rounded-full p-[1.5px] border-4 border-green-600 hover:scale-110 transition-transform duration-200 ease-out"
-               :src="'https://i.pravatar.cc/150?img='+user.id" alt="profile image">
+               :src="'https://i.pravatar.cc/150?img='+user.id%70" alt="profile image">
           <img v-else
                class="h-14 w-14 mr-3 rounded-full p-[1.5px]  hover:scale-110 transition-transform duration-200 ease-out"
-               :src="'https://i.pravatar.cc/150?img='+user.id" alt="profile image">
+               :src="'https://i.pravatar.cc/150?img='+user.id%70" alt="profile image">
           <p v-if="user.active" class="font-bold text-center text-veryDarkViolet md:text-left">{{ user.first_name }}
             {{ user.last_name }}</p>
           <p v-else class="font-bold text-center text-gray-500 md:text-left">{{ user.first_name }}
