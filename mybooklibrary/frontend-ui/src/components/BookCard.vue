@@ -31,11 +31,12 @@
         <img :src="imagePath" alt="card-image" class="w-full h-[280px] object-scale-down" />
       </div>
       <div class="p-4">
-        <!--        <div class="relative flex flex-row flex-wrap gap-2">-->
-        <!--          <div v-for="genre in genres" :key="genre.id" class="mb-4 rounded-full bg-green-400 py-0.5 px-2.5 border border-transparent text-xs text-white transition-all shadow-sm w-20 text-center">-->
-        <!--            {{ genre.genre_name }}-->
-        <!--          </div>-->
-        <!--        </div>-->
+<!--        <div class="relative flex flex-row flex-wrap gap-2">-->
+<!--          <div v-for="genre in genres" :key="genre.id"-->
+<!--               class="mb-4 rounded-full bg-green-400 py-0.5 px-2.5 border border-transparent text-xs text-white transition-all shadow-sm w-20 text-center">-->
+<!--            {{ genre.genre_name }}-->
+<!--          </div>-->
+<!--        </div>-->
         <h6 class="mb-2 text-slate-800 text-xl font-semibold">
           {{ title }}
         </h6>
@@ -75,11 +76,9 @@ export default {
   },
   methods: {
     showBookDialog() {
-      //console.log(this.id)
       //this.$emit('show-book-dialog-event', this.id)
     },
     showBookDetail() {
-      //console.log(this.id)
       this.$emit('show-book-detail-event', this.id)
     },
     capitalizedEachWord(words) {
