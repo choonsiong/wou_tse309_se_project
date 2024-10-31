@@ -79,7 +79,7 @@ export default {
       //this.$emit('show-book-dialog-event', this.id)
     },
     showBookDetail() {
-      console.log(this.id)
+      //console.log(this.id)
       this.$emit('show-book-detail-event', this.id)
     },
     capitalizedEachWord(words) {

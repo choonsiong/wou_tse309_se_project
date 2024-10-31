@@ -82,7 +82,7 @@ export default {
       this.showBookDetail = true
       this.book = this.books.find(book => book.id === id)
       store.book = this.book
-      console.log(this.book.title)
+      //console.log(this.book.title)
       router.push('/books/' + id)
     },
     // handleWriteReviewEvent() {
